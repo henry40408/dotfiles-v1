@@ -1,0 +1,211 @@
+call plug#begin('~/.vim/plugged')
+
+Plug 'Shougo/dein.vim'
+
+" Plugins {
+  " Language {
+    Plug 'chrisbra/csv.vim'
+    Plug 'editorconfig/editorconfig-vim'
+    Plug 'mattn/emmet-vim'
+
+    Plug 'mxw/vim-jsx'
+    let g:jsx_ext_required=0
+
+    Plug 'plasticboy/vim-markdown'
+    let g:markdown_fenced_languages=[
+          \ 'bash=sh',
+          \ 'css',
+          \ 'elixir',
+          \ 'html',
+          \ 'javascript',
+          \ 'json',
+          \ 'python',
+          \ 'ruby',
+          \ 'yaml']
+    let g:vim_markdown_conceal=0
+
+    Plug 'scrooloose/nerdcommenter'
+
+    Plug 'sheerun/vim-polyglot'
+    let g:polyglot_disabled=['markdown']
+
+    Plug 'tpope/vim-ragtag'
+    Plug 'tpope/vim-rails'
+
+    Plug 'scrooloose/syntastic'
+    let g:syntastic_always_populate_loc_list=1
+    let g:syntastic_auto_loc_list=1
+    let g:syntastic_check_on_open=1
+    let g:syntastic_check_on_wq=0
+    let g:syntastic_python_checkers=['flake8']
+    let g:syntastic_python_python_exec='/usr/local/bin/python3'
+  " }
+
+  " Completion {
+    Plug 'Raimondi/delimitMate'
+		let g:delimitMate_expand_cr=1
+
+    Plug 'Valloric/YouCompleteMe'
+    let g:ycm_python_binary_path='/usr/local/bin/python3'
+    " turn on semantic trigger but identifier trigger
+    let g:ycm_min_num_of_chars_for_completion=1024
+
+    Plug 'tpope/vim-endwise'
+  " }
+
+  " Code Display {
+    Plug 'Yggdroot/indentLine'
+
+    Plug 'bling/vim-airline'
+    let g:airline#extensions#tabline#enabled=1
+    let g:airline_powerline_fonts=1
+
+    Plug 'chrisbra/Colorizer'
+    Plug 'chriskempson/vim-tomorrow-theme'
+
+    Plug 'kien/ctrlp.vim'
+    let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|' +
+          \ '(_build|deps|node_modules))$'
+    let g:ctrlp_map='<leader>p'
+    let g:ctrlp_working_path_mode='w'
+  " }
+
+  " Integrations {
+    Plug 'JamshedVesuna/vim-markdown-preview'
+    let g:vim_markdown_preview_github=1
+
+    Plug 'gregsexton/gitv'
+    Plug 'janko-m/vim-test'
+    Plug 'mhinz/vim-signify'
+
+    Plug 'skwp/greplace.vim'
+    let g:grep_cmd_opts='--noheading'
+
+    Plug 'tpope/vim-fugitive'
+  " }
+
+  " Interface {
+    Plug 'altercation/vim-colors-solarized'
+    let g:solarized_termcolors=256
+
+    Plug 'mbbill/undotree'
+    Plug 'sjl/gundo.vim'
+  " }
+
+  " Commands {
+    Plug 'chrisbra/NrrwRgn'
+
+    Plug 'keith/investigate.vim'
+    let g:investigate_use_dash=1
+
+    Plug 'matchit.zip'
+    Plug 'ntpeters/vim-better-whitespace'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'wellle/targets.vim'
+  " }
+
+  " Other {
+  " }
+
+  " Uncategorized {
+    Plug 'AndrewRadev/splitjoin.vim'
+    Plug 'CycleColor'
+
+    Plug 'bogado/file-line'
+    Plug 'luochen1990/rainbow'
+
+    Plug 'mtscout6/syntastic-local-eslint.vim'
+    let g:syntastic_javascript_checkers=['eslint']
+    let g:syntastic_javascript_eslint_exec='./node_modules/.bin/eslint'
+
+    Plug 'muz/vim-gemfile'
+    Plug 'rhysd/conflict-marker.vim'
+
+    Plug 'slashmili/alchemist.vim'
+    Plug 'terryma/vim-smooth-scroll'
+  " }
+" }
+
+call plug#end()
+
+filetype plugin indent on
+syntax on
+
+" Configuration {
+  let mapleader=','
+
+  set autoindent expandtab shiftwidth=2 tabstop=2
+  set backspace=2
+  set cursorline laststatus=2 number
+  set foldmethod=marker
+  set hidden
+  set ignorecase incsearch regexpengine=1 smartcase
+  set nohlsearch
+  set list listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
+  set wrap
+
+  autocmd BufEnter * if &filetype == '' | setlocal ft=markdown | endif
+
+  call system('mkdir -p ~/.vim/backup')
+  call system('mkdir -p ~/.vim/swap')
+  set backupdir=~/.vim/backup/
+  set directory=~/.vim/swap/
+
+  if has('persistent_undo')
+    call system('mkdir -p ~/.vim/undo')
+    set undodir=~/.vim/undo/ undofile undolevels=1000 undoreload=10000
+  endif
+" }
+
+" Key mappings {
+  noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+  noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+
+  vnoremap ; :
+  vnoremap > >gv
+  vnoremap < <gv
+
+  nnoremap ; :
+  nnoremap <silent> <leader>m :call Vim_Markdown_Preview()<cr>
+  nnoremap <silent> <leader>u :UndotreeToggle<cr>
+  nnoremap <silent> <leader>ve :e $MYVIMRC<cr>
+  nnoremap <silent> <leader>vs :so $MYVIMRC<cr>
+  nnoremap <leader>b :CtrlPBuffer<cr>
+  nnoremap <leader>gh :GundoToggle<cr>
+  nnoremap <leader>gs :Gstatus<cr>
+  nnoremap <leader>w :bdelete<cr>
+
+  if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+  endif
+" }
+
+colorscheme torte
+
+" The Silver Searcher {
+  " reference: https://goo.gl/r8QYf7
+  if executable('ag')
+    " Use ag over grep
+    set grepprg=ag\ --nogroup\ --nocolor
+
+    " Use ag in CtrlP for listing files. Lightning fast and respects
+    " .gitignore
+    let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
+
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching=0
+  endif
+
+  " bind K to grep word under cursor
+  nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" }
+
+" Highlight over-length lines {
+  set colorcolumn=80
+  highlight ColorColumn ctermbg=236 guibg=lightgrey
+" }
+
+" vim: set foldmarker={,} foldlevel=0 foldmethod=marker:
