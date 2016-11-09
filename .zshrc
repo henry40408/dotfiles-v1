@@ -34,28 +34,37 @@ EOBUNDLES
 # }
 
 # environment variables {
-  export EDITOR=/usr/local/bin/vim
-  export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
-  export PIP_REQUIRE_VIRTUALENV=1
-
   if [ "$PLATFORM" = "Darwin" ]; then
+    [ -f "/usr/local/bin/nvim" ] && export EDITOR="/usr/local/bin/nvim"
+    [ -f "/usr/local/bin/vim" ] && export EDITOR="/usr/local/bin/vim"
+
+    export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+
+    # for `coreutils`
     export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   fi
+
+  if [ "$PLATFORM" = "Linux" ]; then
+    [ -f "/usr/bin/nvim" ] && export EDITOR="/usr/bin/nvim"
+    [ -f "/usr/bin/vim" ] && export EDITOR="/usr/bin/vim"
+  fi
+
+  export PIP_REQUIRE_VIRTUALENV=1
 # }
 
 # aliases {
   alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-  alias gfl='git-flow'
-  alias ls='ls --color=auto'
+  alias gfl="git-flow"
+  alias ls="ls --color=auto"
 
   # neovim or vim
-  if type nvim > /dev/null; then
+  if (type nvim > /dev/null); then
     alias vim="nvim"
   fi
 
   # pbcopy & pbpaste in Linux
-  if [ "$OSTYPE" = "linux-gnu" ] && [ type xclip > /dev/null ]; then
+  if [ "$PLATFORM" = "Linux" ] && (type xclip > /dev/null); then
     alias pbcopy="xclip -selection clipboard"
     alias pbpaste="xclip -selection clipboard -o"
   fi
@@ -83,6 +92,8 @@ EOBUNDLES
 # }
 
 # theme {
+  THEME="https://github.com/caiogondim/bullet-train-oh-my-zsh-theme"
+
   # bullet train configuration
   BULLETTRAIN_DIR_EXTENDED=0
   BULLETTRAIN_EXEC_TIME_SHOW=true
@@ -90,7 +101,7 @@ EOBUNDLES
   [ -d "$GVM_DIR" ] && BULLETTRAIN_GO_SHOW=true
   [ -d "$NVM_DIR" ] && BULLETTRAIN_NVM_SHOW=true
 
-  antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+  antigen theme $THEME bullet-train
   antigen apply
 # }
 
