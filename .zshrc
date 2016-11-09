@@ -1,25 +1,26 @@
 source $HOME/.antigen/antigen.zsh
 
 # plugins {
+  PLATFORM=`uname`
+
   antigen use oh-my-zsh
 
   antigen bundles <<EOBUNDLES
-    MikeDacre/cdbk
     autojump
     common-aliases
     docker
     gem
     git
     git-flow
-    jreese/zsh-titles
     pip
-    rimraf/k
     vagrant
+    jreese/zsh-titles
+    rimraf/k
     zsh-users/zsh-completions
     zsh-users/zsh-syntax-highlighting
 EOBUNDLES
 
-  if [ "$OSTYPE"="darwin15.0" ]; then
+  if [ $PLATFORM = "Darwin" ]; then
     antigen bundles <<EOBUNDLES
       brew
       brew-cask
@@ -44,18 +45,18 @@ EOBUNDLES
 # }
 
 # aliases {
-  alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-  alias ls='ls --color=auto'
+  alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+  alias ls="ls --color=auto"
 
   # neovim or vim
   if type nvim > /dev/null; then
-    alias vim='nvim'
+    alias vim="nvim"
   fi
 
   # pbcopy & pbpaste in Linux
   if [ "$OSTYPE" = "linux-gnu" ] && type xclip > /dev/null; then
-    alias pbcopy='xclip -selection clipboard'
-    alias pbpaste='xclip -selection clipboard -o'
+    alias pbcopy="xclip -selection clipboard"
+    alias pbpaste="xclip -selection clipboard -o"
   fi
 # }
 
