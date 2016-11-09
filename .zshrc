@@ -1,8 +1,8 @@
 source $HOME/.antigen/antigen.zsh
 
-# plugins {
-  PLATFORM=`uname`
+PLATFORM=`uname`
 
+# plugins {
   antigen use oh-my-zsh
 
   antigen bundles <<EOBUNDLES
@@ -14,13 +14,14 @@ source $HOME/.antigen/antigen.zsh
     git-flow
     pip
     vagrant
+
     jreese/zsh-titles
     rimraf/k
     zsh-users/zsh-completions
     zsh-users/zsh-syntax-highlighting
 EOBUNDLES
 
-  if [ $PLATFORM = "Darwin" ]; then
+  if [ "$PLATFORM" = "Darwin" ]; then
     antigen bundles <<EOBUNDLES
       brew
       brew-cask
@@ -41,12 +42,20 @@ EOBUNDLES
 # }
 
 # environment variables {
+  export EDITOR=/usr/local/bin/vim
   export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+  export PIP_REQUIRE_VIRTUALENV=1
+
+  if [ "$PLATFORM" = "Darwin" ]; then
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+  fi
 # }
 
 # aliases {
   alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-  alias ls="ls --color=auto"
+  alias gfl='git-flow'
+  alias ls='ls --color=auto'
 
   # neovim or vim
   if type nvim > /dev/null; then
@@ -54,7 +63,7 @@ EOBUNDLES
   fi
 
   # pbcopy & pbpaste in Linux
-  if [ "$OSTYPE" = "linux-gnu" ] && type xclip > /dev/null; then
+  if [ "$OSTYPE" = "linux-gnu" ] && [ type xclip > /dev/null ]; then
     alias pbcopy="xclip -selection clipboard"
     alias pbpaste="xclip -selection clipboard -o"
   fi
