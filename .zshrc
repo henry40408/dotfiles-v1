@@ -17,6 +17,8 @@ PLATFORM=`uname`
 
     jreese/zsh-titles
     rimraf/k
+    voronkovich/gitignore.plugin.zsh
+    zsh-users/zsh-autosuggestions
     zsh-users/zsh-completions
     zsh-users/zsh-syntax-highlighting
 EOBUNDLES
@@ -28,17 +30,6 @@ EOBUNDLES
       osx
 EOBUNDLES
   fi
-# }
-
-# theme {
-  # bullet train configuration
-  BULLETTRAIN_DIR_EXTENDED=0
-  BULLETTRAIN_EXEC_TIME_SHOW=true
-  BULLETTRAIN_NVM_SHOW=true
-  BULLETTRAIN_STATUS_EXIT_SHOW=true
-
-  antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
-  antigen apply
 # }
 
 # environment variables {
@@ -70,6 +61,12 @@ EOBUNDLES
 # }
 
 # version managers {
+  # gvm
+  export GVM_DIR="$HOME/.gvm"
+  if [ -s "$GVM_DIR/scripts/gvm" ]; then
+    . "$GVM_DIR/scripts/gvm"
+  fi
+
   # nvm
   export NVM_DIR="$HOME/.nvm"
   if [ -s "$NVM_DIR/nvm.sh" ]; then
@@ -82,6 +79,18 @@ EOBUNDLES
   if [ -s "$RBENV_DIR/scripts/rbenv" ]; then
     eval "$(rbenv init -)"
   fi
+# }
+
+# theme {
+  # bullet train configuration
+  BULLETTRAIN_DIR_EXTENDED=0
+  BULLETTRAIN_EXEC_TIME_SHOW=true
+  BULLETTRAIN_STATUS_EXIT_SHOW=true
+  [ -d "$GVM_DIR" ] && BULLETTRAIN_GO_SHOW=true
+  [ -d "$NVM_DIR" ] && BULLETTRAIN_NVM_SHOW=true
+
+  antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+  antigen apply
 # }
 
 # private configuration {
