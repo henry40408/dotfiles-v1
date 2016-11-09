@@ -15,6 +15,7 @@ PLATFORM=`uname`
     pip
     vagrant
 
+    StackExchange/blackbox
     jreese/zsh-titles
     rimraf/k
     voronkovich/gitignore.plugin.zsh
