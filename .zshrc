@@ -12,6 +12,7 @@ PLATFORM=`uname`
     gem
     git
     git-flow
+    kubectl
     pip
     vagrant
 
@@ -19,7 +20,6 @@ PLATFORM=`uname`
     jreese/zsh-titles
     rimraf/k
     voronkovich/gitignore.plugin.zsh
-    zsh-users/zsh-autosuggestions
     zsh-users/zsh-completions
     zsh-users/zsh-syntax-highlighting
 EOBUNDLES
