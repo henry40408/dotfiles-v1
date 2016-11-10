@@ -12,7 +12,6 @@ PLATFORM=`uname`
     gem
     git
     git-flow
-    gpg
     kubectl
     pip
     vagrant
@@ -27,8 +26,6 @@ EOBUNDLES
 
   if [ "$PLATFORM" = "Darwin" ]; then
     antigen bundles <<EOBUNDLES
-      brew
-      brew-cask
       osx
 EOBUNDLES
   fi
