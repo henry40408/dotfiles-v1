@@ -86,7 +86,7 @@ EOBUNDLES
   # rbenv
   export RBENV_DIR="$HOME/.rbenv"
   export PATH="$RBENV_DIR/bin:$PATH"
-  if [ -s "$RBENV_DIR/scripts/rbenv" ]; then
+  if [ -s "$RBENV_DIR/bin/rbenv" ]; then
     eval "$(rbenv init -)"
   fi
 # }
