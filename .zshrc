@@ -12,6 +12,7 @@ PLATFORM=`uname`
     gem
     git
     git-flow
+    gpg
     kubectl
     pip
     vagrant
