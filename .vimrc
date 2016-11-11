@@ -64,8 +64,7 @@ Plug 'Shougo/dein.vim'
     Plug 'chriskempson/vim-tomorrow-theme'
 
     Plug 'kien/ctrlp.vim'
-    let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|' +
-          \ '(_build|deps|node_modules))$'
+    let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|(_build|deps|node_modules))$'
     let g:ctrlp_map='<leader>p'
     let g:ctrlp_working_path_mode='w'
   " }
