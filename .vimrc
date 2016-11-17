@@ -6,6 +6,7 @@ Plug 'Shougo/dein.vim'
   " Language {
     Plug 'chrisbra/csv.vim'
     Plug 'editorconfig/editorconfig-vim'
+    Plug 'elzr/vim-json'
     Plug 'mattn/emmet-vim'
 
     Plug 'mxw/vim-jsx'
@@ -19,6 +20,7 @@ Plug 'Shougo/dein.vim'
           \ 'html',
           \ 'javascript',
           \ 'json',
+          \ 'jsx',
           \ 'python',
           \ 'ruby',
           \ 'yaml']
@@ -27,8 +29,9 @@ Plug 'Shougo/dein.vim'
     Plug 'scrooloose/nerdcommenter'
 
     Plug 'sheerun/vim-polyglot'
-    let g:polyglot_disabled=['markdown']
+    let g:polyglot_disabled=['json', 'markdown']
 
+    Plug 'suan/vim-instant-markdown'
     Plug 'tpope/vim-ragtag'
     Plug 'tpope/vim-rails'
 
@@ -70,9 +73,6 @@ Plug 'Shougo/dein.vim'
   " }
 
   " Integrations {
-    Plug 'JamshedVesuna/vim-markdown-preview'
-    let g:vim_markdown_preview_github=1
-
     Plug 'gregsexton/gitv'
     Plug 'janko-m/vim-test'
     Plug 'mhinz/vim-signify'
