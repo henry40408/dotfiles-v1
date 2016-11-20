@@ -147,6 +147,7 @@ syntax on
   set wrap
 
   autocmd BufEnter * if &filetype == '' | setlocal ft=markdown | endif
+  autocmd filetype css,html setlocal iskeyword+=-
 
   call system('mkdir -p ~/.vim/backup')
   call system('mkdir -p ~/.vim/swap')
