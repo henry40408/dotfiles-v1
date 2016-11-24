@@ -7,6 +7,12 @@ Plug 'Shougo/dein.vim'
     Plug 'chrisbra/csv.vim'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'elzr/vim-json'
+
+    Plug 'fatih/vim-go'
+    let g:syntastic_go_checkers=['golint', 'govet', 'errcheck']
+    let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['go'] }
+    let g:go_list_type='quickfix'
+
     Plug 'mattn/emmet-vim'
 
     Plug 'mxw/vim-jsx'
@@ -146,8 +152,16 @@ syntax on
   set list listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
   set wrap
 
-  autocmd BufEnter * if &filetype == '' | setlocal ft=markdown | endif
-  autocmd filetype css,html setlocal iskeyword+=-
+  augroup CssHtmlGroup
+    autocmd!
+    autocmd filetype css,html setlocal iskeyword+=-
+  augroup END
+
+  augroup GoGroup
+    autocmd!
+    autocmd BufWrite *.go GoFmt
+    autocmd BufWrite *.go GoImports
+  augroup END
 
   call system('mkdir -p ~/.vim/backup')
   call system('mkdir -p ~/.vim/swap')
@@ -161,22 +175,22 @@ syntax on
 " }
 
 " Key mappings {
-  noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-  noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+  noremap <silent> <C-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+  noremap <silent> <C-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
 
   vnoremap ; :
   vnoremap > >gv
   vnoremap < <gv
 
   nnoremap ; :
-  nnoremap <silent> <leader>m :call Vim_Markdown_Preview()<cr>
-  nnoremap <silent> <leader>u :UndotreeToggle<cr>
-  nnoremap <silent> <leader>ve :e $MYVIMRC<cr>
-  nnoremap <silent> <leader>vs :so $MYVIMRC<cr>
-  nnoremap <leader>b :CtrlPBuffer<cr>
-  nnoremap <leader>gh :GundoToggle<cr>
-  nnoremap <leader>gs :Gstatus<cr>
-  nnoremap <leader>w :bdelete<cr>
+  nnoremap <silent> <leader>m :call Vim_Markdown_Preview()<CR>
+  nnoremap <silent> <leader>u :UndotreeToggle<CR>
+  nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
+  nnoremap <silent> <leader>vs :so $MYVIMRC<CR>
+  nnoremap <leader>b :CtrlPBuffer<CR>
+  nnoremap <leader>gh :GundoToggle<CR>
+  nnoremap <leader>gs :Gstatus<CR>
+  nnoremap <leader>w :bdelete<CR>
 
   if has('nvim')
     tnoremap <Esc> <C-\><C-n>
