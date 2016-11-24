@@ -49,7 +49,6 @@ Plug 'Shougo/dein.vim'
     let g:syntastic_python_checkers=['flake8']
     let g:syntastic_python_python_exec='/usr/local/bin/python3'
   " }
-
   " Completion {
     Plug 'Raimondi/delimitMate'
 		let g:delimitMate_expand_cr=1
@@ -61,7 +60,6 @@ Plug 'Shougo/dein.vim'
 
     Plug 'tpope/vim-endwise'
   " }
-
   " Code Display {
     Plug 'Yggdroot/indentLine'
 
@@ -77,7 +75,6 @@ Plug 'Shougo/dein.vim'
     let g:ctrlp_map='<leader>p'
     let g:ctrlp_working_path_mode='w'
   " }
-
   " Integrations {
     Plug 'gregsexton/gitv'
     Plug 'janko-m/vim-test'
@@ -88,7 +85,6 @@ Plug 'Shougo/dein.vim'
 
     Plug 'tpope/vim-fugitive'
   " }
-
   " Interface {
     Plug 'altercation/vim-colors-solarized'
     let g:solarized_termcolors=256
@@ -96,7 +92,6 @@ Plug 'Shougo/dein.vim'
     Plug 'mbbill/undotree'
     Plug 'sjl/gundo.vim'
   " }
-
   " Commands {
     Plug 'chrisbra/NrrwRgn'
 
@@ -111,10 +106,8 @@ Plug 'Shougo/dein.vim'
     Plug 'tpope/vim-unimpaired'
     Plug 'wellle/targets.vim'
   " }
-
   " Other {
   " }
-
   " Uncategorized {
     Plug 'AndrewRadev/splitjoin.vim'
     Plug 'CycleColor'
@@ -173,7 +166,6 @@ syntax on
     set undodir=~/.vim/undo/ undofile undolevels=1000 undoreload=10000
   endif
 " }
-
 " Key mappings {
   noremap <silent> <C-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
   noremap <silent> <C-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
@@ -196,9 +188,6 @@ syntax on
     tnoremap <Esc> <C-\><C-n>
   endif
 " }
-
-colorscheme torte
-
 " The Silver Searcher {
   " reference: https://goo.gl/r8QYf7
   if executable('ag')
@@ -216,10 +205,11 @@ colorscheme torte
   " bind K to grep word under cursor
   nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " }
-
 " Highlight over-length lines {
   set colorcolumn=80
   highlight ColorColumn ctermbg=236 guibg=lightgrey
 " }
+
+colorscheme torte
 
 " vim: set foldmarker={,} foldlevel=0 foldmethod=marker:
