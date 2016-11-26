@@ -53,6 +53,7 @@ EOBUNDLES
 
 # aliases {
   alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+  alias emacs="emacs -nw"
   alias gfl="git-flow"
   alias ls="ls --color=auto"
 
