@@ -133,7 +133,7 @@ filetype plugin indent on
 syntax on
 
 " Configuration {
-  let mapleader=','
+  let mapleader="\<Space>"
 
   set autoindent expandtab shiftwidth=2 tabstop=2
   set backspace=2
@@ -175,14 +175,12 @@ syntax on
   vnoremap < <gv
 
   nnoremap ; :
-  nnoremap <silent> <leader>m :call Vim_Markdown_Preview()<CR>
   nnoremap <silent> <leader>u :UndotreeToggle<CR>
   nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
   nnoremap <silent> <leader>vs :so $MYVIMRC<CR>
   nnoremap <leader>b :CtrlPBuffer<CR>
-  nnoremap <leader>gh :GundoToggle<CR>
-  nnoremap <leader>gs :Gstatus<CR>
   nnoremap <leader>w :bdelete<CR>
+  nnoremap <leader>r zR
 
   if has('nvim')
     tnoremap <Esc> <C-\><C-n>
