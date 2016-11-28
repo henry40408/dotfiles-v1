@@ -42,7 +42,8 @@ values."
      ;; better-defaults
      emacs-lisp
      git
-     markdown
+     (markdown :variables
+               markdown-live-preview-engine 'vmd)
      ;; org
      ruby
      ;; (shell :variables
@@ -53,12 +54,16 @@ values."
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
+     yaml
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ansible)
+   dotspacemacs-additional-packages '(ac-alchemist
+                                      alchemist
+                                      ansible
+                                      docker)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
