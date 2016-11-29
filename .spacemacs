@@ -62,7 +62,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(alchemist ansible docker minimap)
+   dotspacemacs-additional-packages '(alchemist ansible docker)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -308,9 +308,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (setq enable-local-variables nil)
   (setq linum-format "%4d ")
-  (setq minimap-window-location 'right)
-  (setq minimap-width-fraction 0.10)
-  (setq ns-use-srgb-colorspace nil)
+  (setq ns-use-srgb-colorspace nil) ;; reference: https://goo.gl/mxVevn
   (setq powerline-default-separator 'box)
 
   ;; move custom-set-variables and custom-set-faces to another file
@@ -318,8 +316,8 @@ you should place your code here."
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file)
 
-  ;; modes from additional packages
-  (minimap-mode)
+  ;; underline the current line
+  (set-face-underline-p 'highlight t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
