@@ -140,8 +140,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Ubuntu Mono"
-                               :size 20
+   dotspacemacs-default-font '("Ubuntu Mono derivative Powerline"
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.5)
@@ -307,21 +307,11 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (setq enable-local-variables nil)
+  (setq linum-format "%4d ")
+  (setq explicit-shell-file-name "/usr/local/bin/zsh")
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(enable-local-variables nil)
- '(linum-format "%4d "))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
