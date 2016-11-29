@@ -47,9 +47,9 @@ values."
                markdown-live-preview-engine 'vmd)
      ;; org
      ruby
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checking
      syntax-checking
      (version-control :variables
@@ -308,6 +308,7 @@ you should place your code here."
   (setq enable-local-variables nil)
   (setq explicit-shell-file-name "/bin/zsh")
   (setq linum-format "%4d ")
+  (setq ns-use-srgb-colorspace nil)
   (setq powerline-default-separator 'slant)
 
   ;; move custom-set-variables and custom-set-faces to another file
