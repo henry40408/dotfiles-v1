@@ -49,7 +49,8 @@ values."
      ruby
      (shell :variables
             shell-default-height 30
-            shell-default-position 'bottom)
+            shell-default-position 'top
+            shell-default-term-shell "/bin/zsh")
      ;; spell-checking
      syntax-checking
      (version-control :variables
@@ -61,7 +62,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ac-alchemist alchemist ansible docker)
+   dotspacemacs-additional-packages '(alchemist ansible docker)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -306,10 +307,9 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (setq enable-local-variables nil)
-  (setq explicit-shell-file-name "/bin/zsh")
   (setq linum-format "%4d ")
   (setq ns-use-srgb-colorspace nil)
-  (setq powerline-default-separator 'slant)
+  (setq powerline-default-separator 'box)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
