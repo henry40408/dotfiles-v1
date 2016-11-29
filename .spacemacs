@@ -315,7 +315,7 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(enable-local-variables nil)
- '(explicit-shell-file-name "/usr/local/bin/zsh")
+ '(explicit-shell-file-name "/bin/zsh")
  '(linum-format "%4d ")
  '(package-selected-packages
    (quote
