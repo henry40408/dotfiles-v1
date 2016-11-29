@@ -38,10 +38,11 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      auto-completion
-     helm
      ;; better-defaults
      emacs-lisp
      git
+     helm
+     html
      (markdown :variables
                markdown-live-preview-engine 'vmd)
      ;; org
