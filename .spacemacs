@@ -45,7 +45,7 @@ values."
      html
      (markdown :variables
                markdown-live-preview-engine 'vmd)
-     ;; org
+     org
      ruby
      (shell :variables
             shell-default-height 30
