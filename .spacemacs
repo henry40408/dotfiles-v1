@@ -43,6 +43,7 @@ values."
      git
      helm
      html
+     javascript
      (markdown :variables
                markdown-live-preview-engine 'vmd)
      org
@@ -62,7 +63,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(alchemist ansible docker)
+   dotspacemacs-additional-packages '(alchemist ansible docker nodejs-repl)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -310,6 +311,7 @@ you should place your code here."
   (setq linum-format "%4d ")
   (setq ns-use-srgb-colorspace nil) ;; reference: https://goo.gl/mxVevn
   (setq powerline-default-separator 'box)
+  (setq js-indent-level 2)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
