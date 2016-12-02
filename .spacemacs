@@ -63,7 +63,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(alchemist ansible docker nodejs-repl)
+   dotspacemacs-additional-packages '(ansible docker nodejs-repl)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -296,8 +296,12 @@ values."
 It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
  This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
+before packages are loaded. If you are unsure, you should try in setting them
+in `dotspacemacs/user-config' first."
+  (setq-default enable-local-variables nil
+                ;; suppress warnings
+                exec-path-from-shell-check-startup-files nil
+                )
   )
 
 (defun dotspacemacs/user-config ()
@@ -307,19 +311,19 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq enable-local-variables nil)
-  (setq linum-format "%4d ")
-  (setq ns-use-srgb-colorspace nil) ;; reference: https://goo.gl/mxVevn
-  (setq powerline-default-separator 'box)
-  (setq js-indent-level 2)
+  (setq-default js-indent-level 2
+                linum-format "%5d "
+                ;; reference: https://goo.gl/mxVevn
+                ns-use-srgb-colorspace nil
+                powerline-default-separator 'box
+                )
+
+  (set-face-underline 'highlight t)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file)
-
-  ;; underline the current line
-  (set-face-underline-p 'highlight t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
