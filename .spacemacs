@@ -319,10 +319,11 @@ you should place your code here."
                 )
 
   (set-face-underline 'highlight t)
+  (spacemacs/toggle-golden-ratio-on)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
-  (setq custom-file "~/.emacs.d/custom.el")
+  (setq-default custom-file "~/.emacs.d/custom.el")
   (load custom-file)
   )
 
