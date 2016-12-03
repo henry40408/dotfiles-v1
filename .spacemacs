@@ -298,8 +298,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them
 in `dotspacemacs/user-config' first."
+  ;; suppress warnings from emacs
   (setq-default enable-local-variables nil
-                ;; suppress warnings
                 exec-path-from-shell-check-startup-files nil
                 )
   )
@@ -311,15 +311,22 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq-default js-indent-level 2
-                linum-format "%5d "
-                ;; reference: https://goo.gl/mxVevn
-                ns-use-srgb-colorspace nil
+  ;; variables
+  (setq-default linum-format "%5d "
+                ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
                 powerline-default-separator 'box
                 )
+  (setq-default js-indent-level 2
+                js2-basic-offset 2
+                js2-strict-trailing-comma-warning nil
+                )
 
+  ;; faces
   (set-face-underline 'highlight t)
+
+  ;; GUI elements
   (spacemacs/toggle-golden-ratio-on)
+  (spacemacs/toggle-highlight-long-lines-globally-on)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
