@@ -47,6 +47,7 @@ values."
      (markdown :variables
                markdown-live-preview-engine 'vmd)
      org
+     react
      ruby
      (shell :variables
             shell-default-height 30
@@ -54,16 +55,14 @@ values."
             shell-default-term-shell "/bin/zsh")
      ;; spell-checking
      syntax-checking
-     (version-control :variables
-                      version-control-diff-tool 'diff-hl
-                      version-control-global-margin t)
+     version-control
      yaml
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ansible docker nodejs-repl)
+   dotspacemacs-additional-packages '(ansible docker gitignore keyfreq nodejs-repl)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -316,17 +315,27 @@ you should place your code here."
                 ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
                 powerline-default-separator 'box
                 )
-  (setq-default js-indent-level 2
+
+  ;; override javascript defaults in emacs
+  (setq-default css-indent-offset 2
+                js-indent-level 2
                 js2-basic-offset 2
                 js2-strict-trailing-comma-warning nil
+                web-mode-attr-indent-offset 2
+                web-mode-code-indent-offset 2
+                web-mode-css-indent-offset 2
+                web-mode-markup-indent-offset 2
                 )
 
   ;; faces
   (set-face-underline 'highlight t)
 
   ;; GUI elements
-  (spacemacs/toggle-golden-ratio-on)
   (spacemacs/toggle-highlight-long-lines-globally-on)
+
+  ;; additional package configuration
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
