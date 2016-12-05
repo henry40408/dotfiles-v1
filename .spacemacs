@@ -39,6 +39,8 @@ values."
      ;; ----------------------------------------------------------------
      auto-completion
      ;; better-defaults
+     (colors :variables
+             colors-enable-nyan-cat-progress-bar t)
      emacs-lisp
      git
      helm
@@ -146,7 +148,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Hack"
-                               :size 16
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.5)
@@ -341,7 +343,7 @@ you should place your code here."
     (set-face-underline 'highlight t)
 
     ;; GUI elements
-    (spacemacs/toggle-highlight-long-lines-globally-on)
+    (turn-on-fci-mode)
 
     ;; additional package configuration
     (keyfreq-mode 1)
