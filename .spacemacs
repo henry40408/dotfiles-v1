@@ -62,7 +62,13 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ansible docker gitignore keyfreq nodejs-repl)
+   dotspacemacs-additional-packages '(ansible
+                                      docker
+                                      gitignore
+                                      keyfreq
+                                      magit-popup
+                                      nodejs-repl
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -259,7 +265,7 @@ values."
    dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -298,9 +304,10 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them
 in `dotspacemacs/user-config' first."
   ;; suppress warnings from emacs
-  (setq-default enable-local-variables nil
-                exec-path-from-shell-check-startup-files nil
-                )
+  (setq-default
+   enable-local-variables nil
+   exec-path-from-shell-check-startup-files nil
+   )
   )
 
 (defun dotspacemacs/user-config ()
@@ -311,31 +318,35 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; variables
-  (setq-default linum-format "%5d "
-                ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
-                powerline-default-separator 'box
-                )
+  (setq-default
+   linum-format "%5d "
+   ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
+   powerline-default-separator 'box
+   )
 
   ;; override javascript defaults in emacs
-  (setq-default css-indent-offset 2
-                js-indent-level 2
-                js2-basic-offset 2
-                js2-strict-trailing-comma-warning nil
-                web-mode-attr-indent-offset 2
-                web-mode-code-indent-offset 2
-                web-mode-css-indent-offset 2
-                web-mode-markup-indent-offset 2
-                )
+  (setq-default
+   css-indent-offset 2
+   js-indent-level 2
+   js2-basic-offset 2
+   js2-strict-trailing-comma-warning nil
+   web-mode-attr-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   )
 
-  ;; faces
-  (set-face-underline 'highlight t)
+  (progn
+    ;; faces
+    (set-face-underline 'highlight t)
 
-  ;; GUI elements
-  (spacemacs/toggle-highlight-long-lines-globally-on)
+    ;; GUI elements
+    (spacemacs/toggle-highlight-long-lines-globally-on)
 
-  ;; additional package configuration
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1)
+    ;; additional package configuration
+    (keyfreq-mode 1)
+    (keyfreq-autosave-mode 1)
+    )
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
