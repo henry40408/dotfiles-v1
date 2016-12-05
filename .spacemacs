@@ -321,6 +321,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; variables
   (setq-default
+   helm-buffer-max-length nil
    linum-format "%5d "
    ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
    powerline-default-separator 'box
@@ -343,7 +344,8 @@ you should place your code here."
     (set-face-underline 'highlight t)
 
     ;; GUI elements
-    (turn-on-fci-mode)
+    (spacemacs/toggle-highlight-long-lines-globally-on)
+    (spacemacs/toggle-fill-column-indicator-on)
 
     ;; additional package configuration
     (keyfreq-mode 1)
