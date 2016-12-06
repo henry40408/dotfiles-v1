@@ -32,7 +32,6 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     php
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -340,18 +339,16 @@ you should place your code here."
    web-mode-markup-indent-offset 2
    )
 
-  (progn
-    ;; faces
-    (set-face-underline 'highlight t)
+  ;; faces
+  (set-face-underline 'highlight t)
 
-    ;; GUI elements
-    (spacemacs/toggle-highlight-long-lines-globally-on)
-    (spacemacs/toggle-fill-column-indicator-on)
+  ;; GUI elements
+  (spacemacs/toggle-highlight-long-lines-globally-on)
+  (spacemacs/toggle-fill-column-indicator-on)
 
-    ;; additional package configuration
-    (keyfreq-mode 1)
-    (keyfreq-autosave-mode 1)
-    )
+  ;; additional package configuration
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
