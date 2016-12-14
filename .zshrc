@@ -1,33 +1,27 @@
-source $HOME/.antigen/antigen.zsh
+source ~/.zplug/init.zsh
 
 PLATFORM=`uname`
 
 # plugins {
-  antigen use oh-my-zsh
+  zplug "robbyrussell/oh-my-zsh"
 
-  antigen bundles <<EOBUNDLES
-    autojump
-    common-aliases
-    docker
-    gem
-    git
-    git-flow
-    kubectl
-    pip
-    vagrant
+  zplug "plugins/autojump", from:oh-my-zsh
+  zplug "plugins/common-aliases", from:oh-my-zsh
+  zplug "plugins/docker", from:oh-my-zsh
+  zplug "plugins/gem", from:oh-my-zsh
+  zplug "plugins/git", from:oh-my-zsh
+  zplug "plugins/git-flow", from:oh-my-zsh
+  zplug "plugins/kubectl", from:oh-my-zsh
+  zplug "plugins/pip", from:oh-my-zsh
+  zplug "plugins/vagrant", from:oh-my-zsh
 
-    StackExchange/blackbox
-    jreese/zsh-titles
-    rimraf/k
-    voronkovich/gitignore.plugin.zsh
-    zsh-users/zsh-completions
-    zsh-users/zsh-syntax-highlighting
-EOBUNDLES
+  zplug "StackExchange/blackbox"
+  zplug "jreese/zsh-titles"
+  zplug "rimraf/k"
+  zplug "zsh-users/zsh-syntax-highlighting"
 
   if [ "$PLATFORM" = "Darwin" ]; then
-    antigen bundles <<EOBUNDLES
-      osx
-EOBUNDLES
+      zplug "plugins/osx", from:oh-my-zsh
   fi
 # }
 
@@ -87,9 +81,13 @@ EOBUNDLES
   [ -d "$RBENV_DIR" ] && eval "$(rbenv init -)"
 # }
 
-# theme {
-  THEME="https://github.com/caiogondim/bullet-train-oh-my-zsh-theme"
+# private configuration {
+  if [ -f $HOME/.zshrc-local ]; then
+    source $HOME/.zshrc-local
+  fi
+# }
 
+# theme {
   # bullet train configuration
   BULLETTRAIN_DIR_EXTENDED=0
   BULLETTRAIN_EXEC_TIME_SHOW=true
@@ -97,14 +95,10 @@ EOBUNDLES
   [ -d "$GVM_DIR" ] && BULLETTRAIN_GO_SHOW=true
   [ -d "$NVM_DIR" ] && BULLETTRAIN_NVM_SHOW=true
 
-  antigen theme $THEME bullet-train
-  antigen apply
+  setopt prompt_subst
+  zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 # }
 
-# private configuration {
-  if [ -f $HOME/.zshrc-local ]; then
-    source $HOME/.zshrc-local
-  fi
-# }
+zplug load
 
 # vim: set foldmarker={,} foldlevel=0 foldmethod=marker:
