@@ -87,6 +87,12 @@ PLATFORM=`uname`
   fi
 # }
 
+# python virtualenv {
+  if command -v virtualenvwrapper; then
+    source $(command -v virtualenvwrapper)
+  fi
+# }
+
 # theme {
   # bullet train configuration
   BULLETTRAIN_DIR_EXTENDED=0
