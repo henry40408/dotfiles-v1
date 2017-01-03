@@ -1,9 +1,9 @@
-source ~/.zplug/init.zsh
+source "${HOME}/.zplug/init.zsh"
 
 PLATFORM=`uname`
 
 # plugins
-zplug "robbyrussell/oh-my-zsh"
+zplug "robbyrussell/oh-my-zsh", use:"lib/completion.zsh"
 
 zplug "plugins/autojump", from:oh-my-zsh
 zplug "plugins/common-aliases", from:oh-my-zsh
@@ -26,8 +26,13 @@ fi
 
 # environment variables
 if [ "$PLATFORM" = "Darwin" ]; then
-    [ -f "/usr/local/bin/nvim" ] && export EDITOR="/usr/local/bin/nvim"
-    [ -f "/usr/local/bin/vim" ] && export EDITOR="/usr/local/bin/vim"
+    if [ -f "/usr/local/bin/nvim" ]; then
+        export EDITOR="/usr/local/bin/nvim"
+    fi
+
+    if [ -f "/usr/local/bin/vim" ]; then
+        export EDITOR="/usr/local/bin/vim"
+    fi
 
     export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
@@ -37,8 +42,13 @@ if [ "$PLATFORM" = "Darwin" ]; then
 fi
 
 if [ "$PLATFORM" = "Linux" ]; then
-    [ -f "/usr/bin/nvim" ] && export EDITOR="/usr/bin/nvim"
-    [ -f "/usr/bin/vim" ] && export EDITOR="/usr/bin/vim"
+    if [ -f "/usr/bin/nvim" ]; then
+        export EDITOR="/usr/bin/nvim"
+    fi
+
+    if [ -f "/usr/bin/vim" ]; then
+        export EDITOR="/usr/bin/vim"
+    fi
 fi
 
 # aliases
@@ -48,7 +58,7 @@ alias gfl="git-flow"
 alias ls="ls --color=auto"
 
 # neovim or vim
-if command -v nvim > /dev/null; then
+if (command -v nvim > /dev/null); then
     alias vim="nvim"
 fi
 
@@ -62,24 +72,32 @@ fi
 
 ## gvm
 export GVM_DIR="$HOME/.gvm"
-[ -s "$GVM_DIR/scripts/gvm" ] && . "$GVM_DIR/scripts/gvm"
+if [ -s "$GVM_DIR/scripts/gvm" ]; then
+    . "$GVM_DIR/scripts/gvm"
+fi
 
 ## nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+fi
 
 ## rbenv
 export RBENV_DIR="$HOME/.rbenv"
-[ -d "$RBENV_DIR" ] && eval "$(rbenv init -)"
+if [ -d "$RBENV_DIR" ]; then
+    eval "$(rbenv init -)"
+fi
 
 # python virtualenv
-if command -v virtualenvwrapper.sh > /dev/null; then
+if (command -v virtualenvwrapper.sh > /dev/null); then
     source $(command -v virtualenvwrapper.sh)
     export PIP_REQUIRE_VIRTUALENV=1
 fi
 
 # private configuration
-[ -f $HOME/.zshrc-local ] && . $HOME/.zshrc-local
+if [ -f $HOME/.zshrc-local ]; then
+    . $HOME/.zshrc-local
+fi
 
 # theme
 BULLETTRAIN_DIR_EXTENDED=0
@@ -88,7 +106,7 @@ BULLETTRAIN_STATUS_EXIT_SHOW=true
 BULLETTRAIN_GO_SHOW=true
 BULLETTRAIN_NVM_SHOW=true
 
-setopt prompt_subst
+# setopt prompt_subst
 zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 
 # end of .zshrc
