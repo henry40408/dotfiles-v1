@@ -179,7 +179,7 @@ syntax on
   nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
   nnoremap <silent> <leader>vs :so $MYVIMRC<CR>
   nnoremap <leader>b :CtrlPBuffer<CR>
-  nnoremap <leader>w :bdelete<CR>
+  nnoremap <leader>q :bdelete<CR>
   nnoremap <leader>r zR
 
   if has('nvim')
