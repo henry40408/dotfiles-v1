@@ -49,6 +49,7 @@ values."
      (markdown :variables
                markdown-live-preview-engine 'vmd)
      org
+     python
      react
      ruby
      (shell :variables
