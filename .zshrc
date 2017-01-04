@@ -53,9 +53,9 @@ fi
 
 # aliases
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-alias emacs="emacs -nw"
 alias gfl="git-flow"
 alias ls="ls --color=auto"
+alias mux="tmuxinator"
 
 # neovim or vim
 if (command -v nvim > /dev/null); then
@@ -94,6 +94,10 @@ if (command -v virtualenvwrapper.sh > /dev/null); then
     export PIP_REQUIRE_VIRTUALENV=1
 fi
 
+if [ -f $HOME/.tmuxinator/tmuxinator.zsh ]; then
+    source $HOME/.tmuxinator/tmuxinator.zsh
+fi
+
 # private configuration
 if [ -f $HOME/.zshrc-local ]; then
     . $HOME/.zshrc-local
@@ -106,7 +110,6 @@ BULLETTRAIN_STATUS_EXIT_SHOW=true
 BULLETTRAIN_GO_SHOW=true
 BULLETTRAIN_NVM_SHOW=true
 
-# setopt prompt_subst
 zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 
 # end of .zshrc
