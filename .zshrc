@@ -3,7 +3,7 @@ source "${HOME}/.zplug/init.zsh"
 PLATFORM=`uname`
 
 # plugins
-zplug "robbyrussell/oh-my-zsh", use:"lib/completion.zsh"
+zplug "robbyrussell/oh-my-zsh", use:"lib/clipboard.zsh;lib/completion.zsh;lib/git.zsh;lib/grep.zsh;lib/history.zsh;lib/key-bindings.zsh;lib/nvm.sh"
 
 zplug "plugins/autojump", from:oh-my-zsh
 zplug "plugins/common-aliases", from:oh-my-zsh
@@ -15,6 +15,7 @@ zplug "plugins/kubectl", from:oh-my-zsh
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/vagrant", from:oh-my-zsh
 
+zplug "Sparragus/zsh-auto-nvm-use"
 zplug "StackExchange/blackbox"
 zplug "jreese/zsh-titles"
 zplug "rimraf/k"
@@ -62,24 +63,12 @@ if (command -v nvim > /dev/null); then
     alias vim="nvim"
 fi
 
-# pbcopy & pbpaste in Linux
-if [ "$PLATFORM" = "Linux" ] && (command -v xclip); then
-    alias pbcopy="xclip -selection clipboard"
-    alias pbpaste="xclip -selection clipboard -o"
-fi
-
 # version managers
 
 ## gvm
 export GVM_DIR="$HOME/.gvm"
 if [ -s "$GVM_DIR/scripts/gvm" ]; then
     . "$GVM_DIR/scripts/gvm"
-fi
-
-## nvm
-export NVM_DIR="$HOME/.nvm"
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-    . "$NVM_DIR/nvm.sh"
 fi
 
 ## rbenv
