@@ -32,15 +32,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      auto-completion
-     ;; better-defaults
-     (colors :variables
-             colors-enable-nyan-cat-progress-bar t)
+     colors
      emacs-lisp
      git
      helm
@@ -56,10 +49,16 @@ values."
             shell-default-height 30
             shell-default-position 'top
             shell-default-term-shell "/bin/zsh")
-     ;; spell-checking
      syntax-checking
      version-control
      yaml
+     ;; ----------------------------------------------------------------
+     ;; Example of useful layers you may want to use right away.
+     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
+     ;; <M-m f e R> (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
+     ;; better-defaults
+     ;; spell-checking
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -67,11 +66,9 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ansible
                                       docker
-                                      gitignore
                                       keyfreq
                                       magit-popup
-                                      nodejs-repl
-                                      )
+                                      nodejs-repl)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -152,7 +149,7 @@ values."
                                :size 15
                                :weight normal
                                :width normal
-                               :powerline-scale 1.5)
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -268,7 +265,7 @@ values."
    dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'origami
+   dotspacemacs-folding-method 'evil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -309,9 +306,7 @@ in `dotspacemacs/user-config' first."
   ;; suppress warnings from emacs
   (setq-default
    enable-local-variables nil
-   exec-path-from-shell-check-startup-files nil
-   )
-  )
+   exec-path-from-shell-check-startup-files nil))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -322,13 +317,10 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; variables
   (setq-default
-   helm-buffer-max-length nil
    linum-format "%5d "
-   ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
-   powerline-default-separator 'box
-   )
+   ns-use-srgb-colorspace nil) ;; reference: https://goo.gl/mxVevn
 
-  ;; override javascript defaults in emacs
+  ;; js/js2 mode, web mode
   (setq-default
    css-indent-offset 2
    js-indent-level 2
@@ -337,8 +329,7 @@ you should place your code here."
    web-mode-attr-indent-offset 2
    web-mode-code-indent-offset 2
    web-mode-css-indent-offset 2
-   web-mode-markup-indent-offset 2
-   )
+   web-mode-markup-indent-offset 2)
 
   ;; faces
   (set-face-underline 'highlight t)
@@ -353,9 +344,8 @@ you should place your code here."
 
   ;; move custom-set-variables and custom-set-faces to another file
   ;; DO NOT put it in version control
-  (setq-default custom-file "~/.emacs.d/custom.el")
-  (load custom-file)
-  )
+  (setq-default custom-file "~/.spacemacs-custom.el")
+  (load custom-file))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
