@@ -5,7 +5,7 @@ source "${HOME}/.zplug/init.zsh"
 PLATFORM=`uname`
 
 # plugins {{{
-    zplug "robbyrussell/oh-my-zsh"
+    zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 
     zplug "plugins/autojump", from:oh-my-zsh
     zplug "plugins/common-aliases", from:oh-my-zsh
@@ -30,6 +30,8 @@ PLATFORM=`uname`
 
 # environment variables {{{
     if [ "$PLATFORM" = "Darwin" ]; then
+        export EDITOR="vim"
+
         export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
         # for `coreutils`
@@ -48,26 +50,33 @@ PLATFORM=`uname`
     fi
 # }}}
 
-# version managers {{{
+# version managers and virtual environment {{{
     # gvm {{{
-    export GVM_DIR="$HOME/.gvm"
-    if [ -s "$GVM_DIR/scripts/gvm" ]; then
-        . "$GVM_DIR/scripts/gvm"
-    fi
+        export GVM_DIR="$HOME/.gvm"
+        if [ -s "$GVM_DIR/scripts/gvm" ]; then
+            . "$GVM_DIR/scripts/gvm"
+        fi
     # }}}
 
     # rbenv {{{
-    export RBENV_DIR="$HOME/.rbenv"
-    if [ -d "$RBENV_DIR" ]; then
-        eval "$(rbenv init -)"
-    fi
+        export RBENV_DIR="$HOME/.rbenv"
+        if [ -d "$RBENV_DIR" ]; then
+            eval "$(rbenv init -)"
+        fi
     # }}}
 
     # python virtualenv {{{
-    if (command -v virtualenvwrapper.sh > /dev/null); then
-        source $(command -v virtualenvwrapper.sh)
-        export PIP_REQUIRE_VIRTUALENV=1
-    fi
+        if (command -v virtualenvwrapper.sh > /dev/null); then
+            source $(command -v virtualenvwrapper.sh)
+            export PIP_REQUIRE_VIRTUALENV=1
+        fi
+    # }}}
+
+    # elixir {{{
+        export KIEX_DIR="$HOME/.kiex"
+        if [ -s "$KIEX_DIR/scripts/kiex" ]; then
+            source "$KIEX_DIR/scripts/kiex"
+        fi
     # }}}
 # }}}
 
