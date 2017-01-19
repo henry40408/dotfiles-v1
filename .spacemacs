@@ -69,8 +69,7 @@ values."
    dotspacemacs-additional-packages '(ansible
                                       docker
                                       keyfreq
-                                      magit-popup
-                                      nodejs-repl)
+                                      magit-popup)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -149,7 +148,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro for Powerline"
-                               :size 15
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -265,7 +264,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers t
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'origami
@@ -320,7 +319,6 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; variables
   (setq-default
-   linum-format "%5d "
    ns-use-srgb-colorspace nil) ;; reference: https://goo.gl/mxVevn
 
   ;; js/js2 mode, web mode
@@ -343,12 +341,7 @@ you should place your code here."
 
   ;; additional package configuration
   (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1)
-
-  ;; move custom-set-variables and custom-set-faces to another file
-  ;; DO NOT put it in version control
-  (setq-default custom-file "~/.spacemacs-custom.el")
-  (load custom-file))
+  (keyfreq-autosave-mode 1))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
