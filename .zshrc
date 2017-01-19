@@ -94,10 +94,12 @@ PLATFORM=`uname`
 
 # theme {{{
     BULLETTRAIN_DIR_EXTENDED=0
+    BULLETTRAIN_CONTEXT_DEFAULT_USER=$(whoami)
     BULLETTRAIN_EXEC_TIME_SHOW=true
-    BULLETTRAIN_STATUS_EXIT_SHOW=true
     BULLETTRAIN_GO_SHOW=true
     BULLETTRAIN_NVM_SHOW=true
+    BULLETTRAIN_PROMPT_SEPARATE_LINE=false
+    BULLETTRAIN_STATUS_EXIT_SHOW=true
 
     zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 # }}}
