@@ -98,7 +98,6 @@ PLATFORM=`uname`
     BULLETTRAIN_EXEC_TIME_SHOW=true
     BULLETTRAIN_GO_SHOW=true
     BULLETTRAIN_NVM_SHOW=true
-    BULLETTRAIN_PROMPT_SEPARATE_LINE=false
     BULLETTRAIN_STATUS_EXIT_SHOW=true
 
     zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
