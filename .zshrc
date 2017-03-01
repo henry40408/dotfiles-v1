@@ -7,7 +7,6 @@ PLATFORM=`uname`
 # plugins {{{
     zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 
-    zplug "plugins/autojump", from:oh-my-zsh
     zplug "plugins/common-aliases", from:oh-my-zsh
     zplug "plugins/docker", from:oh-my-zsh
     zplug "plugins/gem", from:oh-my-zsh
@@ -40,16 +39,6 @@ PLATFORM=`uname`
     fi
 # }}}
 
-# aliases {{{
-    alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-    alias ls="ls --color=auto"
-    alias mux="tmuxinator"
-
-    if (command -v nvim > /dev/null); then
-        alias vim="nvim"
-    fi
-# }}}
-
 # version managers and virtual environment {{{
     # gvm {{{
         export GVM_DIR="$HOME/.gvm"
@@ -58,8 +47,16 @@ PLATFORM=`uname`
         fi
     # }}}
 
+    # nvm {{{
+        export NVM_DIR="$HOME/.nvm"
+        if [ -s "$NVM_DIR/nvm.sh" ]; then
+            . "$NVM_DIR/nvm.sh"
+        fi
+    # }}}
+
     # rbenv {{{
         export RBENV_DIR="$HOME/.rbenv"
+        export PATH="$RBENV_DIR/bin:$PATH"
         if [ -d "$RBENV_DIR" ]; then
             eval "$(rbenv init -)"
         fi
@@ -80,15 +77,19 @@ PLATFORM=`uname`
     # }}}
 # }}}
 
-# tmuxinator {{{
-    if [ -f $HOME/.tmuxinator/tmuxinator.zsh ]; then
-        source $HOME/.tmuxinator/tmuxinator.zsh
+# aliases {{{
+    alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+# }}}
+
+# fasd {{{
+    if (command -v fasd > /dev/null); then
+        eval "$(fasd --init posix-alias zsh-hook)"
     fi
 # }}}
 
 # private configuration {{{
     if [ -f $HOME/.zshrc-local ]; then
-        . $HOME/.zshrc-local
+        source $HOME/.zshrc-local
     fi
 # }}}
 
@@ -106,7 +107,7 @@ PLATFORM=`uname`
 # end of .zshrc
 
 if ! zplug check; then
-  zplug install
+    zplug install
 fi
 
 zplug load
