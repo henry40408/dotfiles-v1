@@ -7,6 +7,7 @@ PLATFORM=`uname`
 # plugins {{{
     zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 
+    zplug "plugins/autojump", from:oh-my-zsh
     zplug "plugins/common-aliases", from:oh-my-zsh
     zplug "plugins/docker", from:oh-my-zsh
     zplug "plugins/gem", from:oh-my-zsh
@@ -79,12 +80,8 @@ PLATFORM=`uname`
 
 # aliases {{{
     alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-# }}}
-
-# fasd {{{
-    if (command -v fasd > /dev/null); then
-        eval "$(fasd --init posix-alias zsh-hook)"
-    fi
+    alias gprd="git log HEAD...develop --pretty='format:- **%s**'"
+    alias gprm="git log HEAD...master --pretty='format:- **%s**'"
 # }}}
 
 # private configuration {{{
