@@ -32,6 +32,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ansible
      nginx
      auto-completion
      colors
@@ -312,7 +313,10 @@ before packages are loaded. If you are unsure, you should try in setting them
 in `dotspacemacs/user-config' first."
   ;; suppress warnings from emacs
   (setq-default enable-local-variables nil
-                exec-path-from-shell-check-startup-files nil))
+                exec-path-from-shell-check-startup-files nil
+                ;; reference: https://goo.gl/vCkcmI
+                linum-format "%5d | "
+                linum-relative-format "%5s | "))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -321,39 +325,21 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq-default git-gutter-fr+-side 'left-fringe
-                ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
-                vmd-binary-path "/usr/local/bin/vmd")
-  (keyfreq-mode t)
-  (keyfreq-autosave-mode t)
-
-  ;; reference: https://goo.gl/vCkcmI
   (progn
-    ;; Linum
-
-    ;; NOTE: the "relative" flag for "dotspacemacs-line-numbers 'relative"
-    ;; doesn't seem to be working, so we add the hooks here manually
-    (when (eq dotspacemacs-line-numbers 'relative)
-      (add-hook 'prog-mode-hook 'linum-relative-mode)
-      (add-hook 'text-mode-hook 'linum-relative-mode))
-
-    (setq-default
-     linum-format "%4d \u2502"
-     linum-relative-format "%4s \u2502"
-     ))
-
-  (progn
-    ;; Git Gutter
-    (set-face-attribute
-     'git-gutter:added nil :background nil :foreground "green")
-    (set-face-attribute
-     'git-gutter:deleted nil :background nil :foreground "red")
-    (set-face-attribute
-     'git-gutter:modified nil :background nil :foreground "blue")
-
-    (setq-default
-     git-gutter:modified-sign "!"
-     )))
+    (setq-default git-gutter-fr+-side 'left-fringe
+                  ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
+                  vmd-binary-path "/usr/local/bin/vmd")
+    (keyfreq-mode t)
+    (keyfreq-autosave-mode t)
+    ;; reference: https://goo.gl/vCkcmI
+    (set-face-attribute 'git-gutter:added nil
+                        :background nil :foreground "green")
+    (set-face-attribute 'git-gutter:deleted nil
+                        :background nil :foreground "red")
+    (set-face-attribute 'git-gutter:modified
+                        nil :background nil :foreground "yellow")
+    (setq-default git-gutter:hide-gutter nil
+                  git-gutter:modified-sign "~")))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -364,7 +350,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (figlet nginx-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode disable-mouse jekyll-modes polymode github-search github-clone github-browse-file gist magit-gh-pulls gh marshal logito pcache ht terraform-mode hcl-mode groovy-mode dockerfile-mode powerline pcre2el spinner alert log4e gntp ob-elixir org markdown-mode skewer-mode simple-httpd multiple-cursors js2-mode hydra parent-mode projectile request haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck-mix flycheck flx magit git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree highlight json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish web-completion-data dash-functional tern inf-ruby bind-map bind-key yasnippet packed anaconda-mode pythonic f s alchemist company dash elixir-mode pkg-info epl helm avy helm-core async auto-complete popup package-build tangotango-theme helm-dash dash-at-point yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe restart-emacs rbenv rake rainbow-mode rainbow-identifiers rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode paradox origami orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file nodejs-repl neotree multi-term move-text mmm-mode minitest markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode keyfreq js2-refactor js-doc info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump docker diff-hl define-word cython-mode company-web company-tern company-statistics company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-identifiers-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-compile ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (jinja2-mode ansible-doc figlet nginx-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode disable-mouse jekyll-modes polymode github-search github-clone github-browse-file gist magit-gh-pulls gh marshal logito pcache ht terraform-mode hcl-mode groovy-mode dockerfile-mode powerline pcre2el spinner alert log4e gntp ob-elixir org markdown-mode skewer-mode simple-httpd multiple-cursors js2-mode hydra parent-mode projectile request haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck-mix flycheck flx magit git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree highlight json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish web-completion-data dash-functional tern inf-ruby bind-map bind-key yasnippet packed anaconda-mode pythonic f s alchemist company dash elixir-mode pkg-info epl helm avy helm-core async auto-complete popup package-build tangotango-theme helm-dash dash-at-point yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe restart-emacs rbenv rake rainbow-mode rainbow-identifiers rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode paradox origami orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file nodejs-repl neotree multi-term move-text mmm-mode minitest markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode keyfreq js2-refactor js-doc info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump docker diff-hl define-word cython-mode company-web company-tern company-statistics company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-identifiers-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-compile ansible aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
