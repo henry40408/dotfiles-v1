@@ -31,6 +31,7 @@ PLATFORM=`uname`
 # environment variables {{{
     if [ "$PLATFORM" = "Darwin" ]; then
         export EDITOR="vim"
+        export GPG_TTY=$(tty)
 
         export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
