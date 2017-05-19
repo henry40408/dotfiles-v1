@@ -34,10 +34,6 @@ PLATFORM=`uname`
         export GPG_TTY=$(tty)
 
         export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-
-        # for `coreutils`
-        export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-        export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
     fi
 # }}}
 
