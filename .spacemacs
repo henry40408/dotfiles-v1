@@ -41,7 +41,7 @@ values."
      emacs-lisp
      git
      github
-     go
+     (go :variables gofmt-command "goimports")
      helm
      html
      javascript
