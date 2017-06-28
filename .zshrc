@@ -31,8 +31,6 @@ PLATFORM=`uname`
 # environment variables {{{
     if [ "$PLATFORM" = "Darwin" ]; then
         export EDITOR="vim"
-        export GPG_TTY=$(tty)
-
         export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
     fi
 # }}}
@@ -77,8 +75,8 @@ PLATFORM=`uname`
 
 # aliases {{{
     alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-    alias gprd="git log HEAD...develop --pretty='format:- **%s**'"
-    alias gprm="git log HEAD...master --pretty='format:- **%s**'"
+    alias gprd="git log HEAD...develop --pretty='format:- %h **%s**'"
+    alias gprm="git log HEAD...master --pretty='format:- %h **%s**'"
 # }}}
 
 # private configuration {{{
