@@ -1,69 +1,31 @@
-source "${HOME}/.zplug/init.zsh"
+source "${HOME}/.antigen/antigen.zsh"
 
 # start of .zshrc
 
 PLATFORM=`uname`
 
 # plugins {{{
-    zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+    antigen use oh-my-zsh
 
-    zplug "plugins/autojump", from:oh-my-zsh
-    zplug "plugins/common-aliases", from:oh-my-zsh
-    zplug "plugins/docker", from:oh-my-zsh
-    zplug "plugins/gem", from:oh-my-zsh
-    zplug "plugins/git", from:oh-my-zsh
-    zplug "plugins/git-flow", from:oh-my-zsh
-    zplug "plugins/gpg-agent", from:oh-my-zsh
-    zplug "plugins/pip", from:oh-my-zsh
-    zplug "plugins/virtualenvwrapper", from:oh-my-zsh
+    antigen bundle autojump
+    antigen bundle common-aliases
+    antigen bundle docker
+    antigen bundle gem
+    antigen bundle git
+    antigen bundle git-flow
+    antigen bundle gpg-agent
+    antigen bundle pip
+    antigen bundle virtualenvwrapper
 
-    zplug "Sparragus/zsh-auto-nvm-use"
-    zplug "StackExchange/blackbox"
-    zplug "jreese/zsh-titles"
-    zplug "rimraf/k"
-    zplug "zsh-users/zsh-syntax-highlighting"
+    antigen bundle Sparragus/zsh-auto-nvm-use
+    antigen bundle StackExchange/blackbox
+    antigen bundle jreese/zsh-titles
+    antigen bundle rimraf/k
+    antigen bundle zsh-users/zsh-syntax-highlighting
 
-    if [ "$PLATFORM" = "Darwin" ]; then
-        zplug "plugins/osx", from:oh-my-zsh
+    if [ "${PLATFORM}" = "Darwin" ]; then
+        antigen bundle osx
     fi
-# }}}
-
-# environment variables {{{
-    if [ "$PLATFORM" = "Darwin" ]; then
-        export EDITOR="vim"
-        export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-    fi
-# }}}
-
-# version managers and virtual environment {{{
-    # gvm {{{
-        export GVM_DIR="$HOME/.gvm"
-        if [ -s "$GVM_DIR/scripts/gvm" ]; then
-            . "$GVM_DIR/scripts/gvm"
-        fi
-    # }}}
-
-    # nvm {{{
-        export NVM_DIR="$HOME/.nvm"
-        if [ -s "$NVM_DIR/nvm.sh" ]; then
-            . "$NVM_DIR/nvm.sh"
-        fi
-    # }}}
-
-    # rbenv {{{
-        export RBENV_DIR="$HOME/.rbenv"
-        export PATH="$RBENV_DIR/bin:$PATH"
-        if [ -d "$RBENV_DIR" ]; then
-            eval "$(rbenv init -)"
-        fi
-    # }}}
-
-    # elixir {{{
-        export KIEX_DIR="$HOME/.kiex"
-        if [ -s "$KIEX_DIR/scripts/kiex" ]; then
-            source "$KIEX_DIR/scripts/kiex"
-        fi
-    # }}}
 # }}}
 
 # aliases {{{
@@ -72,10 +34,42 @@ PLATFORM=`uname`
     alias gprm="git log HEAD...master --pretty='format:- %h **%s**'"
 # }}}
 
-# private configuration {{{
-    if [ -f $HOME/.zshrc-local ]; then
-        source $HOME/.zshrc-local
+# environment variables {{{
+    if [ "${PLATFORM}" = "Darwin" ]; then
+        export EDITOR="vim"
+        export PATH="${HOME}/bin:/usr/local/bin:/usr/local/sbin:${PATH}"
     fi
+# }}}
+
+# version managers and virtual environment {{{
+    # elixir {{{
+        export KIEX_DIR="${HOME}/.kiex"
+        if [ -s "${KIEX_DIR}/scripts/kiex" ]; then
+            source "${KIEX_DIR}/scripts/kiex"
+        fi
+    # }}}
+
+    # gvm {{{
+        export GVM_DIR="${HOME}/.gvm"
+        if [ -s "${GVM_DIR}/scripts/gvm" ]; then
+            source "${GVM_DIR}/scripts/gvm"
+        fi
+    # }}}
+
+    # nvm {{{
+        export NVM_DIR="${HOME}/.nvm"
+        if [ -s "${NVM_DIR}/nvm.sh" ]; then
+            source "${NVM_DIR}/nvm.sh"
+        fi
+    # }}}
+
+    # rbenv {{{
+        export RBENV_DIR="${HOME}/.rbenv"
+        export PATH="${RBENV_DIR}/bin:$PATH"
+        if [ -d "${RBENV_DIR}" ]; then
+            eval "$(rbenv init -)"
+        fi
+    # }}}
 # }}}
 
 # theme {{{
@@ -86,15 +80,17 @@ PLATFORM=`uname`
     BULLETTRAIN_NVM_SHOW=true
     BULLETTRAIN_STATUS_EXIT_SHOW=true
 
-    zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
+    antigen theme caiogondim/bullet-train-oh-my-zsh-theme
+# }}}
+
+# private configuration {{{
+    if [ -f $HOME/.zshrc-local ]; then
+        source $HOME/.zshrc-local
+    fi
 # }}}
 
 # end of .zshrc
 
-if ! zplug check; then
-    zplug install
-fi
-
-zplug load
+antigen apply
 
 # vim: set foldlevel=0 foldmethod=marker:
