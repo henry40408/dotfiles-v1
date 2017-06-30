@@ -17,7 +17,6 @@ PLATFORM=`uname`
     antigen bundle pip
     antigen bundle virtualenvwrapper
 
-    antigen bundle Sparragus/zsh-auto-nvm-use
     antigen bundle StackExchange/blackbox
     antigen bundle jreese/zsh-titles
     antigen bundle rimraf/k
@@ -60,6 +59,7 @@ PLATFORM=`uname`
         export NVM_DIR="${HOME}/.nvm"
         if [ -s "${NVM_DIR}/nvm.sh" ]; then
             source "${NVM_DIR}/nvm.sh"
+            antigen bundle henry40408/zsh-auto-nvm-use
         fi
     # }}}
 
