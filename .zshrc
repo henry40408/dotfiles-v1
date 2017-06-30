@@ -13,9 +13,9 @@ PLATFORM=`uname`
     zplug "plugins/gem", from:oh-my-zsh
     zplug "plugins/git", from:oh-my-zsh
     zplug "plugins/git-flow", from:oh-my-zsh
-    zplug "plugins/kubectl", from:oh-my-zsh
+    zplug "plugins/gpg-agent", from:oh-my-zsh
     zplug "plugins/pip", from:oh-my-zsh
-    zplug "plugins/vagrant", from:oh-my-zsh
+    zplug "plugins/virtualenvwrapper", from:oh-my-zsh
 
     zplug "Sparragus/zsh-auto-nvm-use"
     zplug "StackExchange/blackbox"
@@ -55,13 +55,6 @@ PLATFORM=`uname`
         export PATH="$RBENV_DIR/bin:$PATH"
         if [ -d "$RBENV_DIR" ]; then
             eval "$(rbenv init -)"
-        fi
-    # }}}
-
-    # python virtualenv {{{
-        if (command -v virtualenvwrapper.sh > /dev/null); then
-            source $(command -v virtualenvwrapper.sh)
-            export PIP_REQUIRE_VIRTUALENV=1
         fi
     # }}}
 
