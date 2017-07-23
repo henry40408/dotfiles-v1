@@ -1,29 +1,32 @@
-source "${HOME}/.antigen/antigen.zsh"
+source "${HOME}/.zplug/init.zsh"
 
 # start of .zshrc
 
 PLATFORM=`uname`
 
 # plugins {{{
-    antigen use oh-my-zsh
+    zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 
-    antigen bundle autojump
-    antigen bundle common-aliases
-    antigen bundle docker
-    antigen bundle gem
-    antigen bundle git
-    antigen bundle git-flow
-    antigen bundle gpg-agent
-    antigen bundle pip
-    antigen bundle virtualenvwrapper
+    zplug "plugins/autojump", from:oh-my-zsh
+    zplug "plugins/common-aliases", from:oh-my-zsh
+    zplug "plugins/docker", from:oh-my-zsh
+    zplug "plugins/gem", from:oh-my-zsh
+    zplug "plugins/git", from:oh-my-zsh
+    zplug "plugins/git-flow", from:oh-my-zsh
+    zplug "plugins/gpg-agent", from:oh-my-zsh
+    zplug "plugins/kubectl", from:oh-my-zsh
+    zplug "plugins/pip", from:oh-my-zsh
+    zplug "plugins/virtualenvwrapper", from:oh-my-zsh
 
-    antigen bundle StackExchange/blackbox
-    antigen bundle jreese/zsh-titles
-    antigen bundle rimraf/k
-    antigen bundle zsh-users/zsh-syntax-highlighting
+    zplug "Sparragus/zsh-auto-nvm-use"
+    zplug "StackExchange/blackbox"
+    zplug "jreese/zsh-titles"
+    zplug "rimraf/k"
+    zplug "zsh-users/zsh-syntax-highlighting"
+    zplug "zsh-users/zsh-autosuggestions"
 
     if [ "${PLATFORM}" = "Darwin" ]; then
-        antigen bundle osx
+        zplug "plugins/osx", from:oh-my-zsh
     fi
 # }}}
 
@@ -59,7 +62,6 @@ PLATFORM=`uname`
         export NVM_DIR="${HOME}/.nvm"
         if [ -s "${NVM_DIR}/nvm.sh" ]; then
             source "${NVM_DIR}/nvm.sh"
-            antigen bundle henry40408/zsh-auto-nvm-use
         fi
     # }}}
 
@@ -74,23 +76,27 @@ PLATFORM=`uname`
 
 # theme {{{
     BULLETTRAIN_DIR_EXTENDED=0
-    BULLETTRAIN_CONTEXT_DEFAULT_USER=$(whoami)
+    BULLETTRAIN_CONTEXT_DEFAULT_USER="$(whoami)"
     BULLETTRAIN_EXEC_TIME_SHOW=true
     BULLETTRAIN_GO_SHOW=true
     BULLETTRAIN_NVM_SHOW=true
     BULLETTRAIN_STATUS_EXIT_SHOW=true
 
-    antigen theme caiogondim/bullet-train-oh-my-zsh-theme
+    zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 # }}}
 
 # private configuration {{{
-    if [ -f $HOME/.zshrc-local ]; then
-        source $HOME/.zshrc-local
+    if [ -f "${HOME}/.zshrc-local" ]; then
+        source "${HOME}/.zshrc-local"
     fi
 # }}}
 
 # end of .zshrc
 
-antigen apply
+if ! zplug check; then
+    zplug install
+fi
+
+zplug load
 
 # vim: set foldlevel=0 foldmethod=marker:
