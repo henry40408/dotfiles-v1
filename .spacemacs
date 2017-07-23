@@ -314,8 +314,8 @@ in `dotspacemacs/user-config' first."
   (setq-default enable-local-variables nil
                 exec-path-from-shell-check-startup-files nil
                 ;; reference: https://goo.gl/vCkcmI
-                linum-format "%5d | "
-                linum-relative-format "%5s | "
+                linum-format "%5d \u23B8 "
+                linum-relative-format "%5s \u23B8 "
                 ;; reference: https://goo.gl/4ryRym
                 magit-push-current-set-remote-if-missing t
                 ;; reference: https://goo.gl/J32KYy
@@ -330,20 +330,25 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (progn
-    (setq-default git-gutter-fr+-side 'left-fringe
+    (setq-default git-gutter:hide-gutter nil
+                  git-gutter:modified-sign "~"
+                  git-gutter-fr+-side 'left-fringe
                   ns-use-srgb-colorspace nil ;; reference: https://goo.gl/mxVevn
                   vmd-binary-path "/usr/local/bin/vmd")
+
     (keyfreq-mode t)
     (keyfreq-autosave-mode t)
+
     ;; reference: https://goo.gl/vCkcmI
     (set-face-attribute 'git-gutter:added nil
-                        :background nil :foreground "green")
+                        :background nil
+                        :foreground "green")
     (set-face-attribute 'git-gutter:deleted nil
-                        :background nil :foreground "red")
-    (set-face-attribute 'git-gutter:modified
-                        nil :background nil :foreground "yellow")
-    (setq-default git-gutter:hide-gutter nil
-                  git-gutter:modified-sign "~")))
+                        :background nil
+                        :foreground "red")
+    (set-face-attribute 'git-gutter:modified nil
+                        :background nil
+                        :foreground "yellow")))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
