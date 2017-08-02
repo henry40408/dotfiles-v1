@@ -15,8 +15,12 @@ PLATFORM=`uname`
     zplug "plugins/git-flow", from:oh-my-zsh
     zplug "plugins/gpg-agent", from:oh-my-zsh
     zplug "plugins/kubectl", from:oh-my-zsh
+    zplug "plugins/nvm", from:oh-my-zsh
     zplug "plugins/pip", from:oh-my-zsh
+    zplug "plugins/pyenv", from:oh-my-zsh
+    zplug "plugins/rbenv", from:oh-my-zsh
     zplug "plugins/virtualenvwrapper", from:oh-my-zsh
+    zplug "plugins/z", from:oh-my-zsh
 
     zplug "Sparragus/zsh-auto-nvm-use"
     zplug "StackExchange/blackbox"
@@ -43,34 +47,15 @@ PLATFORM=`uname`
     fi
 # }}}
 
-# version managers and virtual environment {{{
+# version managers does not supported by oh-my-zsh {{{
     # elixir {{{
         export KIEX_DIR="${HOME}/.kiex"
-        if [ -s "${KIEX_DIR}/scripts/kiex" ]; then
-            source "${KIEX_DIR}/scripts/kiex"
-        fi
+        [ -s "${KIEX_DIR}/scripts/kiex" ] && source "${KIEX_DIR}/scripts/kiex"
     # }}}
 
     # gvm {{{
         export GVM_DIR="${HOME}/.gvm"
-        if [ -s "${GVM_DIR}/scripts/gvm" ]; then
-            source "${GVM_DIR}/scripts/gvm"
-        fi
-    # }}}
-
-    # nvm {{{
-        export NVM_DIR="${HOME}/.nvm"
-        if [ -s "${NVM_DIR}/nvm.sh" ]; then
-            source "${NVM_DIR}/nvm.sh"
-        fi
-    # }}}
-
-    # rbenv {{{
-        export RBENV_DIR="${HOME}/.rbenv"
-        export PATH="${RBENV_DIR}/bin:$PATH"
-        if [ -d "${RBENV_DIR}" ]; then
-            eval "$(rbenv init -)"
-        fi
+        [ -s "${GVM_DIR}/scripts/gvm" ] && source "${GVM_DIR}/scripts/gvm"
     # }}}
 # }}}
 
