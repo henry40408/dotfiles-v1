@@ -5,7 +5,6 @@ PLATFORM=`uname`
 antigen use oh-my-zsh
 
 antigen bundle asdf
-antigen bundle autojump
 antigen bundle docker
 antigen bundle gem
 antigen bundle git
