@@ -4,6 +4,7 @@ PLATFORM=`uname`
 
 antigen use oh-my-zsh
 
+antigen bundle brew
 antigen bundle docker
 antigen bundle gem
 antigen bundle git
@@ -24,7 +25,15 @@ if [[ "${PLATFORM}" = "Darwin" ]]; then
     antigen bundle osx
 fi
 
-export PATH="${HOME}/go/bin:${PATH}"
+export PATH="${HOME}/bin:$PATH"
+
+if [[ -d "/usr/local/opt/python/libexec/bin" ]]; then
+    export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
+fi
+
+if [[ -d "${HOME}/go/bin" ]]; then
+    export PATH="${HOME}/go/bin:${PATH}"
+fi
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias git='hub'
