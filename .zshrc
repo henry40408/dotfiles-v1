@@ -4,7 +4,7 @@ PLATFORM=`uname`
 
 antigen use oh-my-zsh
 
-antigen bundle brew
+antigen bundle ansible
 antigen bundle docker
 antigen bundle gem
 antigen bundle git
@@ -13,6 +13,7 @@ antigen bundle gpg-agent
 antigen bundle kubectl
 antigen bundle nvm
 antigen bundle pip
+antigen bundle rbenv
 antigen bundle z
 
 antigen bundle StackExchange/blackbox
@@ -25,39 +26,40 @@ if [[ "${PLATFORM}" = "Darwin" ]]; then
     antigen bundle osx
 fi
 
+# Additional executable files in $HOME/bin
 export PATH="${HOME}/bin:$PATH"
 
-if [[ -d "/usr/local/opt/python/libexec/bin" ]]; then
-    export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
-fi
+# GVM: Go Version Manager
+# oh-my-zsh does not support it for now
+export GVM_DIR="${HOME}/.gvm"
+[[ -d "${GVM_DIR}" ]] && . ${GVM_DIR}/scripts/gvm
 
-if [[ -d "${HOME}/go/bin" ]]; then
-    export PATH="${HOME}/go/bin:${PATH}"
-fi
+# I put everything about Go in ${HOME}/go (a.k.a. $GOPATH),
+# so Go executables should be found in ${HOME}/go/bin.
+[[ -d "${HOME}/go/bin" ]] && export PATH="${HOME}/go/bin:${PATH}"
 
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-alias git='hub'
+# # Aliases
+alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias git="hub"
 
-BULLETTRAIN_DIR_EXTENDED=0
-BULLETTRAIN_CONTEXT_DEFAULT_USER="$(whoami)"
-BULLETTRAIN_EXEC_TIME_SHOW=1
-BULLETTRAIN_GO_SHOW=1
-BULLETTRAIN_NVM_SHOW=1
-BULLETTRAIN_STATUS_EXIT_SHOW=1
+# # Themes
+SPACESHIP_BATTERY_SHOW=false
+SPACESHIP_EXIT_CODE_SHOW=true
+SPACESHIP_KUBECONTEXT_SHOW=false
+SPACESHIP_PACKAGE_SHOW=false
+SPACESHIP_TIME_SHOW=true
 
-antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
 
 antigen apply
 
+# Enable auto-completion for Google Cloud SDK
 GOOGLE_CLOUD_SDK_DIR="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
-if [[ -d "${GOOGLE_CLOUD_SDK_DIR}" ]]; then
-    source "${GOOGLE_CLOUD_SDK_DIR}/path.zsh.inc"
+[[ -d "${GOOGLE_CLOUD_SDK_DIR}" ]] && \
+    source "${GOOGLE_CLOUD_SDK_DIR}/path.zsh.inc" && \
     source "${GOOGLE_CLOUD_SDK_DIR}/completion.zsh.inc"
-fi
 
-
-if [[ -f "${HOME}/.local.zsh" ]]; then
-    source "${HOME}/.local.zsh"
-fi
+# Private configuration
+[[ -f "${HOME}/.local.zsh" ]] && source "${HOME}/.local.zsh"
 
 # vim: set foldlevel=0 foldmethod=marker:
