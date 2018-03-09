@@ -14,6 +14,7 @@ antigen bundle kubectl
 antigen bundle nvm
 antigen bundle pip
 antigen bundle rbenv
+antigen bundle virtualenvwrapper
 antigen bundle z
 
 antigen bundle StackExchange/blackbox
