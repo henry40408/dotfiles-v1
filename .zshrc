@@ -1,10 +1,12 @@
 source "${HOME}/.antigen/antigen.zsh"
 
 PLATFORM=`uname`
+VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
 
 antigen use oh-my-zsh
 
 antigen bundle ansible
+antigen bundle autojump
 antigen bundle docker
 antigen bundle gem
 antigen bundle git
@@ -15,7 +17,6 @@ antigen bundle nvm
 antigen bundle pip
 antigen bundle rbenv
 antigen bundle virtualenvwrapper
-antigen bundle z
 
 antigen bundle StackExchange/blackbox
 antigen bundle jreese/zsh-titles
@@ -32,16 +33,18 @@ export PATH="${HOME}/bin:$PATH"
 
 # GVM: Go Version Manager
 # oh-my-zsh does not support it for now
-export GVM_DIR="${HOME}/.gvm"
+GVM_DIR="${HOME}/.gvm"
 [[ -d "${GVM_DIR}" ]] && . ${GVM_DIR}/scripts/gvm
 
 # I put everything about Go in ${HOME}/go (a.k.a. $GOPATH),
 # so Go executables should be found in ${HOME}/go/bin.
 [[ -d "${HOME}/go/bin" ]] && export PATH="${HOME}/go/bin:${PATH}"
 
+# Prevent pip install outside virtualenvs
+export PIP_REQUIRE_VIRTUALENV=1
+
 # # Aliases
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-alias git="hub"
 
 # # Themes
 SPACESHIP_BATTERY_SHOW=false
