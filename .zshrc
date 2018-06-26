@@ -1,7 +1,6 @@
 source "${HOME}/.antigen/antigen.zsh"
 
 PLATFORM=`uname`
-VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
 
 antigen use oh-my-zsh
 
@@ -40,8 +39,15 @@ GVM_DIR="${HOME}/.gvm"
 # so Go executables should be found in ${HOME}/go/bin.
 [[ -d "${HOME}/go/bin" ]] && export PATH="${HOME}/go/bin:${PATH}"
 
+# virtualenvwrapper related settings
 # Prevent pip install outside virtualenvs
 export PIP_REQUIRE_VIRTUALENV=1
+if [[ -f /usr/local/bin/python3 ]]; then
+    export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
+else
+    export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
+fi
+export WORKON_HOME="$HOME/.virtualenvs"
 
 # # Aliases
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
