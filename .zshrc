@@ -33,26 +33,23 @@ export PATH="${HOME}/bin:$PATH"
 # GVM: Go Version Manager
 # oh-my-zsh does not support it for now
 GVM_DIR="${HOME}/.gvm"
-[[ -d "${GVM_DIR}" ]] && . ${GVM_DIR}/scripts/gvm
+if [[ -d "${GVM_DIR}" ]]; then
+    . ${GVM_DIR}/scripts/gvm
+fi
 
 # I put everything about Go in ${HOME}/go (a.k.a. $GOPATH),
 # so Go executables should be found in ${HOME}/go/bin.
-[[ -d "${HOME}/go/bin" ]] && export PATH="${HOME}/go/bin:${PATH}"
+if [[ -d "${HOME}/go/bin" ]]; then
+    export PATH="${HOME}/go/bin:${PATH}"
+fi
 
-# virtualenvwrapper related settings
 # Prevent pip install outside virtualenvs
 export PIP_REQUIRE_VIRTUALENV=1
-if [[ -f /usr/local/bin/python3 ]]; then
-    export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
-else
-    export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
-fi
-export WORKON_HOME="$HOME/.virtualenvs"
 
-# # Aliases
+# Aliases
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
-# # Themes
+# Themes
 SPACESHIP_BATTERY_SHOW=false
 SPACESHIP_EXIT_CODE_SHOW=true
 SPACESHIP_KUBECONTEXT_SHOW=false
@@ -63,13 +60,9 @@ antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
 
 antigen apply
 
-# Enable auto-completion for Google Cloud SDK
-GOOGLE_CLOUD_SDK_DIR="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
-[[ -d "${GOOGLE_CLOUD_SDK_DIR}" ]] && \
-    source "${GOOGLE_CLOUD_SDK_DIR}/path.zsh.inc" && \
-    source "${GOOGLE_CLOUD_SDK_DIR}/completion.zsh.inc"
-
 # Private configuration
-[[ -f "${HOME}/.local.zsh" ]] && source "${HOME}/.local.zsh"
+if [[ -f "${HOME}/.zshrc.local" ]]; then
+    source "${HOME}/.zshrc.local"
+fi
 
 # vim: set foldlevel=0 foldmethod=marker:
