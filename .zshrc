@@ -15,7 +15,6 @@ antigen bundle kubectl
 antigen bundle nvm
 antigen bundle pip
 antigen bundle rbenv
-antigen bundle virtualenvwrapper
 
 antigen bundle StackExchange/blackbox
 antigen bundle jreese/zsh-titles
@@ -34,7 +33,7 @@ export PATH="${HOME}/bin:$PATH"
 # oh-my-zsh does not support it for now
 GVM_DIR="${HOME}/.gvm"
 if [[ -d "${GVM_DIR}" ]]; then
-    . ${GVM_DIR}/scripts/gvm
+    source ${GVM_DIR}/scripts/gvm
 fi
 
 # I put everything about Go in ${HOME}/go (a.k.a. $GOPATH),
@@ -42,9 +41,6 @@ fi
 if [[ -d "${HOME}/go/bin" ]]; then
     export PATH="${HOME}/go/bin:${PATH}"
 fi
-
-# Prevent pip install outside virtualenvs
-export PIP_REQUIRE_VIRTUALENV=1
 
 # Aliases
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
@@ -57,6 +53,16 @@ SPACESHIP_PACKAGE_SHOW=false
 SPACESHIP_TIME_SHOW=true
 
 antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
+
+# Prevent pip install outside virtualenvs
+export PIP_REQUIRE_VIRTUALENV=1
+if [[ "${PLATFORM}" = "Darwin" ]]; then
+    export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
+else
+    export PATH="${HOME}/.local/bin:${PATH}"
+    export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
+fi
+antigen bundle virtualenvwrapper
 
 antigen apply
 
