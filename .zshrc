@@ -14,6 +14,7 @@ antigen bundle gpg-agent
 antigen bundle kubectl
 antigen bundle nvm
 antigen bundle pip
+antigen bundle pyenv
 antigen bundle rbenv
 
 antigen bundle StackExchange/blackbox
@@ -33,13 +34,13 @@ export PATH="${HOME}/bin:$PATH"
 # oh-my-zsh does not support it for now
 GVM_DIR="${HOME}/.gvm"
 if [[ -d "${GVM_DIR}" ]]; then
-    source ${GVM_DIR}/scripts/gvm
+    source ${GVM_DIR}/scripts/gvm;
 fi
 
 # I put everything about Go in ${HOME}/go (a.k.a. $GOPATH),
 # so Go executables should be found in ${HOME}/go/bin.
 if [[ -d "${HOME}/go/bin" ]]; then
-    export PATH="${HOME}/go/bin:${PATH}"
+    export PATH="${HOME}/go/bin:${PATH}";
 fi
 
 # Aliases
@@ -56,19 +57,17 @@ antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
 
 # Prevent pip install outside virtualenvs
 export PIP_REQUIRE_VIRTUALENV=1
-if [[ "${PLATFORM}" = "Darwin" ]]; then
-    export VIRTUALENVWRAPPER_PYTHON="/usr/local/bin/python3"
-else
-    export PATH="${HOME}/.local/bin:${PATH}"
-    export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+if which pyenv-virtualenv-init > /dev/null; then
+    eval "$(pyenv virtualenv-init -)";
 fi
-antigen bundle virtualenvwrapper
 
 antigen apply
 
 # Private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
-    source "${HOME}/.zshrc.local"
+    source "${HOME}/.zshrc.local";
 fi
 
 # vim: set foldlevel=0 foldmethod=marker:
