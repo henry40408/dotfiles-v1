@@ -11,16 +11,17 @@ antigen bundle gem
 antigen bundle git
 antigen bundle git-flow
 antigen bundle gpg-agent
-antigen bundle kubectl
 antigen bundle nvm
 antigen bundle pip
 antigen bundle pyenv
 antigen bundle rbenv
 
-antigen bundle StackExchange/blackbox
+antigen bundle djui/alias-tips
 antigen bundle jreese/zsh-titles
-antigen bundle rimraf/k
-antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle Cloudstek/zsh-plugin-appup
+antigen bundle StackExchange/blackbox
+antigen bundle supercrabtree/k
+antigen bundle zdharma/fast-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
 if [[ "${PLATFORM}" = "Darwin" ]]; then
