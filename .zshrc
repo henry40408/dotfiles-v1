@@ -1,80 +1,86 @@
-source "${HOME}/.antigen/antigen.zsh"
+if [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
+    # I am tired of manually install antigen
+    # before everytime I recover my environment
+    echo "No antigen detected. Automatically Install antigen..."
+    mkdir -p "${HOME}/.antigen"
+    curl -L git.io/antigen > .antigen/antigen.zsh
+    echo "Done."
+fi
 
-PLATFORM=`uname`
+if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
+    source "${HOME}/.antigen/antigen.zsh"
 
-# Additional executable files in $HOME/bin
+    PLATFORM=`uname`
+
+    # plugins
+
+    antigen use oh-my-zsh
+
+    antigen bundle ansible
+    antigen bundle autojump
+    antigen bundle docker
+    antigen bundle gem
+    antigen bundle git
+    antigen bundle git-flow
+    antigen bundle gpg-agent
+    antigen bundle pip
+    antigen bundle pyenv
+    antigen bundle rbenv
+
+    antigen bundle djui/alias-tips
+    antigen bundle jreese/zsh-titles
+    antigen bundle Cloudstek/zsh-plugin-appup
+    antigen bundle StackExchange/blackbox
+    antigen bundle supercrabtree/k
+    antigen bundle zdharma/fast-syntax-highlighting
+    antigen bundle zsh-users/zsh-autosuggestions
+
+    if [[ "${PLATFORM}" = "Darwin" ]]; then
+        antigen bundle osx
+    fi
+
+    # theme
+
+    SPACESHIP_BATTERY_SHOW=false
+    SPACESHIP_EXIT_CODE_SHOW=true
+    SPACESHIP_KUBECONTEXT_SHOW=false
+    SPACESHIP_PACKAGE_SHOW=false
+    SPACESHIP_TIME_SHOW=true
+
+    antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
+
+    antigen apply
+fi
+
+# shell configuration
+
+HISTCONTROL=ignorespace:erasedups
+
+# directory for user-wide executable files
+
 export PATH="${HOME}/bin:$PATH"
 
-# GVM: Go Version Manager
-# oh-my-zsh does not support it for now
-GVM_DIR="${HOME}/.gvm"
-if [[ -d "${GVM_DIR}" ]]; then
-    source ${GVM_DIR}/scripts/gvm;
-fi
-
-# I put everything about Go in ${HOME}/go (a.k.a. $GOPATH),
-# so Go executables should be found in ${HOME}/go/bin.
-if [[ -d "${HOME}/go/bin" ]]; then
-    export PATH="${HOME}/go/bin:${PATH}";
-fi
-
-# Aliases
-
-# https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
-alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-
-# https://gist.github.com/bbengfort/246bc820e76b48f71df7
-alias workon="source venv/bin/activate"
-
-# Python
+# python - no packages should be installed outside pip
 
 export PIP_REQUIRE_VIRTUALENV=1
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 
-# Plugins
+# gvm - Go version manager
 
-antigen use oh-my-zsh
-
-antigen bundle ansible
-antigen bundle autojump
-antigen bundle docker
-antigen bundle gem
-antigen bundle git
-antigen bundle git-flow
-antigen bundle gpg-agent
-antigen bundle nvm
-antigen bundle pip
-antigen bundle pyenv
-antigen bundle rbenv
-
-antigen bundle djui/alias-tips
-antigen bundle jreese/zsh-titles
-antigen bundle Cloudstek/zsh-plugin-appup
-antigen bundle StackExchange/blackbox
-antigen bundle supercrabtree/k
-antigen bundle zdharma/fast-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-
-if [[ "${PLATFORM}" = "Darwin" ]]; then
-    antigen bundle osx
+export GVM_DIR="${HOME}/.gvm"
+if [[ -d "${GVM_DIR}" ]]; then
+    source ${GVM_DIR}/scripts/gvm
+fi
+if [[ -d "${HOME}/go/bin" ]]; then
+    # ${HOME}/go is the default value for GOPATH,
+    # so Go executables should be found in ${HOME}/go/bin.
+    export PATH="${HOME}/go/bin:${PATH}"
 fi
 
-# Theme
+# nvm - Node.js version manager
 
-SPACESHIP_BATTERY_SHOW=false
-SPACESHIP_EXIT_CODE_SHOW=true
-SPACESHIP_KUBECONTEXT_SHOW=false
-SPACESHIP_PACKAGE_SHOW=false
-SPACESHIP_TIME_SHOW=true
-
-antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
-
-antigen apply
-
-# fzf
-
-if [[ -f "${HOME}/.fzf.zsh" ]]; then
-    source ~/.fzf.zsh
+if [[ -d "${HOME}/.nvm" ]]; then
+    export NVM_DIR="${HOME}/.nvm"
+    source "${HOME}/.nvm/nvm.sh" --no-use
 fi
 
 # tmuxifier
@@ -84,10 +90,24 @@ if [[ -d "${HOME}/.tmuxifier" ]]; then
     eval "$(tmuxifier init -)"
 fi
 
-# Private configuration
+# aliases
+
+# https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
+alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+
+# https://gist.github.com/bbengfort/246bc820e76b48f71df7
+alias workon="source venv/bin/activate"
+
+# fzf - fuzzy finder
+
+if [[ -f "${HOME}/.fzf.zsh" ]]; then
+    source "${HOME}/.fzf.zsh"
+fi
+
+# private configuration
 
 if [[ -f "${HOME}/.zshrc.local" ]]; then
-    source "${HOME}/.zshrc.local";
+    source "${HOME}/.zshrc.local"
 fi
 
 # vim: set foldlevel=0 foldmethod=marker:
