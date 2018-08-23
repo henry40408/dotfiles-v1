@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 if [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     # I am tired of manually install antigen
     # before everytime I recover my environment
