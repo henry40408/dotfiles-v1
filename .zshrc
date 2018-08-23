@@ -3,9 +3,16 @@
 if [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     # I am tired of manually install antigen
     # before everytime I recover my environment
-    echo "No antigen detected. Automatically Install antigen..."
+    echo "No antigen detected. Install now..."
     mkdir -p "${HOME}/.antigen"
     curl -L git.io/antigen > .antigen/antigen.zsh
+    echo "Done."
+fi
+
+if [[ ! -d "${HOME}/.tmux" ]]; then
+    echo "No tmux configuration is install. Install now..."
+    git clone https://github.com/gpakosz/.tmux .tmux
+    ln -s -f .tmux/.tmux.conf
     echo "Done."
 fi
 
