@@ -43,13 +43,17 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
 
     # theme
 
-    SPACESHIP_BATTERY_SHOW=false
-    SPACESHIP_EXIT_CODE_SHOW=true
-    SPACESHIP_KUBECONTEXT_SHOW=false
-    SPACESHIP_PACKAGE_SHOW=false
-    SPACESHIP_TIME_SHOW=true
+    POWERLEVEL9K_INSTALLATION_PATH=${ANTIGEN_BUNDLES}/bhilburn/powerlevel9k
 
-    antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
+    POWERLEVEL9K_MODE="nerdfont-complete"
+
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time nvm pyenv rbenv time)
+    POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
+
+    antigen theme bhilburn/powerlevel9k powerlevel9k
 
     antigen apply
 fi
