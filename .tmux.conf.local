@@ -297,3 +297,7 @@ set -g mouse on
 # reference: https://github.com/gpakosz/.tmux/issues/53
 set -gu prefix2
 unbind C-a
+
+# override binding for splitting vertically
+unbind _
+bind \ split-window -h
