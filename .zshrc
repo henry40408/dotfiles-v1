@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-if [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
+if (hash curl 2>/dev/null) && [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     # I am tired of manually install antigen
     # before everytime I recover my environment
     echo "No antigen detected. Install now..."
@@ -9,7 +9,7 @@ if [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     echo "Done."
 fi
 
-if [[ ! -d "${HOME}/.tmux" ]]; then
+if (hash git 2>/dev/null) && [[ ! -d "${HOME}/.tmux" ]]; then
     echo "No tmux configuration is install. Install now..."
     git clone https://github.com/gpakosz/.tmux .tmux
     ln -s -f .tmux/.tmux.conf
@@ -30,6 +30,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle docker
     antigen bundle gem
     antigen bundle git
+    antigen bundle gitignore
     antigen bundle git-flow
     antigen bundle gpg-agent
     antigen bundle pip
@@ -106,7 +107,7 @@ fi
 # aliases
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
-alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 
 # https://gist.github.com/bbengfort/246bc820e76b48f71df7
 alias workon="source venv/bin/activate"
@@ -116,6 +117,9 @@ alias workon="source venv/bin/activate"
 if [[ -f "${HOME}/.fzf.zsh" ]]; then
     source "${HOME}/.fzf.zsh"
 fi
+
+# not show untracked files in home directory
+config config --local status.showUntrackedFiles no
 
 # private configuration
 
