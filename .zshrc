@@ -5,13 +5,13 @@ if (hash curl 2>/dev/null) && [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     # before everytime I recover my environment
     echo "No antigen detected. Install now..."
     mkdir -p "${HOME}/.antigen"
-    curl -L git.io/antigen > .antigen/antigen.zsh
+    /usr/bin/env curl -L git.io/antigen > .antigen/antigen.zsh
     echo "Done."
 fi
 
 if (hash git 2>/dev/null) && [[ ! -d "${HOME}/.tmux" ]]; then
     echo "No tmux configuration is install. Install now..."
-    git clone https://github.com/gpakosz/.tmux .tmux
+    /usr/bin/env git clone https://github.com/gpakosz/.tmux .tmux
     ln -s -f .tmux/.tmux.conf
     echo "Done."
 fi
@@ -119,7 +119,8 @@ if [[ -f "${HOME}/.fzf.zsh" ]]; then
 fi
 
 # not show untracked files in home directory
-config config --local status.showUntrackedFiles no
+/usr/bin/env git --git-dir=${HOME}/.cfg --work-tree=${HOME} \
+    config --local status.showUntrackedFiles no
 
 # private configuration
 
