@@ -112,6 +112,19 @@ alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 # https://gist.github.com/bbengfort/246bc820e76b48f71df7
 alias workon="source venv/bin/activate"
 
+# https://remysharp.com/2018/08/23/cli-improved
+alias cat="bat"
+alias ping="prettyping"
+
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
+alias top="sudo htop"
+/usr/bin/env git config --global pager.diff "diff-so-fancy | less --tabs=1,5 -RFX"
+/usr/bin/env git config --global pager.show "diff-so-fancy | less --tabs=1,5 -RFX"
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+alias help="tldr"
+
 # fzf - fuzzy finder
 
 if [[ -f "${HOME}/.fzf.zsh" ]]; then
