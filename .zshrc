@@ -9,13 +9,6 @@ if (hash curl 2>/dev/null) && [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     echo "Done."
 fi
 
-if (hash git 2>/dev/null) && [[ ! -d "${HOME}/.tmux" ]]; then
-    echo "No tmux configuration is install. Install now..."
-    /usr/bin/env git clone https://github.com/gpakosz/.tmux .tmux
-    ln -s -f .tmux/.tmux.conf
-    echo "Done."
-fi
-
 if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     source "${HOME}/.antigen/antigen.zsh"
 
