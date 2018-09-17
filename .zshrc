@@ -113,8 +113,6 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
 alias top="sudo htop"
-/usr/bin/env git config --global pager.diff "diff-so-fancy | less --tabs=1,5 -RFX"
-/usr/bin/env git config --global pager.show "diff-so-fancy | less --tabs=1,5 -RFX"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
 
@@ -123,10 +121,6 @@ alias help="tldr"
 if [[ -f "${HOME}/.fzf.zsh" ]]; then
     source "${HOME}/.fzf.zsh"
 fi
-
-# not show untracked files in home directory
-/usr/bin/env git --git-dir=${HOME}/.cfg --work-tree=${HOME} \
-    config --local status.showUntrackedFiles no
 
 # private configuration
 
