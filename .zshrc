@@ -77,11 +77,6 @@ export GVM_DIR="${HOME}/.gvm"
 if [[ -d "${GVM_DIR}" ]]; then
     source ${GVM_DIR}/scripts/gvm
 fi
-if [[ -d "${HOME}/go/bin" ]]; then
-    # ${HOME}/go is the default value for GOPATH,
-    # so Go executables should be found in ${HOME}/go/bin.
-    export PATH="${HOME}/go/bin:${PATH}"
-fi
 
 # nvm - Node.js version manager
 
