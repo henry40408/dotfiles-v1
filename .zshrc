@@ -60,33 +60,30 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
 fi
 
 # shell configuration
-
 HISTCONTROL=ignorespace:erasedups
 
 # directory for user-wide executable files
+export PATH="${HOME}/bin:${PATH}"
 
-export PATH="${HOME}/bin:$PATH"
+# suggestion from homebrew
+export PATH="/usr/local/sbin:${PATH}"
 
 # python - no packages should be installed outside pip
-
 export PIP_REQUIRE_VIRTUALENV=1
 
 # gvm - Go version manager
-
 export GVM_DIR="${HOME}/.gvm"
 if [[ -d "${GVM_DIR}" ]]; then
     source ${GVM_DIR}/scripts/gvm
 fi
 
 # nvm - Node.js version manager
-
 if [[ -d "${HOME}/.nvm" ]]; then
     export NVM_DIR="${HOME}/.nvm"
     source "${HOME}/.nvm/nvm.sh" --no-use
 fi
 
 # tmuxifier
-
 if [[ -d "${HOME}/.tmuxifier" ]]; then
     export PATH="${HOME}/.tmuxifier/bin:${PATH}"
     eval "$(tmuxifier init -)"
@@ -112,13 +109,11 @@ alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
 
 # fzf - fuzzy finder
-
 if [[ -f "${HOME}/.fzf.zsh" ]]; then
     source "${HOME}/.fzf.zsh"
 fi
 
 # private configuration
-
 if [[ -f "${HOME}/.zshrc.local" ]]; then
     source "${HOME}/.zshrc.local"
 fi
