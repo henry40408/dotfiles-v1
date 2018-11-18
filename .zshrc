@@ -24,9 +24,13 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle gem
     antigen bundle git
     antigen bundle gitignore
-    antigen bundle git-flow
     antigen bundle gpg-agent
+    antigen bundle nvm
     antigen bundle pip
+
+    export PYENV_ROOT="${HOME}/.pyenv"
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+
     antigen bundle pyenv
     antigen bundle rbenv
 
@@ -77,18 +81,6 @@ if [[ -d "${GVM_DIR}" ]]; then
     source ${GVM_DIR}/scripts/gvm
 fi
 
-# nvm - Node.js version manager
-if [[ -d "${HOME}/.nvm" ]]; then
-    export NVM_DIR="${HOME}/.nvm"
-    source "${HOME}/.nvm/nvm.sh" --no-use
-fi
-
-# tmuxifier
-if [[ -d "${HOME}/.tmuxifier" ]]; then
-    export PATH="${HOME}/.tmuxifier/bin:${PATH}"
-    eval "$(tmuxifier init -)"
-fi
-
 # aliases
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
@@ -102,7 +94,6 @@ alias cat="bat"
 alias ping="prettyping"
 
 alias preview="fzf --preview 'bat --color \"always\" {}'"
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
 alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
@@ -110,6 +101,7 @@ alias help="tldr"
 
 # fzf - fuzzy finder
 if [[ -f "${HOME}/.fzf.zsh" ]]; then
+    export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
     source "${HOME}/.fzf.zsh"
 fi
 
