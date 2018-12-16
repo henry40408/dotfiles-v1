@@ -1,6 +1,5 @@
 tap "beeftornado/rmtree"
 tap "heroku/brew"
-tap "homebrew/apache"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-drivers"
