@@ -11,7 +11,6 @@ tap "martido/brew-graph"
 tap "wallix/awless"
 tap "wata727/tflint"
 tap "wix/brew"
-
 brew "adns"
 brew "gdbm"
 brew "libyaml"
@@ -132,7 +131,6 @@ brew "zsh"
 brew "heroku/brew/heroku-node"
 brew "heroku/brew/heroku"
 brew "wata727/tflint/tflint"
-
 cask "alfred"
 cask "appcleaner"
 cask "cheatsheet"
@@ -173,3 +171,11 @@ cask "vagrant"
 cask "virtualbox"
 cask "visual-studio-code"
 cask "zeplin"
+mas "Affinity Designer", id: 824171161
+mas "Affinity Photo", id: 824183456
+mas "Evernote", id: 406056744
+mas "Numbers", id: 409203825
+mas "Simplenote", id: 692867256
+mas "Spark", id: 1176895641
+mas "Things3", id: 904280696
+mas "Xcode", id: 497799835
