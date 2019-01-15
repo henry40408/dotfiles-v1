@@ -21,6 +21,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle ansible
     antigen bundle autojump
     antigen bundle docker
+    antigen bundle fzf
     antigen bundle gem
     antigen bundle git
     antigen bundle gitignore
@@ -98,12 +99,6 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
-
-# fzf - fuzzy finder
-if [[ -f "${HOME}/.fzf.zsh" ]]; then
-    export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
-    source "${HOME}/.fzf.zsh"
-fi
 
 # private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
