@@ -26,20 +26,20 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle git
     antigen bundle gitignore
     antigen bundle gpg-agent
+    antigen bundle kubectl
     antigen bundle nvm
     antigen bundle pip
 
     export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="${PYENV_ROOT}/bin:${PATH}"
-
     antigen bundle pyenv
+
     antigen bundle rbenv
 
     antigen bundle djui/alias-tips
     antigen bundle jreese/zsh-titles
     antigen bundle Cloudstek/zsh-plugin-appup
     antigen bundle StackExchange/blackbox
-    antigen bundle supercrabtree/k
     antigen bundle zdharma/fast-syntax-highlighting
     antigen bundle zsh-users/zsh-autosuggestions
 
@@ -50,15 +50,12 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     # theme
 
     POWERLEVEL9K_INSTALLATION_PATH=${ANTIGEN_BUNDLES}/bhilburn/powerlevel9k
-
     POWERLEVEL9K_MODE="nerdfont-complete"
-
     POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
     POWERLEVEL9K_PROMPT_ON_NEWLINE=true
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time nvm pyenv rbenv time)
     POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
     POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
-
     antigen theme bhilburn/powerlevel9k powerlevel9k
 
     antigen apply
@@ -84,6 +81,8 @@ fi
 
 # aliases
 
+alias ls="exa"
+
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 
@@ -92,13 +91,11 @@ alias workon="source venv/bin/activate"
 
 # https://remysharp.com/2018/08/23/cli-improved
 alias cat="bat"
-alias ping="prettyping"
-
-alias preview="fzf --preview 'bat --color \"always\" {}'"
-
-alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
+alias ping="prettyping"
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias top="sudo htop"
 
 # private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
