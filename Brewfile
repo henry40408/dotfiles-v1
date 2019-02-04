@@ -11,7 +11,6 @@ tap "martido/brew-graph"
 tap "wallix/awless"
 tap "wata727/tflint"
 tap "wix/brew"
-cask "java"
 brew "ansible"
 brew "autojump"
 brew "awscli"
@@ -77,8 +76,9 @@ cask "font-fontawesome"
 cask "font-hack-nerd-font"
 cask "font-noto-sans-cjk-tc"
 cask "font-noto-serif-cjk-tc"
+cask "font-roboto"
+cask "font-roboto-slab"
 cask "fork"
-cask "geekbench"
 cask "gitup"
 cask "google-cloud-sdk"
 cask "gpg-suite"
@@ -113,6 +113,7 @@ mas "Evernote", id: 406056744
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
+mas "RunCat", id: 1429033973
 mas "Simplenote", id: 692867256
 mas "Spark", id: 1176895641
 mas "Things3", id: 904280696
