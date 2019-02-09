@@ -61,8 +61,10 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen apply
 fi
 
-# shell configuration
-HISTCONTROL=ignorespace:erasedups
+# shell configuration about history
+setopt histfindnodups
+setopt histignorealldups
+setopt histsavenodups
 
 # directory for user-wide executable files
 export PATH="${HOME}/bin:${PATH}"
