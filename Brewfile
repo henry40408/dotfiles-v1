@@ -111,6 +111,7 @@ cask "visual-studio-code"
 cask "zeplin"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
+mas "Airmail 3", id: 918858936
 mas "Evernote", id: 406056744
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
