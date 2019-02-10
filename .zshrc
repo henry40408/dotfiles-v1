@@ -1,8 +1,9 @@
 #!/usr/bin/env zsh
 
+PLATFORM=`uname`
+
 if (hash curl 2>/dev/null) && [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
-    # I am tired of manually install antigen
-    # before everytime I recover my environment
+    # automatically install antigen if not exists
     echo "No antigen detected. Install now..."
     mkdir -p "${HOME}/.antigen"
     /usr/bin/env curl -L git.io/antigen > .antigen/antigen.zsh
@@ -12,9 +13,7 @@ fi
 if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     source "${HOME}/.antigen/antigen.zsh"
 
-    PLATFORM=`uname`
-
-    # plugins
+    # [[plugins]]
 
     antigen use oh-my-zsh
 
@@ -28,6 +27,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle gpg-agent
     antigen bundle pip
 
+    # faster alternative to pyenv plugin in oh-my-zsh
     export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="${PYENV_ROOT}/bin:${PATH}"
     antigen bundle davidparsson/zsh-pyenv-lazy
@@ -43,35 +43,27 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
         antigen bundle osx
     fi
 
-    # theme
+    # [[theme]]
     antigen theme ys
 
     antigen apply
 fi
 
-# shell configuration about history
+# [zsh] configuration about history
 setopt histfindnodups
 setopt histignorealldups
 setopt histsavenodups
 
-# directory for user-wide executable files
-export PATH="${HOME}/bin:${PATH}"
-
-# suggestion from homebrew
+# [homebrew] extra PATH
 export PATH="/usr/local/sbin:${PATH}"
 
-# python - no packages should be installed outside pip
+# [my] per-user executable
+export PATH="${HOME}/bin:${PATH}"
+
+# [python] no packages should be installed outside pip
 export PIP_REQUIRE_VIRTUALENV=1
 
-# gvm - Go version manager
-export GVM_DIR="${HOME}/.gvm"
-if [[ -d "${GVM_DIR}" ]]; then
-    source ${GVM_DIR}/scripts/gvm
-fi
-
-# aliases
-
-alias ls="exa"
+# [[aliases]]
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
@@ -83,32 +75,33 @@ alias workon="source venv/bin/activate"
 alias cat="bat"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias help="tldr"
+alias ls="exa"
 alias ping="prettyping"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
 
+# [nvm]
 # since nvm plugin in oh-my-zsh does not accept arguments
 # initialize nvm manually to apply --no-use
 # reference: https://git.io/fhH7l
 [[ -z "$NVM_DIR" ]] && export NVM_DIR="$HOME/.nvm"
 [[ -f "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 
-# https://carlosbecker.com/posts/speeding-up-zsh/
+# [rbenv] https://carlosbecker.com/posts/speeding-up-zsh/
 rbenv() {
   eval "$(command rbenv init -)"
   rbenv "$@"
 }
 
-# https://git.io/fhH7R
+# [kubernetes] https://git.io/fhH7R
 function kubectl() {
     if ! type __start_kubectl >/dev/null 2>&1; then
         source <(command kubectl completion zsh)
     fi
-
     command kubectl "$@"
 }
 
-# private configuration
+# [my] private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
     source "${HOME}/.zshrc.local"
 fi
