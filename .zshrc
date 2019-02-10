@@ -26,15 +26,11 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle git
     antigen bundle gitignore
     antigen bundle gpg-agent
-    antigen bundle kubectl
-    antigen bundle nvm
     antigen bundle pip
 
     export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="${PYENV_ROOT}/bin:${PATH}"
-    antigen bundle pyenv
-
-    antigen bundle rbenv
+    antigen bundle davidparsson/zsh-pyenv-lazy
 
     antigen bundle djui/alias-tips
     antigen bundle jreese/zsh-titles
@@ -48,15 +44,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     fi
 
     # theme
-
-    POWERLEVEL9K_INSTALLATION_PATH=${ANTIGEN_BUNDLES}/bhilburn/powerlevel9k
-    POWERLEVEL9K_MODE="nerdfont-complete"
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
-    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time nvm pyenv rbenv time)
-    POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
-    POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
-    antigen theme bhilburn/powerlevel9k powerlevel9k
+    antigen theme ys
 
     antigen apply
 fi
@@ -98,6 +86,27 @@ alias help="tldr"
 alias ping="prettyping"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
+
+# since nvm plugin in oh-my-zsh does not accept arguments
+# initialize nvm manually to apply --no-use
+# reference: https://git.io/fhH7l
+[[ -z "$NVM_DIR" ]] && export NVM_DIR="$HOME/.nvm"
+[[ -f "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
+
+# https://carlosbecker.com/posts/speeding-up-zsh/
+rbenv() {
+  eval "$(command rbenv init -)"
+  rbenv "$@"
+}
+
+# https://git.io/fhH7R
+function kubectl() {
+    if ! type __start_kubectl >/dev/null 2>&1; then
+        source <(command kubectl completion zsh)
+    fi
+
+    command kubectl "$@"
+}
 
 # private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
