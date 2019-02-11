@@ -44,7 +44,14 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     fi
 
     # [[theme]]
-    antigen theme ys
+    POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
+    POWERLEVEL9K_MODE="nerdfont-complete"
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time nvm pyenv rbenv time)
+    POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
+    antigen theme bhilburn/powerlevel9k powerlevel9k
 
     antigen apply
 fi
