@@ -48,10 +48,10 @@ Plug 'Shougo/dein.vim'
     Plug 'Raimondi/delimitMate'
     let g:delimitMate_expand_cr=1
 
-    Plug 'Valloric/YouCompleteMe'
-    let g:ycm_python_binary_path='/usr/local/bin/python'
+    " Plug 'Valloric/YouCompleteMe'
+    " let g:ycm_python_binary_path='/usr/local/bin/python'
     " turn on semantic trigger but identifier trigger
-    let g:ycm_min_num_of_chars_for_completion=1024
+    " let g:ycm_min_num_of_chars_for_completion=1024
 
     Plug 'tpope/vim-endwise'
 " }
