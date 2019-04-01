@@ -12,7 +12,6 @@ tap "wallix/awless"
 tap "wata727/tflint"
 tap "wix/brew"
 cask "java8"
-brew "sqlite"
 brew "ansible"
 brew "autojump"
 brew "awscli"
@@ -46,6 +45,7 @@ brew "kubernetes-cli"
 brew "kubernetes-helm"
 brew "mackup"
 brew "mas"
+brew "mosh"
 brew "ncdu"
 brew "opencc"
 brew "pango"
@@ -117,14 +117,14 @@ cask "visual-studio"
 cask "visual-studio-code"
 cask "zeplin"
 cask "zoomus"
-mas "Affinity Designer", id: 824171161
-mas "Affinity Photo", id: 824183456
-mas "Evernote", id: 406056744
-mas "Keynote", id: 409183694
-mas "LINE", id: 539883307
-mas "Numbers", id: 409203825
-mas "RunCat", id: 1429033973
-mas "Simplenote", id: 692867256
-mas "Spark", id: 1176895641
-mas "Things3", id: 904280696
-mas "Xcode", id: 497799835
+mas "com.apple.dt.Xcode", id: 497799835
+mas "com.apple.iWork.Keynote", id: 409183694
+mas "com.apple.iWork.Numbers", id: 409203825
+mas "com.automattic.SimplenoteMac", id: 692867256
+mas "com.culturedcode.ThingsMac", id: 904280696
+mas "com.evernote.Evernote", id: 406056744
+mas "com.kyome.RunCat", id: 1429033973
+mas "com.readdle.smartemail-Mac", id: 1176895641
+mas "com.seriflabs.affinitydesigner", id: 824171161
+mas "com.seriflabs.affinityphoto", id: 824183456
+mas "jp.naver.line.mac", id: 539883307
