@@ -11,7 +11,6 @@ tap "martido/brew-graph"
 tap "wallix/awless"
 tap "wata727/tflint"
 tap "wix/brew"
-cask "java8"
 brew "ansible"
 brew "autojump"
 brew "awscli"
@@ -54,6 +53,7 @@ brew "postgresql"
 brew "prettyping"
 brew "pyenv"
 brew "rbenv"
+brew "skaffold"
 brew "terraform"
 brew "tokei"
 brew "tree"
@@ -89,6 +89,7 @@ cask "google-cloud-sdk"
 cask "gpg-suite"
 cask "iina"
 cask "iterm2"
+cask "java8"
 cask "jetbrains-toolbox"
 cask "keepingyouawake"
 cask "keka"
@@ -113,14 +114,14 @@ cask "virtualbox"
 cask "visual-studio-code"
 cask "zeplin"
 cask "zoomus"
-mas "com.apple.dt.Xcode", id: 497799835
-mas "com.apple.iWork.Keynote", id: 409183694
-mas "com.apple.iWork.Numbers", id: 409203825
-mas "com.automattic.SimplenoteMac", id: 692867256
-mas "com.culturedcode.ThingsMac", id: 904280696
 mas "com.evernote.Evernote", id: 406056744
 mas "com.kyome.RunCat", id: 1429033973
 mas "com.readdle.smartemail-Mac", id: 1176895641
 mas "com.seriflabs.affinitydesigner", id: 824171161
 mas "com.seriflabs.affinityphoto", id: 824183456
-mas "jp.naver.line.mac", id: 539883307
+mas "Keynote", id: 409183694
+mas "LINE", id: 539883307
+mas "Numbers", id: 409203825
+mas "Simplenote", id: 692867256
+mas "Things", id: 904280696
+mas "Xcode", id: 497799835
