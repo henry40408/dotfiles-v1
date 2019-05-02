@@ -93,7 +93,6 @@ cask "iina"
 cask "iterm2"
 cask "java8"
 cask "jetbrains-toolbox"
-cask "keepingyouawake"
 cask "keka"
 cask "keycastr"
 cask "minikube"
@@ -118,6 +117,7 @@ cask "visual-studio-code"
 cask "zeplin"
 cask "zoomus"
 mas "com.evernote.Evernote", id: 406056744
+mas "com.if.Amphetamine", id: 937984704
 mas "com.kyome.RunCat", id: 1429033973
 mas "com.readdle.smartemail-Mac", id: 1176895641
 mas "com.seriflabs.affinitydesigner", id: 824171161
