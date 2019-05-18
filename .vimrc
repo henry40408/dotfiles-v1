@@ -12,9 +12,9 @@ Plug 'Shougo/dein.vim'
     Plug 'elzr/vim-json'
 
     Plug 'fatih/vim-go'
+    let g:go_list_type='quickfix'
     let g:syntastic_go_checkers=['golint', 'govet', 'errcheck']
     let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['go'] }
-    let g:go_list_type='quickfix'
 
     Plug 'marijnh/tern_for_vim'
     Plug 'mattn/emmet-vim'
@@ -28,43 +28,41 @@ Plug 'Shougo/dein.vim'
 
     Plug 'scrooloose/nerdcommenter'
 
+    " A solid language pack for Vim.
     Plug 'sheerun/vim-polyglot'
     let g:polyglot_disabled=['json', 'markdown']
 
     Plug 'suan/vim-instant-markdown'
+
+    " ragtag.vim: ghetto HTML/XML mappings (formerly allml.vim)
     Plug 'tpope/vim-ragtag'
+
     Plug 'tpope/vim-rails'
 
-    Plug 'scrooloose/syntastic'
+    Plug 'vim-syntastic/syntastic'
     let g:syntastic_always_populate_loc_list=1
     let g:syntastic_auto_loc_list=1
     let g:syntastic_check_on_open=1
     let g:syntastic_check_on_wq=0
+    let g:syntastic_javascript_checkers=['eslint']
     let g:syntastic_python_checkers=['flake8']
     let g:syntastic_python_python_exec='/usr/local/bin/python3'
 " }
 
 " ## Completion {
-    Plug 'Raimondi/delimitMate'
-    let g:delimitMate_expand_cr=1
-
-    " Plug 'Valloric/YouCompleteMe'
-    " let g:ycm_python_binary_path='/usr/local/bin/python'
-    " turn on semantic trigger but identifier trigger
-    " let g:ycm_min_num_of_chars_for_completion=1024
-
+    " endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
     Plug 'tpope/vim-endwise'
 " }
 
 " Code Display {
+    " A vim plugin to display the indention levels with thin vertical lines
     Plug 'Yggdroot/indentLine'
 
-    Plug 'bling/vim-airline'
-    let g:airline#extensions#tabline#enabled=1
-    let g:airline_powerline_fonts=1
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
 
+    " A Vim plugin to colorize all text in the form #rrggbb or #rgb.
     Plug 'chrisbra/Colorizer'
-    Plug 'chriskempson/vim-tomorrow-theme'
 
     Plug 'kien/ctrlp.vim'
     let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|(_build|deps|node_modules))$'
@@ -75,57 +73,46 @@ Plug 'Shougo/dein.vim'
 " }
 
 " Integrations {
-    Plug 'gregsexton/gitv'
+    " Run your tests at the speed of thought
     Plug 'janko-m/vim-test'
+
+    " ➕ Show a diff using Vim its sign column.
     Plug 'mhinz/vim-signify'
 
-    Plug 'skwp/greplace.vim'
-    let g:grep_cmd_opts='--noheading'
-
+    " fugitive.vim: A Git wrapper so awesome, it should be illegal
     Plug 'tpope/vim-fugitive'
 " }
 
 " Interface {
-    Plug 'altercation/vim-colors-solarized'
-    let g:solarized_termcolors=256
-
     Plug 'mbbill/undotree'
-    Plug 'sjl/gundo.vim'
 " }
 
 " Commands {
+    " A Narrow Region Plugin for vim (like Emacs Narrow Region)
     Plug 'chrisbra/NrrwRgn'
-
-    Plug 'keith/investigate.vim'
-    let g:investigate_use_dash=1
 
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'terryma/vim-multiple-cursors'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-unimpaired'
+
+    " Vim plugin that provides additional text objects
     Plug 'wellle/targets.vim'
 " }
 
 " Other {
-    Plug 'tmux-plugins/vim-tmux'
 " }
 
 " Uncategorized {
     Plug 'AndrewRadev/splitjoin.vim'
 
+    " Plugin for vim to enabling opening a file in a given line
     Plug 'bogado/file-line'
+
+    " Rainbow Parentheses Improved, shorter code, no level limit, smooth and
+    " fast, powerful configuration.
     Plug 'luochen1990/rainbow'
-
-    "Plug 'mtscout6/syntastic-local-eslint.vim'
-    let g:syntastic_javascript_checkers=['jshint']
-    let g:syntastic_javascript_eslint_exec='./node_modules/.bin/eslint'
-
-    Plug 'muz/vim-gemfile'
-    Plug 'rhysd/conflict-marker.vim'
-    Plug 'shutnik/jshint2.vim'
-    Plug 'slashmili/alchemist.vim'
-    Plug 'terryma/vim-smooth-scroll'
 " }
 
 call plug#end()
