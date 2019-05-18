@@ -60,6 +60,7 @@ Plug 'Shougo/dein.vim'
 
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+    let g:airline#extensions#tabline#enabled = 1
 
     " A Vim plugin to colorize all text in the form #rrggbb or #rgb.
     Plug 'chrisbra/Colorizer'
