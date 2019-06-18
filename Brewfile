@@ -74,7 +74,6 @@ brew "weihanglo/sfz/sfz"
 cask "1password"
 cask "alfred"
 cask "appcleaner"
-cask "brave-browser"
 cask "cheatsheet"
 cask "daisydisk"
 cask "dash"
@@ -99,14 +98,15 @@ cask "google-cloud-sdk"
 cask "gpg-suite"
 cask "hyper"
 cask "iina"
-cask "iterm2"
 cask "java8"
 cask "jetbrains-toolbox"
 cask "keka"
 cask "keycastr"
+cask "launchcontrol"
 cask "minikube"
 cask "moom"
 cask "ngrok"
+cask "notion"
 cask "paragon-ntfs"
 cask "protonvpn"
 cask "react-native-debugger"
@@ -134,6 +134,7 @@ mas "Drafts", id: 1435957248
 mas "Evernote", id: 406056744
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
+mas "monday", id: 1298450641
 mas "Numbers", id: 409203825
 mas "RunCat", id: 1429033973
 mas "Simplenote", id: 692867256
