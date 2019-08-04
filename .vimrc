@@ -130,7 +130,7 @@ syntax on
     set cursorline laststatus=2 number
     set hidden
     set ignorecase incsearch regexpengine=1 smartcase
-    set nohlsearch
+    set hlsearch
     set list listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
     set wrap
 
