@@ -10,6 +10,11 @@ if (hash curl 2>/dev/null) && [[ ! -f "${HOME}/.antigen/antigen.zsh" ]]; then
     echo "Done."
 fi
 
+if [[ ! -d "${HOME}/.asdf" ]]; then
+    # automatically install asdf if not exists
+    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.7.3
+fi
+
 if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     source "${HOME}/.antigen/antigen.zsh"
 
@@ -100,19 +105,9 @@ alias top="sudo htop"
 [[ -z "$NVM_DIR" ]] && export NVM_DIR="$HOME/.nvm"
 [[ -f "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 
-# [rbenv] https://carlosbecker.com/posts/speeding-up-zsh/
-rbenv() {
-  eval "$(command rbenv init -)"
-  rbenv "$@"
-}
-
-# [kubernetes] https://git.io/fhH7R
-function kubectl() {
-    if ! type __start_kubectl >/dev/null 2>&1; then
-        source <(command kubectl completion zsh)
-    fi
-    command kubectl "$@"
-}
+# [asdf] https://asdf-vm.com/#/core-manage-asdf-vm
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
 
 # [my] private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
