@@ -42,8 +42,6 @@ brew "hub"
 brew "hwloc"
 brew "imagemagick"
 brew "jq"
-brew "kubernetes-cli"
-brew "kubectx"
 brew "kubernetes-helm"
 brew "libmicrohttpd"
 brew "libuv"
@@ -109,7 +107,6 @@ cask "moom"
 cask "ngrok"
 cask "notion"
 cask "paragon-ntfs"
-cask "pock"
 cask "protonvpn"
 cask "react-native-debugger"
 cask "robo-3t"
@@ -137,7 +134,6 @@ mas "Drafts", id: 1435957248
 mas "Evernote", id: 406056744
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
-mas "monday", id: 1298450641
 mas "Numbers", id: 409203825
 mas "RunCat", id: 1429033973
 mas "Simplenote", id: 692867256
