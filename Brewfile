@@ -40,7 +40,11 @@ brew "htop"
 brew "httpie"
 brew "hub"
 brew "hwloc"
+brew "usbmuxd", args: ["HEAD"]
+brew "libimobiledevice", args: ["HEAD"]
+brew "ideviceinstaller"
 brew "imagemagick"
+brew "ios-deploy"
 brew "jq"
 brew "kubernetes-helm"
 brew "libmicrohttpd"
