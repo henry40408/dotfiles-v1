@@ -142,7 +142,6 @@ mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
 mas "RunCat", id: 1429033973
-mas "Simplenote", id: 692867256
 mas "Spark", id: 1176895641
 mas "Things", id: 904280696
 mas "Xcode", id: 497799835
