@@ -32,6 +32,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle gpg-agent
     antigen bundle pip
     antigen bundle rails
+    antigen bundle rbenv
     antigen bundle ruby
 
     # faster alternative to pyenv plugin in oh-my-zsh
