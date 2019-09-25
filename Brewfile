@@ -61,7 +61,6 @@ brew "pinentry-mac"
 brew "postgresql", restart_service: true
 brew "prettyping"
 brew "pyenv"
-brew "rbenv"
 brew "ripgrep"
 brew "skaffold"
 brew "starship"
