@@ -1,4 +1,5 @@
 tap "beeftornado/rmtree"
+tap "derailed/k9s"
 tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -24,6 +25,7 @@ brew "go"
 brew "dep"
 brew "diff-so-fancy"
 brew "doctl"
+brew "drone-cli"
 brew "exa"
 brew "faas-cli"
 brew "ffmpeg"
@@ -50,6 +52,7 @@ brew "imagemagick"
 brew "ios-deploy"
 brew "jq"
 brew "kubernetes-helm"
+brew "kustomize"
 brew "libmicrohttpd"
 brew "libuv"
 brew "mackup"
@@ -73,6 +76,7 @@ brew "vim"
 brew "watchman"
 brew "wget"
 brew "yarn"
+brew "derailed/k9s/k9s"
 brew "heroku/brew/heroku-node"
 brew "heroku/brew/heroku"
 brew "puma/puma/puma-dev"
@@ -145,6 +149,5 @@ mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
 mas "RunCat", id: 1429033973
-mas "Spark", id: 1176895641
 mas "Things", id: 904280696
 mas "Xcode", id: 497799835
