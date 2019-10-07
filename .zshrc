@@ -30,6 +30,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle git
     antigen bundle gitignore
     antigen bundle gpg-agent
+    antigen bundle kubectl
     antigen bundle pip
     antigen bundle rails
     antigen bundle rbenv
