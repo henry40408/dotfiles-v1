@@ -118,20 +118,18 @@ cask "notion"
 cask "obs"
 cask "paragon-ntfs"
 cask "protonvpn"
-cask "react-native-debugger"
 cask "robo-3t"
 cask "screens-connect"
 cask "setapp"
 cask "sketch"
-cask "slack"
 cask "soundflower"
 cask "soundflowerbed"
 cask "spotify"
-cask "standard-notes"
 cask "station"
 cask "steam"
 cask "teamviewer"
 cask "telegram-desktop"
+cask "termius"
 cask "tunnelblick"
 cask "typora"
 cask "vagrant"
@@ -142,12 +140,12 @@ cask "zoomus"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
-mas "Copay", id: 1440201813
 mas "Drafts", id: 1435957248
 mas "Evernote", id: 406056744
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
 mas "RunCat", id: 1429033973
+mas "Spark", id: 1176895641
 mas "Things", id: 904280696
 mas "Xcode", id: 497799835
