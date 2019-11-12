@@ -114,7 +114,6 @@ cask "java8"
 cask "jetbrains-toolbox"
 cask "keka"
 cask "keyboardcleantool"
-cask "keycastr"
 cask "moom"
 cask "ngrok"
 cask "notion"
@@ -136,7 +135,6 @@ cask "telegram-desktop"
 cask "termius"
 cask "tunnelblick"
 cask "typora"
-cask "vagrant"
 cask "virtualbox"
 cask "visual-studio-code"
 cask "zeplin"
@@ -152,4 +150,3 @@ mas "Numbers", id: 409203825
 mas "RunCat", id: 1429033973
 mas "Spark", id: 1176895641
 mas "Things", id: 904280696
-mas "Xcode", id: 497799835
