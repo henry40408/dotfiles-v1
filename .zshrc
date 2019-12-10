@@ -79,6 +79,9 @@ export PIP_REQUIRE_VIRTUALENV=1
 # [golang] golang executables
 export PATH="${HOME}/go/bin:${PATH}"
 
+# [dart] pub
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+
 # [[aliases]]
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
