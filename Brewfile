@@ -143,7 +143,6 @@ mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
 mas "Drafts", id: 1435957248
-mas "Evernote", id: 406056744
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
