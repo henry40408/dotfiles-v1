@@ -82,6 +82,9 @@ export PATH="${HOME}/go/bin:${PATH}"
 # [dart] pub
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
+# [haskell] ghcup
+[ -f "${HOME}/.ghcup/env" ] && source "${HOME}/.ghcup/env"
+
 # [[aliases]]
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
