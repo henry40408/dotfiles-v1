@@ -23,7 +23,6 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen use oh-my-zsh
 
     antigen bundle ansible
-    antigen bundle autojump
     antigen bundle docker
     antigen bundle fzf
     antigen bundle gem
@@ -84,6 +83,11 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 # [haskell] ghcup
 [ -f "${HOME}/.ghcup/env" ] && source "${HOME}/.ghcup/env"
+
+# [zoxide]
+if (hash zoxide 2> /dev/null); then
+    eval "$(zoxide init zsh)"
+fi
 
 # [[aliases]]
 
