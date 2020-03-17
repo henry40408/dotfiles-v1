@@ -12,7 +12,7 @@ fi
 
 if [[ ! -d "${HOME}/.asdf" ]]; then
     # automatically install asdf if not exists
-    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.7.3
+    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.7.7
 fi
 
 if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
@@ -23,6 +23,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen use oh-my-zsh
 
     antigen bundle ansible
+    antigen bundle asdf
     antigen bundle docker
     antigen bundle fzf
     antigen bundle gem
@@ -32,13 +33,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle kubectl
     antigen bundle pip
     antigen bundle rails
-    antigen bundle rbenv
     antigen bundle ruby
-
-    # faster alternative to pyenv plugin in oh-my-zsh
-    export PYENV_ROOT="${HOME}/.pyenv"
-    export PATH="${PYENV_ROOT}/bin:${PATH}"
-    antigen bundle davidparsson/zsh-pyenv-lazy
 
     antigen bundle djui/alias-tips
     antigen bundle jreese/zsh-titles
@@ -112,10 +107,6 @@ alias top="sudo htop"
 # reference: https://git.io/fhH7l
 [[ -z "$NVM_DIR" ]] && export NVM_DIR="$HOME/.nvm"
 [[ -f "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
-
-# [asdf] https://asdf-vm.com/#/core-manage-asdf-vm
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
 
 # [my] private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
