@@ -70,15 +70,6 @@ export PATH="${HOME}/bin:${PATH}"
 # [python] no packages should be installed outside pip
 export PIP_REQUIRE_VIRTUALENV=1
 
-# [golang] golang executables
-export PATH="${HOME}/go/bin:${PATH}"
-
-# [dart] pub
-export PATH="$PATH":"$HOME/.pub-cache/bin"
-
-# [haskell] ghcup
-[ -f "${HOME}/.ghcup/env" ] && source "${HOME}/.ghcup/env"
-
 # [zoxide]
 if (hash zoxide 2> /dev/null); then
     eval "$(zoxide init zsh)"
@@ -94,19 +85,13 @@ alias workon="source venv/bin/activate"
 
 # https://remysharp.com/2018/08/23/cli-improved
 alias cat="bat"
-alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
-alias help="tldr"
+alias du="dust"
+alias find="fd"
+alias grep="rg"
 alias ls="exa"
 alias ping="prettyping"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
-
-# [nvm]
-# since nvm plugin in oh-my-zsh does not accept arguments
-# initialize nvm manually to apply --no-use
-# reference: https://git.io/fhH7l
-[[ -z "$NVM_DIR" ]] && export NVM_DIR="$HOME/.nvm"
-[[ -f "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 
 # [my] private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
