@@ -141,7 +141,9 @@ module.exports = {
     // for advanced config flags please refer to https://hyper.is/#cfg
 
     // The default width/height in pixels of a new window
-    windowSize: [800, 540]
+    windowSize: [800, 540],
+
+    scrollback: 100000,
   },
 
   // a list of plugins to fetch and install from npm
