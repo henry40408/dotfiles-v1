@@ -47,11 +47,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     fi
 
     # [[theme]]
-    if (hash starship 2>/dev/null); then
-        eval "$(starship init zsh)"
-    else
-        antigen theme ys
-    fi
+    antigen theme ys
 
     antigen apply
 fi
@@ -92,6 +88,11 @@ alias ls="exa"
 alias ping="prettyping"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
+
+# load starship prompt
+if (hash starship 2>/dev/null); then
+    eval "$(starship init zsh)"
+fi
 
 # [my] private configuration
 if [[ -f "${HOME}/.zshrc.local" ]]; then
