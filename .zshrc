@@ -12,7 +12,7 @@ fi
 
 if [[ ! -d "${HOME}/.asdf" ]]; then
     # automatically install asdf if not exists
-    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.7.7
+    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.7.8
 fi
 
 if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
