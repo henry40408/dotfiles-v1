@@ -4,6 +4,7 @@ dep 0.5.4
 doctl 1.38.0
 fd 7.4.0
 flutter 1.15.9-dev
+gcloud 287.0.0
 golang 1.14
 gradle 6.2.2
 haskell 8.8.3
