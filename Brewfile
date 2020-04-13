@@ -65,7 +65,6 @@ brew "watch"
 brew "watchman"
 brew "wget"
 brew "cjbassi/ytop/ytop"
-brew "heroku/brew/heroku-node"
 brew "heroku/brew/heroku"
 brew "puma/puma/puma-dev"
 brew "weihanglo/sfz/sfz"
@@ -90,10 +89,13 @@ cask "fork"
 cask "google-chrome"
 cask "gpg-suite"
 cask "hyper"
+cask "imageoptim"
 cask "java8"
 cask "jetbrains-toolbox"
 cask "keka"
 cask "keyboardcleantool"
+cask "lens"
+cask "miniconda"
 cask "moom"
 cask "multipass"
 cask "ngrok"
@@ -115,7 +117,6 @@ cask "telegram-desktop"
 cask "termius"
 cask "typora"
 cask "visual-studio-code"
-cask "zeplin"
 cask "zoomus"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
@@ -124,7 +125,8 @@ mas "Drafts", id: 1435957248
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
-mas "Playgrounds", id: 1496833156
+mas "Pocket", id: 568494494
+mas "Reeder", id: 1449412482
 mas "RunCat", id: 1429033973
 mas "Spark", id: 1176895641
 mas "Things", id: 904280696
