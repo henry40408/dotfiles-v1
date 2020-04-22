@@ -155,10 +155,6 @@ syntax on
         set undodir=~/.vim/undo/ undofile undolevels=1000 undoreload=10000
     endif
 
-    " # Key mappings
-    noremap <silent> <C-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-    noremap <silent> <C-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-
     vnoremap ; :
     vnoremap > >gv
     vnoremap < <gv
@@ -195,11 +191,6 @@ syntax on
 
 " Theme {
     colorscheme dracula
-" }
-
-" Highlight over-length lines {
-    set colorcolumn=80
-    highlight ColorColumn ctermbg=7 guibg=lightgrey
 " }
 
 " vim: set foldmarker={,}:
