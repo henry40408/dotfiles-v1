@@ -64,7 +64,8 @@ export PATH="/usr/local/sbin:${PATH}"
 export PATH="${HOME}/bin:${PATH}"
 
 # [python] no packages should be installed outside pip
-export PIP_REQUIRE_VIRTUALENV=1
+# 2020/04/24: use conda instead
+# export PIP_REQUIRE_VIRTUALENV=1
 
 # [zoxide]
 if (hash zoxide 2> /dev/null); then
