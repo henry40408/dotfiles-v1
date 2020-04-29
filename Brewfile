@@ -56,6 +56,7 @@ brew "pinentry-mac"
 brew "postgresql"
 brew "prettyping"
 brew "procs"
+brew "tig"
 brew "tldr"
 brew "tmux"
 brew "tokei"
@@ -64,6 +65,7 @@ brew "vim"
 brew "watch"
 brew "watchman"
 brew "wget"
+brew "xsv"
 brew "cjbassi/ytop/ytop"
 brew "heroku/brew/heroku"
 brew "puma/puma/puma-dev"
@@ -100,6 +102,7 @@ cask "moom"
 cask "multipass"
 cask "ngrok"
 cask "notion"
+cask "now"
 cask "parallels"
 cask "protonvpn"
 cask "quip"
@@ -124,6 +127,7 @@ mas "Amphetamine", id: 937984704
 mas "Drafts", id: 1435957248
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
+mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pocket", id: 568494494
 mas "Reeder", id: 1449412482
