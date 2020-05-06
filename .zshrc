@@ -34,6 +34,7 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle pip
     antigen bundle rails
     antigen bundle ruby
+    antigen bundle virtualenvwrapper
 
     antigen bundle djui/alias-tips
     antigen bundle jreese/zsh-titles
@@ -64,8 +65,7 @@ export PATH="/usr/local/sbin:${PATH}"
 export PATH="${HOME}/bin:${PATH}"
 
 # [python] no packages should be installed outside pip
-# 2020/04/24: use conda instead
-# export PIP_REQUIRE_VIRTUALENV=1
+export PIP_REQUIRE_VIRTUALENV=1
 
 # [zoxide]
 if (hash zoxide 2> /dev/null); then
@@ -76,9 +76,6 @@ fi
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
-
-# https://gist.github.com/bbengfort/246bc820e76b48f71df7
-alias workon="source venv/bin/activate"
 
 # https://remysharp.com/2018/08/23/cli-improved
 alias cat="bat"
