@@ -143,6 +143,8 @@ module.exports = {
     windowSize: [800, 540],
 
     scrollback: 100000,
+
+    modifierKeys: { altIsMeta: true }
   },
 
   // a list of plugins to fetch and install from npm
