@@ -34,7 +34,6 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle pip
     antigen bundle rails
     antigen bundle ruby
-    antigen bundle virtualenvwrapper
 
     antigen bundle djui/alias-tips
     antigen bundle jreese/zsh-titles
