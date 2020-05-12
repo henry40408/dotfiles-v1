@@ -38,7 +38,6 @@ if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
     antigen bundle djui/alias-tips
     antigen bundle jreese/zsh-titles
     antigen bundle Cloudstek/zsh-plugin-appup
-    antigen bundle StackExchange/blackbox
     antigen bundle zdharma/fast-syntax-highlighting
     antigen bundle zsh-users/zsh-autosuggestions
 
