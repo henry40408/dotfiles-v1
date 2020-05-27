@@ -79,6 +79,7 @@ cask "docker"
 cask "dropbox"
 cask "figma"
 cask "firefox"
+cask "font-fira-code"
 cask "font-firacode-nerd-font"
 cask "font-fontawesome"
 cask "font-jetbrains-mono"
@@ -133,3 +134,4 @@ mas "RunCat", id: 1429033973
 mas "Spark", id: 1176895641
 mas "Things", id: 904280696
 mas "Trello", id: 1278508951
+mas "Unsplash Wallpapers", id: 1284863847
