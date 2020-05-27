@@ -2,16 +2,16 @@
 
 PLATFORM=`uname`
 
-_install_zgen() {
-    echo "==> install zgen"
-    git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
-    echo "==> zgen installed"
-}
-
 _install_asdf() {
     echo "==> install asdf"
     git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.7.8
     echo "==> asdf installed"
+}
+
+_install_tpm() {
+    echo "==> install tpm"
+    git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm --branch v3.0.0
+    echo "==> tpm installed"
 }
 
 _install_vim_plug() {
@@ -27,6 +27,12 @@ _install_vim_plug() {
     echo "==> vim-plug installed"
 }
 
+_install_zgen() {
+    echo "==> install zgen"
+    git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+    echo "==> zgen installed"
+}
+
 benchmark() {
     for i ({1..10}) time zsh -ilc exit
 }
@@ -35,6 +41,7 @@ setup() {
     _install_zgen || true
     _install_asdf || true
     _install_vim_plug || true
+    _install_tpm || true
 }
 
 if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
@@ -55,16 +62,16 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         zgen oh-my-zsh plugins/git
         zgen oh-my-zsh plugins/gitignore
         zgen oh-my-zsh plugins/gpg-agent
+        [[ "${PLATFORM}" = "Darwin" ]] && zgen oh-my-zsh plugins/osx
         zgen oh-my-zsh plugins/pip
         zgen oh-my-zsh plugins/ruby
         zgen oh-my-zsh plugins/z
 
         zgen load djui/alias-tips
+        zgen load hlissner/zsh-autopair
         zgen load jreese/zsh-titles
         zgen load zdharma/fast-syntax-highlighting
         zgen load zsh-users/zsh-autosuggestions
-
-        [[ "${PLATFORM}" = "Darwin" ]] && zgen oh-my-zsh plugins/osx
 
         # [[theme]]
         zgen load romkatv/powerlevel10k powerlevel10k
