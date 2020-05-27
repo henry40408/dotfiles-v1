@@ -38,10 +38,10 @@ benchmark() {
 }
 
 setup() {
-    _install_zgen || true
-    _install_asdf || true
-    _install_vim_plug || true
-    _install_tpm || true
+    _install_zgen
+    _install_asdf
+    _install_vim_plug
+    _install_tpm
 }
 
 if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
@@ -72,6 +72,7 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         zgen load jreese/zsh-titles
         zgen load zdharma/fast-syntax-highlighting
         zgen load zsh-users/zsh-autosuggestions
+        zgen load zsh-users/zsh-completions
 
         # [[theme]]
         zgen load romkatv/powerlevel10k powerlevel10k
@@ -98,14 +99,15 @@ export PIP_REQUIRE_VIRTUALENV=1
 alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 
 # https://remysharp.com/2018/08/23/cli-improved
+function install_cli_tools() {
+    cargo install du-dust exa
+}
 (hash bar 2> /dev/null) && alias cat="bat"
 (hash dust 2> /dev/null) && alias du="dust"
 (hash fd 2> /dev/null) && alias find="fd"
 (hash rg 2> /dev/null) && alias grep="rg"
 (hash exa 2> /dev/null) && alias ls="exa"
-(hash prettyping 2> /dev/null) && alias ping="prettyping"
 (hash fzf 2> /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-(hash htop 2> /dev/null) && alias top="sudo htop"
 
 # [my] private configuration
 [[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local"
