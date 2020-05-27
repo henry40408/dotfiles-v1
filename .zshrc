@@ -2,17 +2,10 @@
 
 PLATFORM=`uname`
 
-_install_antigen() {
-    echo "==> install antigen"
-
-    if [[ -d ".antigen" ]]; then
-        echo "==> antigen exists. remove .antigen directory to re-install. abort"
-        return 1
-    fi
-
-    mkdir -p "${HOME}/.antigen"
-    /usr/bin/env curl -L git.io/antigen > .antigen/antigen.zsh
-    echo "==> antigen installed"
+_install_zgen() {
+    echo "==> install zgen"
+    git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+    echo "==> zgen installed"
 }
 
 _install_asdf() {
@@ -35,59 +28,53 @@ _install_vim_plug() {
 }
 
 benchmark() {
-    for i in $(seq 1 10); do time zsh -i -c exit; done
+    for i ({1..10}) time zsh -ilc exit
 }
 
 setup() {
-    _install_antigen || true
+    _install_zgen || true
     _install_asdf || true
     _install_vim_plug || true
 }
 
-if [[ -f "${HOME}/.antigen/antigen.zsh" ]]; then
-    source "${HOME}/.antigen/antigen.zsh"
+if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
+    source "${HOME}/.zgen/zgen.zsh"
+    
+    # load powerlevel10k configuration
+    [[ -f "${HOME}/.p10k.zsh" ]] && source "${HOME}/.p10k.zsh"
 
-    # [[plugins]]
+    if ! zgen saved; then
+        # [[plugins]]
 
-    antigen use oh-my-zsh
+        zgen oh-my-zsh
 
-    antigen bundle asdf
-    antigen bundle docker
+        zgen oh-my-zsh plugins/asdf
+        zgen oh-my-zsh plugins/docker
+        zgen oh-my-zsh plugins/fzf
+        zgen oh-my-zsh plugins/gem
+        zgen oh-my-zsh plugins/git
+        zgen oh-my-zsh plugins/gitignore
+        zgen oh-my-zsh plugins/gpg-agent
+        zgen oh-my-zsh plugins/pip
+        zgen oh-my-zsh plugins/ruby
+        zgen oh-my-zsh plugins/z
 
-    # disable it since `setup_using_debian_package` slows startup
-    #antigen bundle fzf
+        zgen load djui/alias-tips
+        zgen load jreese/zsh-titles
+        zgen load zdharma/fast-syntax-highlighting
+        zgen load zsh-users/zsh-autosuggestions
 
-    antigen bundle gem
-    antigen bundle git
-    antigen bundle gitignore
-    antigen bundle gpg-agent
+        [[ "${PLATFORM}" = "Darwin" ]] && zgen oh-my-zsh plugins/osx
 
-    # disable until https://github.com/ohmyzsh/ohmyzsh/issues/6843 gets fixed
-    #antigen bundle kubectl
+        # [[theme]]
+        zgen load romkatv/powerlevel10k powerlevel10k
 
-    antigen bundle pip
-    antigen bundle rails
-    antigen bundle ruby
-
-    antigen bundle djui/alias-tips
-    antigen bundle jreese/zsh-titles
-    antigen bundle zdharma/fast-syntax-highlighting
-    antigen bundle zsh-users/zsh-autosuggestions
-
-    if [[ "${PLATFORM}" = "Darwin" ]]; then
-        antigen bundle osx
+        zgen save
     fi
-
-    # [[theme]]
-    antigen theme ys
-
-    antigen apply
 fi
 
 # [zsh] configuration about history
-setopt histfindnodups
-setopt histignorealldups
-setopt histsavenodups
+setopt histfindnodups histignorealldups histsavenodups
 
 # [homebrew] extra PATH
 export PATH="/usr/local/sbin:${PATH}"
@@ -97,9 +84,6 @@ export PATH="${HOME}/bin:${PATH}"
 
 # [python] no packages should be installed outside pip
 export PIP_REQUIRE_VIRTUALENV=1
-
-# [zoxide]
-(hash zoxide 2> /dev/null) && eval "$(zoxide init zsh)"
 
 # [[aliases]]
 
@@ -115,9 +99,6 @@ alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 (hash prettyping 2> /dev/null) && alias ping="prettyping"
 (hash fzf 2> /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
 (hash htop 2> /dev/null) && alias top="sudo htop"
-
-# load starship prompt
-(hash starship 2>/dev/null) && eval "$(starship init zsh)"
 
 # [my] private configuration
 [[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local"
