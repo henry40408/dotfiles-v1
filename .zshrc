@@ -81,7 +81,7 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
 
     # [[theme]]
     zinit ice depth=1
-    zinit atload"!source ~/.p10k.zsh; _p9k_precmd" lucid nocd for romkatv/powerlevel10k
+    zinit light romkatv/powerlevel10k
 fi
 
 # [zsh] configuration about history
