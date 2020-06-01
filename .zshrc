@@ -46,7 +46,7 @@ setup() {
 
 if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
     source "${HOME}/.zgen/zgen.zsh"
-    
+
     # load powerlevel10k configuration
     [[ -f "${HOME}/.p10k.zsh" ]] && source "${HOME}/.p10k.zsh"
 
@@ -65,14 +65,15 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         [[ "${PLATFORM}" = "Darwin" ]] && zgen oh-my-zsh plugins/osx
         zgen oh-my-zsh plugins/pip
         zgen oh-my-zsh plugins/ruby
-        zgen oh-my-zsh plugins/z
 
+        zgen load MichaelAquilina/zsh-auto-notify
         zgen load djui/alias-tips
         zgen load hlissner/zsh-autopair
         zgen load jreese/zsh-titles
         zgen load zdharma/fast-syntax-highlighting
         zgen load zsh-users/zsh-autosuggestions
         zgen load zsh-users/zsh-completions
+        zgen load agkozak/zsh-z
 
         # [[theme]]
         zgen load romkatv/powerlevel10k powerlevel10k
