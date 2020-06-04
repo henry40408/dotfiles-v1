@@ -37,6 +37,10 @@ benchmark() {
     for i ({1..10}) time zsh -ilc exit
 }
 
+reload() {
+    exec zsh
+}
+
 setup() {
     _install_zgen
     _install_asdf
@@ -103,7 +107,7 @@ alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 function install_cli_tools() {
     cargo install du-dust exa
 }
-(hash bar 2> /dev/null) && alias cat="bat"
+(hash bat 2> /dev/null) && alias cat="bat"
 (hash dust 2> /dev/null) && alias du="dust"
 (hash fd 2> /dev/null) && alias find="fd"
 (hash rg 2> /dev/null) && alias grep="rg"
