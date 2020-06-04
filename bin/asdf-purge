@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import re
+import os
+
+from pathlib import Path
+
+def purge_versions(*, plugin, expected_versions):
+    install_dir = Path('.asdf/installs/{}'.format(plugin))
+    
+    if not install_dir.exists():
+        print('==> asdf installation directory for plugin {} does not exist. skip.'.format(plugin))
+        return
+    
+    for version_dir in install_dir.iterdir():
+        version = version_dir.name
+        if version in expected_versions:
+            continue
+        print('==> uninstall {} {}'.format(plugin, version))
+        os.system('asdf uninstall {} {}'.format(plugin, version))
+
+def main():
+    with open('.tool-versions') as tool_versions:
+        for plugin_versions in tool_versions:
+            plugin, *expected_versions = re.split(r'\s+', plugin_versions.strip())
+            purge_versions(plugin=plugin, expected_versions=expected_versions)
+
+if __name__ == '__main__':
+    main()
