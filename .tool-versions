@@ -1,26 +1,20 @@
-bat 0.12.1
-consul 1.7.1
-dep 0.5.4
-doctl 1.38.0
-fd 7.4.0
-flutter 1.19.0-1.0.pre-dev 1.15.9-dev
-gcloud 287.0.0
-golang 1.14.2 1.14
-gradle 6.2.2
-haskell 8.8.3
-helm 3.1.2 2.16.3
+bat 0.15.4
+consul 1.7.3
+doctl 1.45.0
+fd 8.1.1
+flutter 1.17.2-stable
+gcloud 294.0.0
+golang 1.14.4
+helm 3.2.1 2.16.7
 hub v2.14.2
 k9s 0.17.7
 kubectl 1.17.4
-kustomize 3.5.4
 mkcert 1.4.1
-nodejs 12.16.1 4.9.1 6.14.0 8.17.0 10.14.2 10.19.0 10.20.1 11.15.0
+nodejs 12.16.1 6.14.0 8.17.0 10.14.2 10.19.0 10.20.1 11.15.0
 python 3.8.0 2.7.15 3.6.8 3.7.1
-ripgrep 12.0.0
+ripgrep 12.1.1
 ruby 2.6.5 2.4.2 2.5.1 2.6.3
-rust 1.42.0
-skaffold 1.5.0
-starship 0.37.0
+rust 1.43.1
 terraform 0.12.23
 tflint 0.15.2
 yarn 1.22.4 1.13.0
