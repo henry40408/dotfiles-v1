@@ -5,13 +5,23 @@ import os
 
 from pathlib import Path
 
+def purge_plugins(*, expected_plugins):
+    install_dir = Path('.asdf/installs')
+
+    for plugin_dir in install_dir.iterdir():
+        plugin = plugin_dir.name
+        if plugin in expected_plugins:
+            continue
+        print('==> remove plugin {}'.format(plugin))
+        os.system('asdf plugin remvoe {}'.format(plugin))
+
 def purge_versions(*, plugin, expected_versions):
     install_dir = Path('.asdf/installs/{}'.format(plugin))
-    
+
     if not install_dir.exists():
         print('==> asdf installation directory for plugin {} does not exist. skip.'.format(plugin))
         return
-    
+
     for version_dir in install_dir.iterdir():
         version = version_dir.name
         if version in expected_versions:
@@ -21,9 +31,14 @@ def purge_versions(*, plugin, expected_versions):
 
 def main():
     with open('.tool-versions') as tool_versions:
+        expected_plugins = []
+
         for plugin_versions in tool_versions:
             plugin, *expected_versions = re.split(r'\s+', plugin_versions.strip())
             purge_versions(plugin=plugin, expected_versions=expected_versions)
+            expected_plugins.append(plugin)
+
+        purge_plugins(expected_plugins=expected_plugins)
 
 if __name__ == '__main__':
     main()
