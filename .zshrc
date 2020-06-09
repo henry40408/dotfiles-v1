@@ -98,6 +98,9 @@ export PATH="${HOME}/bin:${PATH}"
 # [python] no packages should be installed outside pip
 export PIP_REQUIRE_VIRTUALENV=1
 
+# [tmuxifier]
+export PATH="${HOME}/.tmuxifier/bin:${PATH}"
+
 # [[aliases]]
 
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
