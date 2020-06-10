@@ -34,7 +34,7 @@ _install_zgen() {
 }
 
 benchmark() {
-    for i ({1..10}) time zsh -ilc exit
+    for i ({1..10}) time zsh -ilc 'zgen reset; exit'
 }
 
 reload() {
@@ -77,7 +77,6 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         zgen load zdharma/fast-syntax-highlighting
         zgen load zsh-users/zsh-autosuggestions
         zgen load zsh-users/zsh-completions
-        zgen load agkozak/zsh-z
 
         # [[theme]]
         zgen load romkatv/powerlevel10k powerlevel10k
@@ -108,16 +107,17 @@ alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
 
 # https://remysharp.com/2018/08/23/cli-improved
 function install_cli_tools() {
-    cargo install du-dust exa
+    cargo install du-dust exa xsv zoxide
 }
-(hash bat 2> /dev/null) && alias cat="bat"
-(hash dust 2> /dev/null) && alias du="dust"
-(hash fd 2> /dev/null) && alias find="fd"
-(hash rg 2> /dev/null) && alias grep="rg"
-(hash exa 2> /dev/null) && alias ls="exa"
-(hash fzf 2> /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
+(type bat > /dev/null) && alias cat="bat"
+(type dust > /dev/null) && alias du="dust"
+(type fd > /dev/null) && alias find="fd"
+(type rg > /dev/null) && alias grep="rg"
+(type exa > /dev/null) && alias ls="exa"
+(type fzf > /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
+(type zoxide > /dev/null) && eval "$(zoxide init zsh)"
 
 # [my] private configuration
-[[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local"
+[[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local" || true
 
 # vim: set foldlevel=0 foldmethod=marker:
