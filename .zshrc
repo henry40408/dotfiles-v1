@@ -38,7 +38,7 @@ benchmark() {
 }
 
 reload() {
-    exec zsh
+    zgen reset; exec zsh
 }
 
 setup() {
