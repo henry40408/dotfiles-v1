@@ -13,7 +13,7 @@ def purge_plugins(*, expected_plugins):
         if plugin in expected_plugins:
             continue
         print('==> remove plugin {}'.format(plugin))
-        os.system('asdf plugin remvoe {}'.format(plugin))
+        os.system('asdf plugin remove {}'.format(plugin))
 
 def purge_versions(*, plugin, expected_versions):
     install_dir = Path('.asdf/installs/{}'.format(plugin))
