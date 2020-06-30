@@ -2,7 +2,7 @@ bat 0.15.4
 consul 1.7.3
 doctl 1.45.0
 fd 8.1.1
-flutter 1.17.2-stable
+flutter 1.17.4-stable
 gcloud 294.0.0
 golang 1.14.4
 helm 3.2.1 2.16.7
