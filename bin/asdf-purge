@@ -30,7 +30,7 @@ def purge_versions(*, plugin, expected_versions):
         os.system('asdf uninstall {} {}'.format(plugin, version))
 
 def main():
-    with open('.tool-versions') as tool_versions:
+    with open(os.path.expanduser('~/.tool-versions')) as tool_versions:
         expected_plugins = []
 
         for plugin_versions in tool_versions:
