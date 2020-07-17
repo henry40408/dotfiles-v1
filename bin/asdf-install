@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import re
+import os
+
+def main():
+    with open(os.path.expanduser('~/.tool-versions')) as f:
+        for line in f:
+            plugin, *versions = re.split(r'\s+', line)
+            os.system(' '.join(['asdf', 'plugin', 'add', plugin]))
+    os.system(' '.join(['asdf', 'install']))
+
+if __name__ == '__main__':
+    main()
