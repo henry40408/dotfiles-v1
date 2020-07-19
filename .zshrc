@@ -71,7 +71,10 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         zgen oh-my-zsh plugins/ruby
 
         zgen load MichaelAquilina/zsh-auto-notify
+
         zgen load djui/alias-tips
+        export ZSH_PLUGINS_ALIAS_TIPS_FORCE=1
+
         zgen load hlissner/zsh-autopair
         zgen load jreese/zsh-titles
         zgen load zdharma/fast-syntax-highlighting
