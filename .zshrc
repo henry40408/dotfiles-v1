@@ -91,8 +91,9 @@ fi
 # [zsh] configuration about history
 setopt histfindnodups histignorealldups histsavenodups
 
-# [homebrew] extra PATH
+# [homebrew] configuration
 export PATH="/usr/local/sbin:${PATH}"
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # [my] per-user executable
 export PATH="${HOME}/bin:${PATH}"
