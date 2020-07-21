@@ -37,8 +37,22 @@ benchmark() {
     for i ({1..10}) time zsh -ilc 'zgen reset; exit'
 }
 
+# https://remysharp.com/2018/08/23/cli-improved
+install-cli-tools() {
+    cargo install du-dust --version 0.5.1
+    cargo install exa --version 0.9.0
+    cargo install xsv --version 0.13.0
+    cargo install zoxide --version 0.4.3
+}
+
 reload() {
     zgen reset; exec zsh
+}
+
+restore() {
+    pushd ${HOME}/.cfg
+    stow $(ls -d */)
+    popd
 }
 
 setup() {
@@ -106,13 +120,6 @@ export PATH="${HOME}/.tmuxifier/bin:${PATH}"
 
 # [[aliases]]
 
-# https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
-alias config="/usr/bin/git --git-dir=${HOME}/.cfg --work-tree=${HOME}"
-
-# https://remysharp.com/2018/08/23/cli-improved
-function install_cli_tools() {
-    cargo install du-dust exa xsv zoxide
-}
 (type bat > /dev/null) && alias cat="bat"
 (type dust > /dev/null) && alias du="dust"
 (type fd > /dev/null) && alias find="fd"
