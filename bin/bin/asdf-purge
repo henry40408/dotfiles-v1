@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 def purge_plugins(*, expected_plugins):
-    install_dir = Path('.asdf/installs')
+    install_dir = Path(os.path.expanduser('~/.asdf/installs'))
 
     for plugin_dir in install_dir.iterdir():
         plugin = plugin_dir.name
@@ -16,7 +16,7 @@ def purge_plugins(*, expected_plugins):
         os.system('asdf plugin remove {}'.format(plugin))
 
 def purge_versions(*, plugin, expected_versions):
-    install_dir = Path('.asdf/installs/{}'.format(plugin))
+    install_dir = Path(os.path.expanduser('~/.asdf/installs/{}'.format(plugin)))
 
     if not install_dir.exists():
         print('==> asdf installation directory for plugin {} does not exist. skip.'.format(plugin))
