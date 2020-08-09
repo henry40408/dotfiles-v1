@@ -181,7 +181,7 @@ bindsym $mod+r mode "resize"
 #}
 
 # [my] setup resolution for 4K display
-exec --no-startup-id xrandr --dpi 274 -s 3840x2160
+exec --no-startup-id "xrandr --dpi 274 -s 3840x2160"
 
 # ref: https://github.com/dracula/i3
 # class                 border  bground text    indicator child_border
@@ -209,5 +209,8 @@ bar {
 }
 
 #bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
-bindsym $mod+d exec --no-startup-id "rofi -combi-modi window,ssh,drun -show combi -font \\"FiraCode Nerd Font 32\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+bindsym $mod+d exec --no-startup-id "rofi -combi-modi window,ssh,drun -show combi -font \\"Fira Code Retina Nerd Font Complete 32\\" -show-icons"
 
+for_window [class=".*"] title_format "<span size=\\"smaller\\">%title</span>"
+
+exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.sh
