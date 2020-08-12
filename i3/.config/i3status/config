@@ -7,8 +7,9 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
-        colors = true
-        interval = 1
+  colors = true
+  interval = 1
+  markup = pango
 }
 
 order += "cpu_usage"
@@ -20,36 +21,36 @@ order += "volume master"
 order += "tztime local"
 
 cpu_usage {
-        format = "C: %usage"
+  format = "&#xf2db; %usage"
 }
 
 ethernet _first_ {
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+  format_up = "&#xf817; %ip (%speed)"
+  format_down = "&#xf818; down"
 }
 
 disk "/" {
-        format = "D: %avail"
+  format = "&#xf0a0; %avail"
 }
 
 load {
-        format = "L: %1min"
+  format = "&#xe234; %1min"
 }
 
 memory {
-        format = "M: %used / %available"
-        threshold_degraded = "1G"
-        format_degraded = "MEMORY < %available"
+  format = "&#xf85a; %used / %available"
+  threshold_degraded = "1G"
+  format_degraded = "MEMORY < %available"
 }
 
 volume master {
-        format = "V: %volume"
-        format_muted = "V: muted (%volume)"
-        device = "default"
-        mixer = "Master"
-        mixer_idx = 0
+  format = "&#xf028; %volume"
+  format_muted = "&#xfa80; %volume"
+  device = "default"
+  mixer = "Master"
+  mixer_idx = 0
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+  format = "%Y-%m-%d %H:%M:%S"
 }
