@@ -1,44 +1,29 @@
-#!/usr/bin/env python
+#!/usr/bin/env ruby
 
-import re
-import os
+require 'fileutils'
 
-from pathlib import Path
+all_plugins = []
+all_versions = []
 
-def purge_plugins(*, expected_plugins):
-    install_dir = Path(os.path.expanduser('~/.asdf/installs'))
+open(File.expand_path('~/.tool-versions')) do |file|
+  file.each do |line|
+    plugin, *versions = line.split(/\s+/)
+    all_plugins << plugin
+    versions.each do |version|
+      all_versions << "#{plugin}/#{version}"
+    end
+  end
+end
 
-    for plugin_dir in install_dir.iterdir():
-        plugin = plugin_dir.name
-        if plugin in expected_plugins:
-            continue
-        print('==> remove plugin {}'.format(plugin))
-        os.system('asdf plugin remove {}'.format(plugin))
-
-def purge_versions(*, plugin, expected_versions):
-    install_dir = Path(os.path.expanduser('~/.asdf/installs/{}'.format(plugin)))
-
-    if not install_dir.exists():
-        print('==> asdf installation directory for plugin {} does not exist. skip.'.format(plugin))
-        return
-
-    for version_dir in install_dir.iterdir():
-        version = version_dir.name
-        if version in expected_versions:
-            continue
-        print('==> uninstall {} {}'.format(plugin, version))
-        os.system('asdf uninstall {} {}'.format(plugin, version))
-
-def main():
-    with open(os.path.expanduser('~/.tool-versions')) as tool_versions:
-        expected_plugins = []
-
-        for plugin_versions in tool_versions:
-            plugin, *expected_versions = re.split(r'\s+', plugin_versions.strip())
-            purge_versions(plugin=plugin, expected_versions=expected_versions)
-            expected_plugins.append(plugin)
-
-        purge_plugins(expected_plugins=expected_plugins)
-
-if __name__ == '__main__':
-    main()
+all_plugins.each do |plugin|
+  plugin_path = File.expand_path("~/.asdf/installs/#{plugin}")
+  next if !Dir.exists?(plugin_path)
+  installed_versions = Dir.entries(plugin_path).select{ |version| !%w[. ..].include?(version) }
+  installed_versions.each do |installed_version|
+    plugin_version_path = "#{plugin}/#{installed_version}"
+    next if all_versions.include?(plugin_version_path)
+    full_path = File.expand_path("~/.asdf/installs/#{plugin_version_path}")
+    FileUtils.remove_dir(full_path)
+    puts full_path
+  end
+end
