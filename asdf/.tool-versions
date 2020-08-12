@@ -1,20 +1,18 @@
 bat 0.15.4
-consul 1.7.3
-doctl 1.45.0
+consul 1.8.2
+doctl 1.46.0
 fd 8.1.1
-flutter 1.17.5-stable
-gcloud 294.0.0
-golang 1.14.4
-helm 3.2.1 2.16.7
+flutter 1.20.1-stable
+gcloud 304.0.0
+golang 1.15
+helm 3.3.0 2.16.7
 hub v2.14.2
-k9s 0.17.7
-kubectl 1.17.4
-mkcert 1.4.1
-nodejs 12.16.1 6.14.0 8.17.0 10.14.2 10.19.0 10.20.1 11.15.0
-python 3.8.0 2.7.15 3.6.8 3.7.1
+kubectl 1.18.6
+nodejs 14.8.0 6.14.0 8.17.0 10.14.2 11.15.0 12.16.1
+python 3.8.5 2.7.15 3.6.8 3.7.1
 ripgrep 12.1.1
-ruby 2.6.6 2.5.1 2.5.8
-rust 1.45.0
-terraform 0.12.23
-tflint 0.15.2
+ruby 2.7.1 2.5.1 2.5.8 2.6.6
+rust 1.45.2
+terraform 0.13.0
+tflint 0.18.0
 yarn 1.22.4 1.13.0
