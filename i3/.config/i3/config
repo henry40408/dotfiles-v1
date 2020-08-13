@@ -215,3 +215,6 @@ exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.sh
 
 bindsym $mod+x exec --no-startup-id "i3lock -c 282a36"
 bindsym $mod+Shift+x exec --no-startup-id "i3lock -c 282a36; systemctl suspend"
+
+for_window [class=".*"] border pixel 0
+gaps inner 5
