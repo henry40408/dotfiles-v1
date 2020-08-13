@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# https://remysharp.com/2018/08/23/cli-improved
+open(File.expand_path('~/.crates.txt')) do |file|
+  file.each do |line|
+    name, version = line.split('==')
+    IO.popen("cargo install #{name} --version #{version}") do |io|
+      while (line = io.gets) do
+        print line
+      end
+    end
+  end
+end
+

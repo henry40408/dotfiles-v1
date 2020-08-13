@@ -37,14 +37,6 @@ benchmark() {
     for i ({1..10}) time zsh -ilc 'zgen reset; exit'
 }
 
-# https://remysharp.com/2018/08/23/cli-improved
-install-cli-tools() {
-    cargo install du-dust --version 0.5.1
-    cargo install exa --version 0.9.0
-    cargo install xsv --version 0.13.0
-    cargo install zoxide --version 0.4.3
-}
-
 reload() {
     zgen reset; exec zsh
 }
