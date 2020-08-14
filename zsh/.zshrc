@@ -116,7 +116,7 @@ export PATH="${HOME}/.tmuxifier/bin:${PATH}"
 (type dust > /dev/null) && alias du="dust"
 (type fd > /dev/null) && alias find="fd"
 (type rg > /dev/null) && alias grep="rg"
-(type exa > /dev/null) && alias ls="exa"
+(type lsd > /dev/null) && alias ls="lsd"
 (type fzf > /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
 (type zoxide > /dev/null) && eval "$(zoxide init zsh)"
 
