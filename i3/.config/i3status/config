@@ -21,7 +21,7 @@ order += "volume master"
 order += "tztime local"
 
 cpu_usage {
-  format = "&#xf2db; %usage"
+  format = "&#xfb19; %usage"
 }
 
 ethernet _first_ {
