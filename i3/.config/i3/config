@@ -209,8 +209,9 @@ client.background       #F8F8F2
 bindsym $mod+Shift+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 bindsym $mod+d exec --no-startup-id "rofi -dpi 205 -theme arthur -combi-modi window,ssh,drun -show combi -show-icons"
 
-exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.sh
+exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.rb
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id numlockx
 
 bindsym $mod+x exec --no-startup-id "i3lock -c 282a36"
 bindsym $mod+Shift+x exec --no-startup-id "i3lock -c 282a36; systemctl suspend"
