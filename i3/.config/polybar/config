@@ -35,6 +35,10 @@ modules-left = i3
 modules-right = alsa cpu gpu memory filesystem wired-network date
 separator = %{F#00000000}|%{F-}
 
+tray-position = right
+tray-background = ${colors.background}
+tray-maxsize = 32
+
 [module/i3]
 type = internal/i3
 
