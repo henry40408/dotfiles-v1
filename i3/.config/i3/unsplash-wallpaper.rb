@@ -21,4 +21,4 @@ def save_to_tempfile(url)
 end
 
 f = save_to_tempfile "https://source.unsplash.com/featured/3840x2160/daily/?cat"
-`feh --bg-scale /tmp/wallpaper.jpg #{f.path}`
+`feh --bg-scale #{f.path}`
