@@ -1,16 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env ruby
 
-import datetime
-import os
-import pathlib
+file_realpath = File.dirname(File.realpath(__FILE__))
+dir_realpath = File.realpath(File.join(file_realpath, '../..'))
 
-def main():
-    real_filepath = pathlib.Path(__file__).resolve()
-    real_dir = pathlib.Path("{}/../../..".format(real_filepath)).resolve()
-    os.chdir(real_dir)
-    os.system('brew bundle dump --force')
-    os.system('git add Brewfile Brewfile.lock.json')
-    os.system('git commit -m "feat: update Brewfile at {}"'.format(datetime.datetime.now().isoformat()))
-
-if __name__ == '__main__':
-    main()
+Dir.chdir(dir_realpath) do
+  `brew bundle dump --force`
+  `git add Brewfile Brewfile.lock.json`
+  `git commit -m "feat: update Brewfile at #{Time.now.to_s}"`
+end
