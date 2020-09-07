@@ -10,20 +10,23 @@ open(File.expand_path('~/.tool-versions')) do |file|
     plugin, *versions = line.split(/\s+/)
     all_plugins << plugin
     versions.each do |version|
-      all_versions << "#{plugin}/#{version}"
+      all_versions << [plugin, version]
     end
   end
 end
 
-all_plugins.each do |plugin|
-  plugin_path = File.expand_path("~/.asdf/installs/#{plugin}")
-  next if !Dir.exists?(plugin_path)
-  installed_versions = Dir.entries(plugin_path).select{ |version| !%w[. ..].include?(version) }
-  installed_versions.each do |installed_version|
-    plugin_version_path = "#{plugin}/#{installed_version}"
-    next if all_versions.include?(plugin_version_path)
-    full_path = File.expand_path("~/.asdf/installs/#{plugin_version_path}")
-    FileUtils.remove_dir(full_path)
-    puts full_path
+Dir[File.expand_path("~/.asdf/installs/*")].each do |dir|
+  plugin = File.basename(dir)
+  if all_plugins.include?(plugin)
+    versions = Dir.entries(dir).select{ |version| !%w[. ..].include?(version) }
+    versions.each do |version|
+      next if all_versions.include?([plugin, version])
+      full_path = File.expand_path("~/.asdf/installs/#{plugin}/#{version}")
+      FileUtils.remove_dir(full_path)
+      puts full_path
+    end
+  else
+    FileUtils.remove_dir(dir)
+    puts dir
   end
 end
