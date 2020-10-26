@@ -1,5 +1,5 @@
-du-dust==0.5.1
-lsd==0.17.0
-procs==0.10.4
+du-dust==0.5.3
+lsd==0.18.0
+procs==0.10.5
 xsv==0.13.0
 zoxide==0.4.3
