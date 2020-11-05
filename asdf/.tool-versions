@@ -3,7 +3,7 @@ consul 1.8.5
 deno 1.4.6
 doctl 1.48.1
 fd 8.1.1
-flutter 1.22.0-stable 1.20.3-stable
+flutter 1.22.3-stable 1.22.2-stable 1.22.0-stable 1.20.3-stable
 gcloud 315.0.0
 golang 1.15.3
 helm 3.3.4 2.16.7
