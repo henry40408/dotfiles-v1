@@ -17,6 +17,8 @@ brew "ansible"
 brew "awscli"
 brew "bandwhich"
 brew "bash"
+brew "openjdk"
+brew "bundletool"
 brew "cmake"
 brew "cocoapods"
 brew "coreutils"
@@ -39,19 +41,18 @@ brew "jq"
 brew "libuv"
 brew "mackup"
 brew "mas"
-brew "memcached", restart_service: true
+brew "memcached"
 brew "mosh"
 brew "mysql"
 brew "nasm"
 brew "nomad"
 brew "nss"
 brew "opencc"
-brew "openjdk"
 brew "pinentry-mac"
-brew "postgresql", restart_service: true
+brew "postgresql"
 brew "prettyping"
 brew "procs"
-brew "redis", restart_service: true
+brew "redis"
 brew "so"
 brew "stow"
 brew "the_silver_searcher"
@@ -124,6 +125,7 @@ mas "LINE", id: 539883307
 mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pocket", id: 568494494
+mas "Reeder", id: 1529448980
 mas "Reeder", id: 1449412482
 mas "RunCat", id: 1429033973
 mas "Spark", id: 1176895641
