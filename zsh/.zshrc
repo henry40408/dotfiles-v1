@@ -68,6 +68,7 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         zgen oh-my-zsh plugins/asdf
         zgen oh-my-zsh plugins/command-not-found
         zgen oh-my-zsh plugins/docker
+        zgen oh-my-zsh plugins/docker-compose
         zgen oh-my-zsh plugins/fzf
         zgen oh-my-zsh plugins/gem
         zgen oh-my-zsh plugins/git
@@ -78,7 +79,10 @@ if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
         zgen oh-my-zsh plugins/ruby
 
         zgen load MichaelAquilina/zsh-auto-notify
+
         zgen load MichaelAquilina/zsh-you-should-use
+        export YSU_HARDCORE=1
+
         zgen load hlissner/zsh-autopair
         zgen load jreese/zsh-titles
         zgen load zdharma/fast-syntax-highlighting
