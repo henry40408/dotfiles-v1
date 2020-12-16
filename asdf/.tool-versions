@@ -1,15 +1,17 @@
 bat 0.16.0
 consul 1.8.5
-deno 1.4.6
+dart 2.9.3
+deno 1.6.0
 doctl 1.48.1
 fd 8.1.1
-flutter 1.22.3-stable 1.22.2-stable 1.22.0-stable 1.20.3-stable
+flutter 1.22.5-stable 1.22.4-stable
 gcloud 315.0.0
 golang 1.15.3
 helm 3.3.4 2.16.7
 hub v2.14.2
 kubectl 1.19.3
-nodejs 14.14.0 6.17.1 8.17.0 10.14.2 10.22.1 11.15.0 12.19.0 14.12.0
+mkcert 1.4.1
+nodejs 14.14.0 6.17.1 8.17.0 10.23.0 10.14.2 10.22.1 11.15.0 12.19.0 14.12.0
 python 3.8.6 2.7.18
 ripgrep 12.1.1
 ruby 2.7.1 2.4.2 2.5.1 2.5.8 2.6.6

@@ -76,8 +76,8 @@ cask "alfred"
 cask "android-file-transfer"
 cask "appcleaner"
 cask "cheatsheet"
-cask "dash"
 cask "devonthink"
+cask "discord"
 cask "docker"
 cask "figma"
 cask "firefox"
@@ -85,8 +85,7 @@ cask "font-firacode-nerd-font"
 cask "font-meslo-lg-nerd-font"
 cask "fork"
 cask "genymotion"
-cask "google-chrome"
-cask "gpg-suite"
+cask "gpg-suite-no-mail"
 cask "imageoptim"
 cask "intel-power-gadget"
 cask "iterm2"
@@ -97,12 +96,14 @@ cask "keyboardcleantool"
 cask "moom"
 cask "ngrok"
 cask "notion"
+cask "obsidian"
 cask "parallels"
 cask "pocket-casts"
 cask "protonvpn"
 cask "quip"
 cask "responsively"
 cask "screens-connect"
+cask "signal"
 cask "sketch"
 cask "slack"
 cask "soundflower"
@@ -116,6 +117,7 @@ cask "typora"
 cask "vagrant"
 cask "virtualbox"
 cask "visual-studio-code"
+cask "vivaldi"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
@@ -126,7 +128,6 @@ mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pocket", id: 568494494
 mas "Reeder", id: 1529448980
-mas "Reeder", id: 1449412482
 mas "RunCat", id: 1429033973
 mas "Spark", id: 1176895641
 mas "Things", id: 904280696
