@@ -1,6 +1,6 @@
 bat 0.16.0
 consul 1.8.5
-dart 2.9.3
+dart 2.10.4
 deno 1.6.0
 doctl 1.48.1
 fd 8.1.1
