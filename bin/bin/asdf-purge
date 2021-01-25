@@ -2,31 +2,32 @@
 
 require 'fileutils'
 
-all_plugins = []
-all_versions = []
+require_relative 'asdf-lib'
 
-open(File.expand_path('~/.tool-versions')) do |file|
-  file.each do |line|
-    plugin, *versions = line.split(/\s+/)
-    all_plugins << plugin
-    versions.each do |version|
-      all_versions << [plugin, version]
-    end
+def ignore_parents(dir)
+  Dir.entries(File.expand_path(dir)).select{ |entry| !%w[. ..].include?(entry) }
+end
+
+tuples = []
+read_tool_versions.each do |(plugin, versions)|
+  versions.each do |version|
+    tuples << [plugin, version]
   end
 end
 
-Dir[File.expand_path("~/.asdf/installs/*")].each do |dir|
-  plugin = File.basename(dir)
-  if all_plugins.include?(plugin)
-    versions = Dir.entries(dir).select{ |version| !%w[. ..].include?(version) }
-    versions.each do |version|
-      next if all_versions.include?([plugin, version])
+plugins = tuples.map{ |p| p[0] }.uniq
+
+ignore_parents("~/.asdf/installs").each do |plugin|
+  if plugins.include?(plugin)
+    ignore_parents("~/.asdf/installs/#{plugin}").each do |version|
+      next if tuples.include?([plugin, version])
       full_path = File.expand_path("~/.asdf/installs/#{plugin}/#{version}")
       FileUtils.remove_dir(full_path)
-      puts full_path
+      puts "- #{full_path}"
     end
   else
-    FileUtils.remove_dir(dir)
-    puts dir
+    full_path = File.expand_path("~/.asdf/installs/#{plugin}")
+    FileUtils.remove_dir(full_path)
+    puts "- #{full_path}"
   end
 end

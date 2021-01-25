@@ -2,31 +2,7 @@
 
 require 'open3'
 
-class String
-  def black;          "\e[30m#{self}\e[0m" end
-  def red;            "\e[31m#{self}\e[0m" end
-  def green;          "\e[32m#{self}\e[0m" end
-  def brown;          "\e[33m#{self}\e[0m" end
-  def blue;           "\e[34m#{self}\e[0m" end
-  def magenta;        "\e[35m#{self}\e[0m" end
-  def cyan;           "\e[36m#{self}\e[0m" end
-  def gray;           "\e[37m#{self}\e[0m" end
-  
-  def bg_black;       "\e[40m#{self}\e[0m" end
-  def bg_red;         "\e[41m#{self}\e[0m" end
-  def bg_green;       "\e[42m#{self}\e[0m" end
-  def bg_brown;       "\e[43m#{self}\e[0m" end
-  def bg_blue;        "\e[44m#{self}\e[0m" end
-  def bg_magenta;     "\e[45m#{self}\e[0m" end
-  def bg_cyan;        "\e[46m#{self}\e[0m" end
-  def bg_gray;        "\e[47m#{self}\e[0m" end
-  
-  def bold;           "\e[1m#{self}\e[22m" end
-  def italic;         "\e[3m#{self}\e[23m" end
-  def underline;      "\e[4m#{self}\e[24m" end
-  def blink;          "\e[5m#{self}\e[25m" end
-  def reverse_color;  "\e[7m#{self}\e[27m" end
-end
+require_relative 'asdf-lib'
 
 PYTHON_RUBY = ->(version){ version.match?(/^\d/) && %w[dev preview rc].none?{ |s| version.include?(s) } }
 
@@ -34,39 +10,30 @@ FILTERS = {
   flutter: ->(version){ %w[beta pre].none?{ |s| version.include?(s) } },
   helm: ->(version){ %w[rc].none?{ |s| version.include?(s) } },
   golang: ->(version){ %w[beta].none?{ |s| version.include?(s) } },
+  kubectl: ->(version){ %w[alpha].none?{ |s| version.include?(s) } },
   python: PYTHON_RUBY,
   ruby: PYTHON_RUBY,
-  rust: ->(version){ %w[beta nightly stable].none?{ |s| version.include?(s) } }
+  rust: ->(version){ %w[beta nightly stable].none?{ |s| version.include?(s) } },
+  terraform: ->(version){ %w[alpha].none?{ |s| version.include?(s) } },
 }
 
-all_versions = []
-
-open(File.expand_path('~/.tool-versions')) do |file|
-  file.each do |line|
-    plugin, *versions = line.split(/\s+/)
-    all_versions << [plugin, versions[0]] unless versions.empty?
-  end
-end
-
-all_versions.each do |(plugin, version)|
-  io = IO.popen("asdf list all #{plugin}")
-  lines = io.read.lines.map(&:strip)
-  lines = if FILTERS[plugin.to_sym].nil?
+read_tool_versions(first_only: true).each do |(plugin, version)|
+  lines = IO.popen("asdf list all #{plugin}").read.lines.map(&:strip)
+  
+  filter = FILTERS[plugin.to_sym]
+  lines = if filter.nil?
     lines
   else
-    filter = FILTERS[plugin.to_sym]
     lines = lines.select{ |line| filter.call(line) }
   end
 
   latest_version = lines.last
-  if latest_version.nil?
-    colorized = "no latest version".gray
-    puts "#{plugin}: #{colorized}"
+  colorized = if latest_version.nil?
+    "no latest version".gray
   elsif latest_version != version
-    colorized = "#{version} -> #{latest_version}".red
-    puts "#{plugin}: #{colorized}"
+    "#{version} -> #{latest_version}".red
   else
-    colorized = "up-to-date".green
-    puts "#{plugin}: #{colorized}"
+    "up-to-date".green
   end
+  puts "#{plugin}: #{colorized}"
 end
