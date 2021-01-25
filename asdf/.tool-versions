@@ -1,20 +1,20 @@
 bat 0.17.1
 consul 1.9.1
-deno 1.6.3
-doctl 1.54.0
+deno 1.7.0
+doctl 1.55.0
 fd 8.2.1
-flutter 1.22.5-stable 1.22.4-stable
-gcloud 321.0.0
-golang 1.15.6
-github-cli 1.4.0
-helm 3.4.2 2.17.0
-kubectl 1.20.1
+flutter 1.22.5-stable
+gcloud 323.0.0
+golang 1.15.7
+github-cli 1.5.0
+helm 3.5.0 2.17.0
+kubectl 1.20.2
 mkcert 1.4.3
-nodejs 14.14.0 6.17.1 8.17.0 10.23.0 10.14.2 10.22.1 11.15.0 12.19.0 14.12.0
+nodejs 15.6.0 6.17.1 8.17.0 10.23.0 10.14.2 10.22.1 11.15.0 12.19.0 14.12.0 14.14.0
 python 3.9.1 2.7.18
 ripgrep 12.1.1
-ruby 2.7.2 2.4.2 2.5.1 2.5.8 2.6.6
+ruby 3.0.0 2.4.2 2.5.1 2.5.8 2.6.6 2.7.2
 rust 1.49.0
-terraform 0.14.3
-tflint 0.23.0
+terraform 0.14.5
+tflint 0.23.1
 yarn 1.22.10
