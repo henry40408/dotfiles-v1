@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-
-require 'open3'
+# frozen_string_literal: true
 
 require_relative 'asdf-lib'
 

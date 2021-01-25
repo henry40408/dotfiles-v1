@@ -1,14 +1,37 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-# https://remysharp.com/2018/08/23/cli-improved
-open(File.expand_path('~/.crates.txt')) do |file|
-  file.each do |line|
-    name, version = line.split('==')
-    IO.popen("cargo install #{name} --version #{version}") do |io|
-      while (line = io.gets) do
-        print line
-      end
+# package_name brew_name version
+CRATES = %w[
+  du-dust dust    0.5.4
+  lsd     lsd     0.19.0
+  procs   procs   0.10.10
+  xsv     xsv     0.13.0
+  zoxide  zoxide  0.5.0
+]
+
+def run_command(command)
+  IO.popen(command) do |io|
+    while (line = io.gets) do
+      puts line
     end
   end
 end
 
+def install_via_cargo(name, version)
+  run_command("cargo install #{name} --version #{version}")
+end
+
+def install_via_homebrew(brew_name)
+  run_command("brew install #{brew_name}")
+end
+
+# https://remysharp.com/2018/08/23/cli-improved
+CRATES.each_slice(3).each do |(name, brew_name, version)|
+  `brew info #{brew_name}`
+  if $?.success?
+    install_via_homebrew(brew_name)
+  else
+    install_via_cargo(name, version)
+  end
+end
