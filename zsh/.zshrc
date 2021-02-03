@@ -27,18 +27,21 @@ _install_vim_plug() {
     echo "==> vim-plug installed"
 }
 
-_install_zgen() {
-    echo "==> install zgen"
-    git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
-    echo "==> zgen installed"
+_install_zplug() {
+    echo "==> install zplug"
+    git clone https://github.com/zplug/zplug.git "${HOME}/.zplug"
+    echo "==> zplug installed"
 }
 
 benchmark() {
-    for i ({1..10}) time zsh -ilc 'zgen reset; exit'
+    echo cached
+    for i ({1..3}) time zsh -ilc 'exit'
+    echo non-cached
+    for i ({1..3}) time zsh -ilc 'zplug clean; exit'
 }
 
 reload() {
-    zgen reset; exec zsh
+    zplug clean; exec zsh
 }
 
 restore() {
@@ -48,52 +51,61 @@ restore() {
 }
 
 setup() {
-    _install_zgen
+    _install_zplug
     _install_asdf
     _install_vim_plug
     _install_tpm
 }
 
-if [[ -f "${HOME}/.zgen/zgen.zsh" ]]; then
-    source "${HOME}/.zgen/zgen.zsh"
+if [[ -f "${HOME}/.zplug/init.zsh" ]]; then
+    source "${HOME}/.zplug/init.zsh"
 
     # load powerlevel10k configuration
     [[ -f "${HOME}/.p10k.zsh" ]] && source "${HOME}/.p10k.zsh"
 
-    if ! zgen saved; then
-        # [[plugins]]
+    # [[plugins]]
 
-        zgen oh-my-zsh
+    zplug "plugins/asdf", from:oh-my-zsh
+    zplug "plugins/command-not-found", from:oh-my-zsh
+    zplug "plugins/docker", from:oh-my-zsh
+    zplug "plugins/docker-compose", from:oh-my-zsh
+    zplug "plugins/fzf", from:oh-my-zsh
+    zplug "plugins/gem", from:oh-my-zsh
+    zplug "plugins/git", from:oh-my-zsh
+    zplug "plugins/gitignore", from:oh-my-zsh
+    zplug "plugins/gpg-agent", from:oh-my-zsh
+    zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+    zplug "plugins/pip", from:oh-my-zsh
+    zplug "plugins/ruby", from:oh-my-zsh
 
-        zgen oh-my-zsh plugins/asdf
-        zgen oh-my-zsh plugins/command-not-found
-        zgen oh-my-zsh plugins/docker
-        zgen oh-my-zsh plugins/docker-compose
-        zgen oh-my-zsh plugins/fzf
-        zgen oh-my-zsh plugins/gem
-        zgen oh-my-zsh plugins/git
-        zgen oh-my-zsh plugins/gitignore
-        zgen oh-my-zsh plugins/gpg-agent
-        [[ "${PLATFORM}" = "Darwin" ]] && zgen oh-my-zsh plugins/osx
-        zgen oh-my-zsh plugins/pip
-        zgen oh-my-zsh plugins/ruby
+    zplug "MichaelAquilina/zsh-auto-notify"
 
-        zgen load MichaelAquilina/zsh-auto-notify
+    zplug "MichaelAquilina/zsh-you-should-use"
+    export YSU_HARDCORE=1
 
-        zgen load MichaelAquilina/zsh-you-should-use
-        export YSU_HARDCORE=1
+    zplug "hlissner/zsh-autopair"
+    zplug "jreese/zsh-titles"
+    zplug "zdharma/fast-syntax-highlighting", defer:2
+    zplug "zsh-users/zsh-autosuggestions"
+    zplug "zsh-users/zsh-completions"
 
-        zgen load hlissner/zsh-autopair
-        zgen load jreese/zsh-titles
-        zgen load zdharma/fast-syntax-highlighting
-        zgen load zsh-users/zsh-autosuggestions
-        zgen load zsh-users/zsh-completions
+    zplug "BurntSushi/xsv", as:command, from:gh-r, at:0.13.0
+    zplug "Peltoche/lsd", as:command, from:gh-r, at:0.19.0
+    zplug "ajeetdsouza/zoxide", as:command, from:gh-r, at:v0.5.0
+    zplug "bootandy/dust", as:command, from:gh-r, at:v0.5.4
+    zplug "dalance/procs", as:command, from:gh-r, at:v0.11.3, use:"*x86_64-mac*"
 
-        # [[theme]]
-        zgen load romkatv/powerlevel10k powerlevel10k
+    # [[theme]]
+    zplug "romkatv/powerlevel10k", as:theme
 
-        zgen save
+    if ! zplug check --verbose; then
+        printf "Install? [y/N]: "
+        if read -q; then
+            echo; zplug install
+        fi
     fi
+
+    zplug load
 fi
 
 # [zsh] configuration about history
