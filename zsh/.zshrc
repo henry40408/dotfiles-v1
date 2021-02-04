@@ -34,7 +34,7 @@ _install_zinit() {
 }
 
 benchmark() {
-    for i ({1..3}) time zsh -ilc "exit"
+    for i in $(seq 1 10); do /usr/bin/time $SHELL -i -c "exit"; done
 }
 
 reload() {
@@ -62,7 +62,10 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
     # ref: https://github.com/asdf-vm/asdf/issues/692
     autoload -U +X bashcompinit && bashcompinit
 
-    zinit for \
+    # avoid conflict of "ls" command
+    export DISABLE_LS_COLORS=true
+
+    zinit wait lucid for \
       OMZL::functions.zsh \
       OMZL::clipboard.zsh \
       OMZL::compfix.zsh \
@@ -75,11 +78,11 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
       OMZL::misc.zsh \
       OMZL::prompt_info_functions.zsh \
       OMZL::termsupport.zsh \
-      OMZL::theme-and-appearance.zsh
-
-    zinit for \
+      OMZL::theme-and-appearance.zsh \
       OMZP::asdf \
+      if"[[ $OSTYPE == *darwin* ]]" OMZP::brew \
       OMZP::command-not-found \
+      OMZP::common-aliases \
       OMZP::docker-compose \
       OMZP::fzf \
       OMZP::gem \
@@ -89,13 +92,15 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
       OMZP::pip \
       OMZP::ruby
 
-    zinit as"completion" for \
-      OMZP::docker/_docker \
-      zsh-users/zsh-completions
+    zinit wait lucid as"completion" for \
+      OMZP::docker/_docker
 
     export YSU_HARDCORE=1
 
-    zinit for \
+    zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+      zsh-users/zsh-completions
+
+    zinit wait lucid for \
       MichaelAquilina/zsh-auto-notify \
       MichaelAquilina/zsh-you-should-use \
       hlissner/zsh-autopair \
@@ -103,17 +108,28 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
       zdharma/fast-syntax-highlighting \
       zsh-users/zsh-autosuggestions
 
-    zinit as"program" from"gh-r" for \
+    # fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets,
+    # such as zsh-autosuggestions or fast-syntax-highlighting!!
+    zinit wait lucid for \
+      Aloxaf/fzf-tab
+
+    # ref: https://remysharp.com/2018/08/23/cli-improved
+    zinit wait lucid as"program" from"gh-r" for \
       ver"0.13.0" BurntSushi/xsv \
-      ver"0.19.0" Peltoche/lsd \
+      ver"0.19.0" atload"alias ls='lsd'" Peltoche/lsd \
       ver"v0.5.0" ajeetdsouza/zoxide \
-      ver"v0.5.4" bootandy/dust \
-      ver"v0.11.3" dalance/procs
+      ver"v0.5.4" atload"alias du='dust'" bootandy/dust \
+      ver"v0.11.3" atload"alias ps='procs'" dalance/procs
+
+    zinit wait lucid as"program" for \
+      ver"748a7db" denilsonsa/prettyping
 
     # [[theme]]
     if [[ -f "${HOME}/.p10k.zsh" ]]; then
         source "${HOME}/.p10k.zsh"
-        zinit load romkatv/powerlevel10k
+
+        zinit depth"1" for \
+          romkatv/powerlevel10k
     fi
 fi
 
@@ -134,13 +150,12 @@ export PATH="${HOME}/.tmuxifier/bin:${PATH}"
 
 # [[aliases]]
 
-(type bat > /dev/null) && alias cat="bat"
-(type dust > /dev/null) && alias du="dust"
-(type fd > /dev/null) && alias find="fd"
-(type rg > /dev/null) && alias grep="rg"
-(type lsd > /dev/null) && alias ls="lsd"
-(type fzf > /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-(type zoxide > /dev/null) && eval "$(zoxide init zsh)"
+# ref: https://remysharp.com/2018/08/23/cli-improved
+(( $+commands[bat] )) && alias cat="bat"
+(( $+commands[fd] )) && alias find="fd"
+(( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
+(( $+commands[htop] )) && alias top='htop'
+(( $+commands[rg] )) && alias grep="rg"
 
 # [my] private configuration
 [[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local" || true
