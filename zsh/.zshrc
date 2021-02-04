@@ -27,21 +27,18 @@ _install_vim_plug() {
     echo "==> vim-plug installed"
 }
 
-_install_zplug() {
-    echo "==> install zplug"
-    git clone https://github.com/zplug/zplug.git "${HOME}/.zplug"
-    echo "==> zplug installed"
+_install_zinit() {
+    echo "==> install zinit"
+    git clone https://github.com/zdharma/zinit.git "${HOME}/.zinit/bin"
+    echo "==> zinit installed"
 }
 
 benchmark() {
-    echo cached
-    for i ({1..3}) time zsh -ilc 'exit'
-    echo non-cached
-    for i ({1..3}) time zsh -ilc 'zplug clean; exit'
+    for i ({1..3}) time zsh -ilc "exit"
 }
 
 reload() {
-    zplug clean; exec zsh
+    exec zsh
 }
 
 restore() {
@@ -51,61 +48,73 @@ restore() {
 }
 
 setup() {
-    _install_zplug
+    _install_zinit
     _install_asdf
     _install_vim_plug
     _install_tpm
 }
 
-if [[ -f "${HOME}/.zplug/init.zsh" ]]; then
-    source "${HOME}/.zplug/init.zsh"
-
-    # load powerlevel10k configuration
-    [[ -f "${HOME}/.p10k.zsh" ]] && source "${HOME}/.p10k.zsh"
+if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
+    source "${HOME}/.zinit/bin/zinit.zsh"
 
     # [[plugins]]
 
-    zplug "plugins/asdf", from:oh-my-zsh
-    zplug "plugins/command-not-found", from:oh-my-zsh
-    zplug "plugins/docker", from:oh-my-zsh
-    zplug "plugins/docker-compose", from:oh-my-zsh
-    zplug "plugins/fzf", from:oh-my-zsh
-    zplug "plugins/gem", from:oh-my-zsh
-    zplug "plugins/git", from:oh-my-zsh
-    zplug "plugins/gitignore", from:oh-my-zsh
-    zplug "plugins/gpg-agent", from:oh-my-zsh
-    zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-    zplug "plugins/pip", from:oh-my-zsh
-    zplug "plugins/ruby", from:oh-my-zsh
+    # ref: https://github.com/asdf-vm/asdf/issues/692
+    autoload -U +X bashcompinit && bashcompinit
 
-    zplug "MichaelAquilina/zsh-auto-notify"
+    zinit for \
+      OMZL::functions.zsh \
+      OMZL::clipboard.zsh \
+      OMZL::compfix.zsh \
+      OMZL::completion.zsh \
+      OMZL::correction.zsh \
+      OMZL::directories.zsh \
+      OMZL::git.zsh \
+      OMZL::history.zsh \
+      OMZL::key-bindings.zsh \
+      OMZL::misc.zsh \
+      OMZL::prompt_info_functions.zsh \
+      OMZL::termsupport.zsh \
+      OMZL::theme-and-appearance.zsh
 
-    zplug "MichaelAquilina/zsh-you-should-use"
+    zinit for \
+      OMZP::asdf \
+      OMZP::command-not-found \
+      OMZP::docker-compose \
+      OMZP::fzf \
+      OMZP::gem \
+      OMZP::git \
+      OMZP::gitignore \
+      OMZP::gpg-agent \
+      OMZP::pip \
+      OMZP::ruby
+
+    zinit as"completion" for \
+      OMZP::docker/_docker \
+      zsh-users/zsh-completions
+
     export YSU_HARDCORE=1
 
-    zplug "hlissner/zsh-autopair"
-    zplug "jreese/zsh-titles"
-    zplug "zdharma/fast-syntax-highlighting", defer:2
-    zplug "zsh-users/zsh-autosuggestions"
-    zplug "zsh-users/zsh-completions"
+    zinit for \
+      MichaelAquilina/zsh-auto-notify \
+      MichaelAquilina/zsh-you-should-use \
+      hlissner/zsh-autopair \
+      jreese/zsh-titles \
+      zdharma/fast-syntax-highlighting \
+      zsh-users/zsh-autosuggestions
 
-    zplug "BurntSushi/xsv", as:command, from:gh-r, at:0.13.0
-    zplug "Peltoche/lsd", as:command, from:gh-r, at:0.19.0
-    zplug "ajeetdsouza/zoxide", as:command, from:gh-r, at:v0.5.0
-    zplug "bootandy/dust", as:command, from:gh-r, at:v0.5.4
-    zplug "dalance/procs", as:command, from:gh-r, at:v0.11.3, use:"*x86_64-mac*"
+    zinit as"program" from"gh-r" for \
+      ver"0.13.0" BurntSushi/xsv \
+      ver"0.19.0" Peltoche/lsd \
+      ver"v0.5.0" ajeetdsouza/zoxide \
+      ver"v0.5.4" bootandy/dust \
+      ver"v0.11.3" dalance/procs
 
     # [[theme]]
-    zplug "romkatv/powerlevel10k", as:theme
-
-    if ! zplug check --verbose; then
-        printf "Install? [y/N]: "
-        if read -q; then
-            echo; zplug install
-        fi
+    if [[ -f "${HOME}/.p10k.zsh" ]]; then
+        source "${HOME}/.p10k.zsh"
+        zinit load romkatv/powerlevel10k
     fi
-
-    zplug load
 fi
 
 # [zsh] configuration about history
