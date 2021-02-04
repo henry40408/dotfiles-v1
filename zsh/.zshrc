@@ -118,7 +118,7 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
 fi
 
 # [zsh] configuration about history
-setopt histfindnodups histignorealldups histsavenodups
+setopt histfindnodups histignorealldups histignorespace histsavenodups
 
 # [homebrew] configuration
 export PATH="/usr/local/sbin:${PATH}"
