@@ -37,6 +37,10 @@ benchmark() {
     for i in $(seq 1 10); do /usr/bin/time $SHELL -i -c "exit"; done
 }
 
+decrypt() {
+    eval "$(secrets decrypt .zshrc.local)"
+}
+
 reload() {
     exec zsh
 }
@@ -103,6 +107,7 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
     zinit wait lucid for \
       MichaelAquilina/zsh-auto-notify \
       MichaelAquilina/zsh-you-should-use \
+      chuwy/zsh-secrets \
       hlissner/zsh-autopair \
       jreese/zsh-titles \
       zdharma/fast-syntax-highlighting \
