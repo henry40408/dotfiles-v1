@@ -157,10 +157,8 @@ export PATH="${HOME}/.tmuxifier/bin:${PATH}"
 
 # ref: https://remysharp.com/2018/08/23/cli-improved
 (( $+commands[bat] )) && alias cat="bat"
-(( $+commands[fd] )) && alias find="fd"
 (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-(( $+commands[htop] )) && alias top='htop'
-(( $+commands[rg] )) && alias grep="rg"
+(( $+commands[prettyping] )) && alias ping="prettyping"
 
 # [my] private configuration
 [[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local" || true
