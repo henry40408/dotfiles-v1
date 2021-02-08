@@ -159,6 +159,7 @@ export PATH="${HOME}/.tmuxifier/bin:${PATH}"
 (( $+commands[bat] )) && alias cat="bat"
 (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
 (( $+commands[prettyping] )) && alias ping="prettyping"
+(( $+commands[tmuxifier] )) && eval "$(tmuxifier init -)"
 
 # [my] private configuration
 [[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local" || true
