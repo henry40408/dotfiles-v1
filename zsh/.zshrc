@@ -38,7 +38,7 @@ benchmark() {
 }
 
 decrypt() {
-    eval "$(secrets decrypt .zshrc.local)"
+    eval "$(secrets decrypt environment)"
 }
 
 reload() {
