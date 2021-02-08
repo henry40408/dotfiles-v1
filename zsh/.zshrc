@@ -17,13 +17,13 @@ _install_tpm() {
 _install_vim_plug() {
     echo "==> install vim-plug"
 
-    if [[ -f ~/.vim/autoload/plug.vim ]]; then
-        echo "==> vim-plug installed. remove ~/.vim/autoload/plug.vim to re-install. abort."
+    if [[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
+        echo "==> vim-plug installed. remove ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim to re-install. abort."
         return 1
     fi
 
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
+      --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     echo "==> vim-plug installed"
 }
 
