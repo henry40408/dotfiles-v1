@@ -4,13 +4,13 @@ PLATFORM=`uname`
 
 _install_asdf() {
     echo "==> install asdf"
-    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.8.0
+    git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
     echo "==> asdf installed"
 }
 
 _install_tpm() {
     echo "==> install tpm"
-    git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm --branch v3.0.0
+    git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm --branch v3.0.0
     echo "==> tpm installed"
 }
 
@@ -29,7 +29,7 @@ _install_vim_plug() {
 
 _install_zinit() {
     echo "==> install zinit"
-    git clone https://github.com/zdharma/zinit.git "${HOME}/.zinit/bin"
+    git clone https://github.com/zdharma/zinit.git "$HOME/.zinit/bin"
     echo "==> zinit installed"
 }
 
@@ -46,7 +46,7 @@ reload() {
 }
 
 restore() {
-    pushd ${HOME}/.cfg
+    pushd $HOME/.cfg
     stow $(ls -d */)
     popd
 }
@@ -58,8 +58,8 @@ setup() {
     _install_tpm
 }
 
-if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
-    source "${HOME}/.zinit/bin/zinit.zsh"
+if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
+    source "$HOME/.zinit/bin/zinit.zsh"
 
     # [[plugins]]
 
@@ -99,10 +99,10 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
     zinit wait lucid as"completion" for \
       OMZP::docker/_docker
 
-    export YSU_HARDCORE=1
-
     zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       zsh-users/zsh-completions
+
+    export YSU_HARDCORE=1
 
     zinit wait lucid for \
       MichaelAquilina/zsh-auto-notify \
@@ -123,16 +123,22 @@ if [[ -f "${HOME}/.zinit/bin/zinit.zsh" ]]; then
       ver"0.13.0" BurntSushi/xsv \
       ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
       ver"v0.5.0" mv"zoxide-* -> zoxide" atload'chmod +x zoxide; eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
-      ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
-      ver"v0.11.3" atload"alias ps='procs'" dalance/procs
+      ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust
+
+    if [[ "$OSTYPE" = "*darwin*" ]]; then
+      declare procs_bpick="*-mac*"
+    else
+      declare procs_bpick="*-lnx*"
+    fi
+    zinit ice as"program" from"gh-r" ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'"
+    zinit light dalance/procs
 
     zinit wait lucid as"program" for \
       ver"748a7db" denilsonsa/prettyping
 
     # [[theme]]
-    if [[ -f "${HOME}/.p10k.zsh" ]]; then
-        source "${HOME}/.p10k.zsh"
-
+    if [[ -f "$HOME/.p10k.zsh" ]]; then
+        source "$HOME/.p10k.zsh"
         zinit depth"1" for \
           romkatv/powerlevel10k
     fi
@@ -142,16 +148,16 @@ fi
 setopt histfindnodups histignorealldups histignorespace histsavenodups
 
 # [homebrew] configuration
-export PATH="/usr/local/sbin:${PATH}"
+export PATH="/usr/local/sbin:$PATH"
 
 # [my] per-user executable
-export PATH="${HOME}/bin:${PATH}"
+export PATH="$HOME/bin:$PATH"
 
 # [python] no packages should be installed outside pip
 export PIP_REQUIRE_VIRTUALENV=1
 
 # [tmuxifier]
-export PATH="${HOME}/.tmuxifier/bin:${PATH}"
+export PATH="$HOME/.tmuxifier/bin:$PATH"
 
 # [[aliases]]
 
@@ -162,6 +168,6 @@ export PATH="${HOME}/.tmuxifier/bin:${PATH}"
 (( $+commands[tmuxifier] )) && eval "$(tmuxifier init -)"
 
 # [my] private configuration
-[[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local" || true
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local" || true
 
 # vim: set foldlevel=0 foldmethod=marker:
