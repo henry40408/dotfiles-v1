@@ -64,9 +64,6 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     # ref: https://github.com/asdf-vm/asdf/issues/692
     autoload -U +X bashcompinit && bashcompinit
 
-    # avoid conflict of "ls" command
-    export DISABLE_LS_COLORS=true
-
     zinit wait lucid for \
       OMZL::functions.zsh \
       OMZL::clipboard.zsh \
@@ -80,7 +77,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZL::misc.zsh \
       OMZL::prompt_info_functions.zsh \
       OMZL::termsupport.zsh \
-      OMZL::theme-and-appearance.zsh \
+      atload"DISABLE_LS_COLORS=true" OMZL::theme-and-appearance.zsh \
       OMZP::asdf \
       if"[[ $OSTYPE = *darwin* ]]" OMZP::brew \
       OMZP::command-not-found \
@@ -91,7 +88,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZP::git \
       OMZP::gitignore \
       OMZP::gpg-agent \
-      OMZP::pip \
+      atload"PIP_REQUIRE_VIRTUALENV=1" OMZP::pip \
       OMZP::ruby
 
     zinit wait lucid as"completion" for \
@@ -100,11 +97,9 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       zsh-users/zsh-completions
 
-    export YSU_HARDCORE=1
-
     zinit wait lucid for \
       MichaelAquilina/zsh-auto-notify \
-      MichaelAquilina/zsh-you-should-use \
+      atload"YSU_HARDCORE=1" MichaelAquilina/zsh-you-should-use \
       chuwy/zsh-secrets \
       hlissner/zsh-autopair \
       jreese/zsh-titles \
@@ -116,21 +111,21 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     zinit wait lucid for \
       Aloxaf/fzf-tab
 
-    if [[ "$OSTYPE" = "*darwin*" ]]; then
-      declare procs_bpick="*-mac*"
+    if [[ $OSTYPE = *darwin* ]]; then
+      local procs_bpick="*-mac*"
     else
-      declare procs_bpick="*-lnx*"
+      local procs_bpick="*-lnx*"
     fi
 
     # ref: https://remysharp.com/2018/08/23/cli-improved
-    zinit wait lucid as"program" from"gh-r" for \
+    zinit wait"2" lucid as"program" from"gh-r" for \
       ver"0.13.0" BurntSushi/xsv \
       ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
       ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
       ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
       ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'" dalance/procs
 
-    zinit wait lucid as"program" for \
+    zinit wait"2" lucid as"program" for \
       ver"748a7db" atload"alias ping='prettyping'" denilsonsa/prettyping
 
     # [[theme]]
@@ -141,25 +136,14 @@ fi
 # [zsh] configuration about history
 setopt histfindnodups histignorealldups histignorespace histsavenodups
 
-# [homebrew] configuration
-export PATH="/usr/local/sbin:$PATH"
-
-# [my] per-user executable
-export PATH="$HOME/bin:$PATH"
-
-# [python] no packages should be installed outside pip
-export PIP_REQUIRE_VIRTUALENV=1
-
 # [tmuxifier]
-export PATH="$HOME/.tmuxifier/bin:$PATH"
+[[ -d "$HOME/.tmuxifier" ]] && eval "$(tmuxifier init -)"
 
 # [[aliases]]
 
 # ref: https://remysharp.com/2018/08/23/cli-improved
 (( $+commands[bat] )) && alias cat="bat"
 (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-
-(( $+commands[tmuxifier] )) && eval "$(tmuxifier init -)"
 
 # [my] private configuration
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local" || true
