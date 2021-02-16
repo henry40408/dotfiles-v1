@@ -116,23 +116,22 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     zinit wait lucid for \
       Aloxaf/fzf-tab
 
-    # ref: https://remysharp.com/2018/08/23/cli-improved
-    zinit wait lucid as"program" from"gh-r" for \
-      ver"0.13.0" BurntSushi/xsv \
-      ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
-      ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
-      ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust
-
     if [[ "$OSTYPE" = "*darwin*" ]]; then
       declare procs_bpick="*-mac*"
     else
       declare procs_bpick="*-lnx*"
     fi
-    zinit ice as"program" from"gh-r" ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'"
-    zinit light dalance/procs
+
+    # ref: https://remysharp.com/2018/08/23/cli-improved
+    zinit wait lucid as"program" from"gh-r" for \
+      ver"0.13.0" BurntSushi/xsv \
+      ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
+      ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
+      ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
+      ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'" dalance/procs
 
     zinit wait lucid as"program" for \
-      ver"748a7db" denilsonsa/prettyping
+      ver"748a7db" atload"alias ping='prettyping'" denilsonsa/prettyping
 
     # [[theme]]
     zinit ice depth"1" atload"source $HOME/.p10k.zsh"
@@ -159,7 +158,7 @@ export PATH="$HOME/.tmuxifier/bin:$PATH"
 # ref: https://remysharp.com/2018/08/23/cli-improved
 (( $+commands[bat] )) && alias cat="bat"
 (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-(( $+commands[prettyping] )) && alias ping="prettyping"
+
 (( $+commands[tmuxifier] )) && eval "$(tmuxifier init -)"
 
 # [my] private configuration
