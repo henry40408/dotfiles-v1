@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-PLATFORM=`uname`
-
 _install_asdf() {
     echo "==> install asdf"
     git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
@@ -137,11 +135,8 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       ver"748a7db" denilsonsa/prettyping
 
     # [[theme]]
-    if [[ -f "$HOME/.p10k.zsh" ]]; then
-        source "$HOME/.p10k.zsh"
-        zinit depth"1" for \
-          romkatv/powerlevel10k
-    fi
+    zinit ice depth"1" atload"source $HOME/.p10k.zsh"
+    zinit load romkatv/powerlevel10k
 fi
 
 # [zsh] configuration about history
