@@ -137,7 +137,7 @@ fi
 setopt histfindnodups histignorealldups histignorespace histsavenodups
 
 # [tmuxifier]
-[[ -d "$HOME/.tmuxifier" ]] && eval "$(tmuxifier init -)"
+[[ -d "$HOME/.tmuxifier" ]] && eval "$($HOME/.tmuxifier/bin/tmuxifier init -)"
 
 # [[aliases]]
 
