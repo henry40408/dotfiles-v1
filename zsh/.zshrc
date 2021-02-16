@@ -122,7 +122,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     zinit wait lucid as"program" from"gh-r" for \
       ver"0.13.0" BurntSushi/xsv \
       ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
-      ver"v0.5.0" mv"zoxide-* -> zoxide" atload'chmod +x zoxide; eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
+      ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
       ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust
 
     if [[ "$OSTYPE" = "*darwin*" ]]; then
