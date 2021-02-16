@@ -145,6 +145,9 @@ setopt histfindnodups histignorealldups histignorespace histsavenodups
 (( $+commands[bat] )) && alias cat="bat"
 (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
 
+# [my] executables
+[[ -d "$HOME/bin" ]] && path+="$HOME/bin"
+
 # [my] private configuration
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local" || true
 
