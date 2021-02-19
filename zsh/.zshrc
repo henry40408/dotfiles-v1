@@ -89,10 +89,12 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZP::gitignore \
       OMZP::gpg-agent \
       atload"PIP_REQUIRE_VIRTUALENV=1" OMZP::pip \
-      OMZP::ruby
+      OMZP::ruby \
+      OMZP::rails
 
     zinit wait lucid as"completion" for \
-      OMZP::docker/_docker
+      OMZP::docker/_docker \
+      OMZP::rails/_rails
 
     zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       zsh-users/zsh-completions
