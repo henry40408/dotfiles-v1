@@ -212,7 +212,5 @@ exec_always --no-startup-id numlockx
 bindsym $mod+x exec --no-startup-id "i3lock -c 282a36"
 bindsym $mod+Shift+x exec --no-startup-id "i3lock -c 282a36; systemctl suspend"
 
-for_window [class=".*"] border pixel 0
-
 bindsym --whole-window $mod+button4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym --whole-window $mod+button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
