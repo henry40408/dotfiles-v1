@@ -220,7 +220,7 @@ client.placeholder      $nord0  $nord0  $nord6  $nord0    $nord0
 client.background       $nord6
 
 bindsym $mod+Shift+d exec "dmenu_run -nf '$nord6' -nb '$nord0' -sb '$nord9' -sf '$nord6' -fn 'monospace-10' -p 'dmenu%'"
-bindsym $mod+d exec --no-startup-id "rofi -dpi 205 -theme solarized -combi-modi window,ssh,drun -show combi -show-icons -font 'Ubuntu 12'"
+bindsym $mod+d exec --no-startup-id "rofi -dpi 192 -theme Arc-Dark -combi-modi window,ssh,drun -show combi -show-icons"
 
 exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.rb
 exec_always --no-startup-id numlockx
