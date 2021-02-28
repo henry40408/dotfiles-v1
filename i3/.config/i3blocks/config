@@ -1,0 +1,35 @@
+interval=5
+markup=pango
+
+[weather]
+command=curl https://wttr.in?format=3
+interval=60
+
+[cpu]
+command=echo "&#xfb19; $(/usr/share/i3blocks/cpu_usage)"
+interval=1
+
+[gpu]
+command=echo "&#xf03d; $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%"
+interval=1
+
+[load]
+command=echo "&#xf0e4; $(uptime | awk -F'[a-z]:' '{print $2}'| awk -F',' '{print $1 $2 $3}' | xargs)"
+interval=60
+
+[mem]
+command=echo "&#xf85a; $(/usr/share/i3blocks/memory)"
+
+[disk]
+command=echo "&#xf0a0; $(/usr/share/i3blocks/disk)"
+
+[iface]
+command=echo "&#xf817; $(/usr/share/i3blocks/iface)"
+
+[volume]
+command=echo "&#xf028; $(pactl list sinks | grep '^[[:space:]]Volume:' | awk '{print "L" $5 " R" $12}')"
+interval=1
+
+[date]
+command=echo "&#xf017; $(date +"%Y-%m-%d %a %H:%M")"
+interval=1
