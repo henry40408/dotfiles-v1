@@ -224,6 +224,7 @@ bindsym $mod+d exec --no-startup-id "rofi -dpi 205 -theme solarized -combi-modi 
 
 exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.rb
 exec_always --no-startup-id numlockx
+exec_always --no-startup-id picom -b
 
 bindsym $mod+x exec --no-startup-id "i3lock -c 2e3440"
 bindsym $mod+Shift+x exec --no-startup-id "i3lock -c 2e3440; systemctl suspend"
@@ -232,3 +233,7 @@ bindsym --whole-window $mod+button4 exec --no-startup-id pactl set-sink-volume @
 bindsym --whole-window $mod+button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 
 for_window [class="jetbrains-toolbox"] floating enable
+
+gaps inner 10
+smart_borders on
+smart_gaps on
