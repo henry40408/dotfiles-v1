@@ -55,6 +55,8 @@ Plug 'Shougo/dein.vim'
 " }
 
 " Code Display {
+    Plug 'arcticicestudio/nord-vim'
+
     " A vim plugin to display the indention levels with thin vertical lines
     Plug 'Yggdroot/indentLine'
 
@@ -69,8 +71,6 @@ Plug 'Shougo/dein.vim'
     let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|(_build|deps|node_modules))$'
     let g:ctrlp_map='<leader>p'
     let g:ctrlp_working_path_mode='w'
-
-    Plug 'dracula/vim', { 'as': 'dracula' }
 " }
 
 " Integrations {
@@ -190,7 +190,7 @@ syntax on
 " }
 
 " Theme {
-    colorscheme dracula
+    colorscheme nord
 " }
 
 " vim: set foldmarker={,}:
