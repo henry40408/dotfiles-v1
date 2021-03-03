@@ -18,6 +18,7 @@ Plug 'Shougo/dein.vim'
 
     Plug 'marijnh/tern_for_vim'
     Plug 'mattn/emmet-vim'
+    Plug 'mboughaba/i3config.vim'
 
     Plug 'mxw/vim-jsx'
     let g:jsx_ext_required=0
@@ -122,9 +123,6 @@ filetype plugin indent on
 syntax on
 
 " Configuration {
-    " migrated from spacemacs ¯\_(ツ)_/¯
-    let mapleader="\<Space>"
-
     set autoindent expandtab shiftwidth=4 tabstop=4
     set backspace=2
     set cursorline laststatus=2 number
