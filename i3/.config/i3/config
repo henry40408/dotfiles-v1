@@ -219,15 +219,17 @@ client.placeholder      $nord0  $nord0  $nord6  $nord0    $nord0
 
 client.background       $nord6
 
-bindsym $mod+Shift+d exec "dmenu_run -nf '$nord6' -nb '$nord0' -sb '$nord9' -sf '$nord6' -fn 'monospace-10' -p 'dmenu%'"
-bindsym $mod+d exec --no-startup-id "rofi -dpi 192 -theme Arc-Dark -combi-modi window,ssh,drun -show combi -show-icons"
+bindsym $mod+Shift+d exec dmenu_run -nf '$nord6' -nb '$nord0' -sb '$nord9' -sf '$nord6' -fn 'monospace-10' -p 'dmenu%'
+bindsym $mod+d exec --no-startup-id rofi -dpi 192 -theme Arc-Dark -combi-modi window,ssh,drun -show combi -show-icons
 
 exec_always --no-startup-id ~/.config/i3/unsplash-wallpaper.rb
 exec_always --no-startup-id numlockx
 exec_always --no-startup-id picom -b
 
-bindsym $mod+x exec --no-startup-id "i3lock -c 2e3440"
-bindsym $mod+Shift+x exec --no-startup-id "i3lock -c 2e3440; systemctl suspend"
+bindsym $mod+x exec --no-startup-id i3lock -c 2e3440
+
+# suspend immediately, refer https://nparsons.uk/blog/automatic-i3lock-on-suspend for auto i3lock after suspend
+bindsym $mod+Shift+x exec --no-startup-id systemctl suspend
 
 bindsym --whole-window $mod+button4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym --whole-window $mod+button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -237,3 +239,5 @@ for_window [class="jetbrains-toolbox"] floating enable
 gaps inner 10
 smart_borders on
 smart_gaps on
+
+# vim: filetype=i3config
