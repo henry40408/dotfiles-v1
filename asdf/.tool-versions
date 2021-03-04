@@ -6,7 +6,7 @@ fd 8.2.1
 flutter 1.22.5-stable
 gcloud 323.0.0
 golang 1.16
-github-cli 1.6.2
+github-cli 1.7.0
 helm 3.5.2 2.17.0
 kubectl 1.20.4
 mkcert 1.4.3
