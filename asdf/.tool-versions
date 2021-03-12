@@ -3,7 +3,7 @@ consul 1.9.3
 deno 1.7.5
 doctl 1.57.0
 fd 8.2.1
-flutter 1.22.5-stable
+flutter 2.0.1-stable 1.22.5-stable
 gcloud 323.0.0
 golang 1.16
 github-cli 1.7.0
