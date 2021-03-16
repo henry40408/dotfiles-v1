@@ -129,6 +129,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       ver"v0.7.5" mv"ctop-* -> ctop" bcicen/ctop \
       ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
       ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'" dalance/procs \
+      ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv \
       ver"v1.2.4" drone/drone-cli
 
     zinit wait"2" lucid as"program" for \
