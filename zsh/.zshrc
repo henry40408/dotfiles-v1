@@ -116,15 +116,17 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
 
     if [[ $OSTYPE = *darwin* ]]; then
       local procs_bpick="*-mac*"
+      local tokei_bpick="*-apple-darwin*"
     else
       local procs_bpick="*-lnx*"
+      local tokei_bpick="*-linux-gnu*"
     fi
 
     # ref: https://remysharp.com/2018/08/23/cli-improved
     zinit wait"2" lucid as"program" from"gh-r" for \
       ver"0.13.0" BurntSushi/xsv \
       ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
-      ver"v12.1.2" XAMPPRocky/tokei \
+      ver"v12.1.2" bpick"$tokei_bpick" XAMPPRocky/tokei \
       ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
       ver"v0.7.5" mv"ctop-* -> ctop" bcicen/ctop \
       ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
