@@ -73,9 +73,12 @@ brew "puma/puma/puma-dev"
 brew "robotsandpencils/made/xcodes"
 brew "weihanglo/sfz/sfz"
 cask "1password"
+cask "aldente"
 cask "alfred"
+cask "android-file-transfer"
 cask "appcleaner"
 cask "cheatsheet"
+cask "chromium"
 cask "daisydisk"
 cask "discord"
 cask "docker"
@@ -93,6 +96,7 @@ cask "keka"
 cask "keyboardcleantool"
 cask "moom"
 cask "ngrok"
+cask "obsidian"
 cask "parallels"
 cask "pocket-casts"
 cask "protonvpn"
@@ -120,6 +124,5 @@ mas "Numbers", id: 409203825
 mas "Pocket", id: 568494494
 mas "Reeder", id: 1529448980
 mas "RunCat", id: 1429033973
-mas "Spark", id: 1176895641
 mas "Things", id: 904280696
 mas "Unsplash Wallpapers", id: 1284863847
