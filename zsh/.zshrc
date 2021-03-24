@@ -89,6 +89,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZP::golang \
       OMZP::gitignore \
       OMZP::gpg-agent \
+      OMZP::kubectl \
       atload"PIP_REQUIRE_VIRTUALENV=1" OMZP::pip \
       OMZP::ruby \
       OMZP::rails
