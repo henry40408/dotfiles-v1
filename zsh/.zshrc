@@ -64,6 +64,13 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     # ref: https://github.com/asdf-vm/asdf/issues/692
     autoload -U +X bashcompinit && bashcompinit
 
+    # load the following libraries / plugins immediately
+    # because we want to use them at the first line
+    zinit for \
+      OMZL::history.zsh \
+      OMZP::asdf \
+      zsh-users/zsh-autosuggestions
+
     zinit wait lucid for \
       OMZL::functions.zsh \
       OMZL::clipboard.zsh \
@@ -72,13 +79,11 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZL::correction.zsh \
       OMZL::directories.zsh \
       OMZL::git.zsh \
-      OMZL::history.zsh \
       OMZL::key-bindings.zsh \
       OMZL::misc.zsh \
       OMZL::prompt_info_functions.zsh \
       OMZL::termsupport.zsh \
       atload"DISABLE_LS_COLORS=true" OMZL::theme-and-appearance.zsh \
-      OMZP::asdf \
       if"[[ $OSTYPE = *darwin* ]]" OMZP::brew \
       OMZP::command-not-found \
       OMZP::common-aliases \
@@ -107,8 +112,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       chuwy/zsh-secrets \
       hlissner/zsh-autopair \
       jreese/zsh-titles \
-      zdharma/fast-syntax-highlighting \
-      zsh-users/zsh-autosuggestions
+      zdharma/fast-syntax-highlighting
 
     # fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets,
     # such as zsh-autosuggestions or fast-syntax-highlighting!!
