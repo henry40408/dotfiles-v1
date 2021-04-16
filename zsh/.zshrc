@@ -64,14 +64,8 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
     # ref: https://github.com/asdf-vm/asdf/issues/692
     autoload -U +X bashcompinit && bashcompinit
 
-    # load the following libraries / plugins immediately
-    # because we want to use them at the first line
+    # synchronously load the following libraries / plugins
     zinit for \
-      OMZL::history.zsh \
-      OMZP::asdf \
-      zsh-users/zsh-autosuggestions
-
-    zinit wait lucid for \
       OMZL::functions.zsh \
       OMZL::clipboard.zsh \
       OMZL::compfix.zsh \
@@ -79,11 +73,17 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZL::correction.zsh \
       OMZL::directories.zsh \
       OMZL::git.zsh \
+      OMZL::history.zsh \
       OMZL::key-bindings.zsh \
       OMZL::misc.zsh \
       OMZL::prompt_info_functions.zsh \
       OMZL::termsupport.zsh \
       atload"DISABLE_LS_COLORS=true" OMZL::theme-and-appearance.zsh \
+      OMZP::asdf \
+      zsh-users/zsh-autosuggestions
+
+    # asynchronously load the following libraries / plugins
+    zinit wait lucid for \
       if"[[ $OSTYPE = *darwin* ]]" OMZP::brew \
       OMZP::command-not-found \
       OMZP::common-aliases \
