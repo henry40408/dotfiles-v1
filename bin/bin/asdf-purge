@@ -19,15 +19,10 @@ end
 plugins = tuples.map{ |p| p[0] }.uniq
 
 ignore_parents("~/.asdf/installs").each do |plugin|
-  if plugins.include?(plugin)
-    ignore_parents("~/.asdf/installs/#{plugin}").each do |version|
-      next if tuples.include?([plugin, version])
-      full_path = File.expand_path("~/.asdf/installs/#{plugin}/#{version}")
-      FileUtils.remove_dir(full_path)
-      puts "- #{full_path}"
-    end
-  else
-    full_path = File.expand_path("~/.asdf/installs/#{plugin}")
+  preserve_plugin = plugins.include?(plugin)
+  ignore_parents("~/.asdf/installs/#{plugin}").each do |version|
+    next if preserve_plugin && tuples.include?([plugin, version])
+    full_path = File.expand_path("~/.asdf/installs/#{plugin}/#{version}")
     FileUtils.remove_dir(full_path)
     puts "- #{full_path}"
   end
