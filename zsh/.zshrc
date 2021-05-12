@@ -97,8 +97,10 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       OMZP::helm \
       OMZP::kubectl \
       atload"PIP_REQUIRE_VIRTUALENV=1" OMZP::pip \
+      OMZP::python \
       OMZP::ruby \
-      OMZP::rails
+      OMZP::rails \
+      OMZP::virtualenvwrapper
 
     zinit wait lucid as"completion" for \
       OMZP::docker/_docker \
