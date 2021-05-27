@@ -4,7 +4,7 @@ deno 1.7.5
 doctl 1.57.0
 elixir 1.11.4
 fd 8.2.1
-flutter 2.0.1-stable 1.22.5-stable
+flutter 2.0.1-stable
 gcloud 323.0.0
 golang 1.16.2
 github-cli 1.9.2
@@ -17,7 +17,7 @@ pulumi 2.22.0
 python 3.9.1 2.7.18
 ripgrep 12.1.1
 ruby 2.7.2 2.4.2 2.5.1 2.5.8 2.6.6
-rust 1.50.0 1.49.0
+rust 1.49.0
 terraform 0.14.8 0.13.6
 tflint 0.24.1
 tmux 3.2
