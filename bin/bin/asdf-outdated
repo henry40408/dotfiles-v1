@@ -3,36 +3,22 @@
 
 require_relative 'asdf-lib'
 
-PYTHON_RUBY = ->(version){ version.match?(/^\d/) && %w[dev preview rc].none?{ |s| version.include?(s) } }
+read_tool_versions.each do |(plugin, versions)|
+  newer_versions = IO.popen("asdf list all #{plugin}").read.lines
+    .map(&:strip)
+    .select{ |v| Gem::Version.correct?(v) }
+    .reject{ |v| v.include?('-dev') || v.include?('-alpha') || v.include?('-beta') }
 
-FILTERS = {
-  flutter: ->(version){ %w[beta pre].none?{ |s| version.include?(s) } },
-  helm: ->(version){ %w[rc].none?{ |s| version.include?(s) } },
-  golang: ->(version){ %w[beta].none?{ |s| version.include?(s) } },
-  kubectl: ->(version){ %w[alpha].none?{ |s| version.include?(s) } },
-  python: PYTHON_RUBY,
-  ruby: PYTHON_RUBY,
-  rust: ->(version){ %w[beta nightly stable].none?{ |s| version.include?(s) } },
-  terraform: ->(version){ %w[alpha].none?{ |s| version.include?(s) } },
-}
+  # releases = newer_versions.map{ |v| Gem::Version.new(v).release.to_s }
+  # newer_versions = newer_versions.select{ |v| releases.include?(v) }
 
-read_tool_versions(first_only: true).each do |(plugin, version)|
-  lines = IO.popen("asdf list all #{plugin}").read.lines.map(&:strip)
-  
-  filter = FILTERS[plugin.to_sym]
-  lines = if filter.nil?
-    lines
-  else
-    lines = lines.select{ |line| filter.call(line) }
-  end
-
-  latest_version = lines.last
+  latest_version = newer_versions.last
   colorized = if latest_version.nil?
     "no latest version".gray
-  elsif latest_version != version
-    "#{version} -> #{latest_version}".red
-  else
+  elsif versions.include?(latest_version)
     "up-to-date".green
+  else
+    "#{versions.join(', ')} -> #{latest_version}".red
   end
   puts "#{plugin}: #{colorized}"
 end

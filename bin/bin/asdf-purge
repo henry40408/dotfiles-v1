@@ -23,7 +23,7 @@ ignore_parents("~/.asdf/installs").each do |plugin|
   ignore_parents("~/.asdf/installs/#{plugin}").each do |version|
     next if preserve_plugin && tuples.include?([plugin, version])
     full_path = File.expand_path("~/.asdf/installs/#{plugin}/#{version}")
-    FileUtils.remove_dir(full_path)
+    FileUtils.remove_dir(full_path, true)
     puts "- #{full_path}"
   end
 end
