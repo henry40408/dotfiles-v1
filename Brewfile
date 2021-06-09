@@ -79,7 +79,6 @@ cask "discord"
 cask "docker"
 cask "firefox"
 cask "font-firacode-nerd-font"
-cask "fork"
 cask "genymotion"
 cask "gpg-suite-no-mail"
 cask "imageoptim"
@@ -103,7 +102,6 @@ cask "spotify"
 cask "steam"
 cask "syncthing"
 cask "telegram-desktop"
-cask "typora"
 cask "vagrant"
 cask "virtualbox"
 cask "visual-studio-code"
@@ -122,3 +120,4 @@ mas "Reeder", id: 1529448980
 mas "RunCat", id: 1429033973
 mas "Things", id: 904280696
 mas "Unsplash Wallpapers", id: 1284863847
+mas "Welly", id: 1521402269
