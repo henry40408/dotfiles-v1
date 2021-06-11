@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+ARCH="$(uname -i)"
+
 _install_asdf() {
     echo "==> install asdf"
     git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
@@ -110,8 +112,9 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       zsh-users/zsh-completions
 
     zinit wait lucid for \
-      MichaelAquilina/zsh-auto-notify \
+      if"(( $+commands[notify-send] ))" MichaelAquilina/zsh-auto-notify \
       atload"YSU_HARDCORE=1" MichaelAquilina/zsh-you-should-use \
+      agkozak/zsh-z \
       chuwy/zsh-secrets \
       hlissner/zsh-autopair \
       jreese/zsh-titles \
@@ -123,22 +126,21 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       Aloxaf/fzf-tab
 
     if [[ $OSTYPE = *darwin* ]]; then
-      local procs_bpick="*-mac*"
       local tokei_bpick="*-apple-darwin*"
     else
-      local procs_bpick="*-lnx*"
       local tokei_bpick="*-linux-gnu*"
+      if [[ $ARCH = *aarch64* ]]; then
+        local lsd_bpick="*-aarch64*"
+      else
+        local lsd_bpick="*-x86_64*"
+      fi
     fi
 
     # ref: https://remysharp.com/2018/08/23/cli-improved
     zinit wait"2" lucid as"program" from"gh-r" for \
-      ver"0.13.0" BurntSushi/xsv \
-      ver"0.19.0" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
+      ver"0.20.1" bpick"$lsd_bpick" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
       ver"v12.1.2" bpick"$tokei_bpick" XAMPPRocky/tokei \
-      ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
       ver"v0.7.5" mv"ctop-* -> ctop" bcicen/ctop \
-      ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
-      ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'" dalance/procs \
       ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv \
       ver"v1.2.4" drone/drone-cli
 
