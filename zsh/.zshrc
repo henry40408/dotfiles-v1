@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-ARCH="$(uname -i)"
-
 _install_asdf() {
     echo "==> install asdf"
     git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
@@ -129,7 +127,8 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       local tokei_bpick="*-apple-darwin*"
     else
       local tokei_bpick="*-linux-gnu*"
-      if [[ $ARCH = *aarch64* ]]; then
+      local arch="$(uname -i)"
+      if [[ $arch = *aarch64* ]]; then
         local lsd_bpick="*-aarch64*"
       else
         local lsd_bpick="*-x86_64*"
