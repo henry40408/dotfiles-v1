@@ -40,6 +40,7 @@ brew "imagemagick"
 brew "ispell"
 brew "jq"
 brew "libuv"
+brew "lnav"
 brew "mackup"
 brew "mas"
 brew "memcached", restart_service: true
