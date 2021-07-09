@@ -49,6 +49,7 @@ brew "nasm"
 brew "neovim"
 brew "nss"
 brew "opencc"
+brew "pandoc"
 brew "pinentry-mac"
 brew "postgresql", restart_service: true
 brew "prettyping"
@@ -121,6 +122,7 @@ mas "LINE", id: 539883307
 mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pocket", id: 568494494
+mas "PopClip", id: 445189367
 mas "Reeder", id: 1529448980
 mas "RunCat", id: 1429033973
 mas "Things", id: 904280696
