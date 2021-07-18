@@ -124,6 +124,8 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
 
     # ref: https://remysharp.com/2018/08/23/cli-improved
     if [[ $OSTYPE = *darwin* ]]; then
+        zinit as"program" from"gh-r" for \
+              ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv
         zinit wait"2" lucid as"program" from"gh-r" for \
               ver"0.13.0" BurntSushi/xsv \
               ver"0.20.1" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
@@ -132,9 +134,10 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
               ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
               ver"v0.11.3" atload"alias ps='procs'" dalance/procs \
               ver"v0.7.5" mv"ctop-* -> ctop" bcicen/ctop \
-              ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv \
               ver"v1.2.4" drone/drone-cli
     elif [[ $(uname -i) = x86_64 ]]; then
+        zinit as"program" from"gh-r" for \
+              ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv
         zinit wait"2" lucid as"program" from"gh-r" for \
               ver"0.13.0" BurntSushi/xsv \
               ver"0.20.1" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
@@ -143,7 +146,6 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
               ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
               ver"v0.11.3" bpick"*-lnx*" atload"alias ps='procs'" dalance/procs \
               ver"v0.7.5" mv"ctop-* -> ctop" bcicen/ctop \
-              ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv \
               ver"v1.2.4" drone/drone-cli
     fi
 
