@@ -3,14 +3,28 @@
 
 require_relative 'asdf-lib'
 
-read_tool_versions.each do |(plugin, versions)|
-  newer_versions = IO.popen("asdf list all #{plugin}").read.lines
-    .map(&:strip)
-    .select{ |v| Gem::Version.correct?(v) }
-    .reject{ |v| v.include?('-dev') || v.include?('-alpha') || v.include?('-beta') }
+ignore_patterns = {
+  'python' => ->(v){ v.include?('b') },
+  'golang' => ->(v){ %w[beta rc].any?{ |w| v.include?(w) } },
+  'kubectl' => ->(v){ v.include?('rc') },
+}
 
-  # releases = newer_versions.map{ |v| Gem::Version.new(v).release.to_s }
-  # newer_versions = newer_versions.select{ |v| releases.include?(v) }
+tool_versions = read_tool_versions
+
+if ARGV.size > 0
+  tool_versions = tool_versions.select{ |(p, _vs)| ARGV.include?(p) }
+end
+
+tool_versions.each do |(plugin, versions)|
+  newer_versions = IO.popen("asdf list all #{plugin}")
+    .read.lines.map(&:strip)
+    .select{ |v| Gem::Version.correct?(v) }
+    .reject{ |v| %w[-dev -alpha -beta].any?{ |w| v.include?(w) } }
+
+  ignore_pattern = ignore_patterns[plugin]
+  if !ignore_pattern.nil?
+    newer_versions = newer_versions.reject{ |v| ignore_pattern.(v) }
+  end
 
   latest_version = newer_versions.last
   colorized = if latest_version.nil?
@@ -18,7 +32,7 @@ read_tool_versions.each do |(plugin, versions)|
   elsif versions.include?(latest_version)
     "up-to-date".green
   else
-    "#{versions.join(', ')} -> #{latest_version}".red
+    "#{latest_version} <- #{versions.join(', ')}".red
   end
   puts "#{plugin}: #{colorized}"
 end
