@@ -121,7 +121,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       zsh-users/zsh-completions
 
     zinit wait lucid for \
-      if"(( $+commands[notify-send] ))" MichaelAquilina/zsh-auto-notify \
+      if"[[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] ))" MichaelAquilina/zsh-auto-notify \
       atload"YSU_HARDCORE=1" MichaelAquilina/zsh-you-should-use \
       chuwy/zsh-secrets \
       hlissner/zsh-autopair \
