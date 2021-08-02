@@ -15,24 +15,32 @@ if ARGV.size > 0
   tool_versions = tool_versions.select{ |(p, _vs)| ARGV.include?(p) }
 end
 
+threads = []
 tool_versions.each do |(plugin, versions)|
-  newer_versions = IO.popen("asdf list all #{plugin}")
-    .read.lines.map(&:strip)
-    .select{ |v| Gem::Version.correct?(v) }
-    .reject{ |v| %w[-dev -alpha -beta].any?{ |w| v.include?(w) } }
+  threads << Thread.new do
+    newer_versions = IO.popen("asdf list all #{plugin}")
+      .read.lines.map(&:strip)
+      .select{ |v| Gem::Version.correct?(v) }
+      .reject{ |v| %w[-dev -alpha -beta].any?{ |w| v.include?(w) } }
 
-  ignore_pattern = ignore_patterns[plugin]
-  if !ignore_pattern.nil?
-    newer_versions = newer_versions.reject{ |v| ignore_pattern.(v) }
-  end
+    ignore_pattern = ignore_patterns[plugin]
+    if !ignore_pattern.nil?
+      newer_versions = newer_versions.reject{ |v| ignore_pattern.(v) }
+    end
 
-  latest_version = newer_versions.last
-  colorized = if latest_version.nil?
-    "no latest version".gray
-  elsif versions.include?(latest_version)
-    "up-to-date".green
-  else
-    "#{latest_version} <- #{versions.join(', ')}".red
+    latest_version = newer_versions.last
+    colorized = if latest_version.nil?
+      "no latest version".gray
+    elsif versions.include?(latest_version)
+      "up-to-date".green
+    else
+      "#{latest_version} <- #{versions.join(', ')}".red
+    end
+    
+    "#{plugin}: #{colorized}"
   end
-  puts "#{plugin}: #{colorized}"
+end
+
+threads.map(&:join).each do |t|
+  puts t.value
 end
