@@ -49,6 +49,7 @@ brew "memcached", restart_service: true
 brew "mosh"
 brew "nasm"
 brew "neovim"
+brew "nmap"
 brew "nss"
 brew "opencc"
 brew "pandoc"
@@ -79,7 +80,6 @@ cask "1password"
 cask "alfred"
 cask "android-file-transfer"
 cask "appcleaner"
-cask "chromium"
 cask "daisydisk"
 cask "discord"
 cask "docker"
@@ -88,6 +88,7 @@ cask "firefox"
 cask "font-firacode-nerd-font"
 cask "genymotion"
 cask "gpg-suite-no-mail"
+cask "iina"
 cask "imageoptim"
 cask "intel-power-gadget"
 cask "iterm2"
@@ -95,6 +96,7 @@ cask "java"
 cask "jetbrains-toolbox"
 cask "keka"
 cask "keyboardcleantool"
+cask "monitorcontrol"
 cask "moom"
 cask "ngrok"
 cask "obsidian"
@@ -109,7 +111,6 @@ cask "spotify"
 cask "steam"
 cask "syncthing"
 cask "telegram"
-cask "vagrant"
 cask "visual-studio-code"
 cask "zoom"
 mas "Affinity Designer", id: 824171161
@@ -122,7 +123,6 @@ mas "LINE", id: 539883307
 mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pocket", id: 568494494
-mas "PopClip", id: 445189367
 mas "Reeder", id: 1529448980
 mas "RunCat", id: 1429033973
 mas "Things", id: 904280696
