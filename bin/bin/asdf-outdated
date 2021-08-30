@@ -4,7 +4,7 @@
 require_relative 'asdf-lib'
 
 ignore_patterns = {
-  'python' => ->(v){ v.include?('b') },
+  'python' => ->(v){ v.include?('b') || v.include?('rc') },
   'golang' => ->(v){ %w[beta rc].any?{ |w| v.include?(w) } },
   'kubectl' => ->(v){ v.include?('rc') },
 }
