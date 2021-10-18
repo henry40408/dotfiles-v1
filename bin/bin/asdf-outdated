@@ -4,9 +4,10 @@
 require_relative 'asdf-lib'
 
 ignore_patterns = {
-  'python' => ->(v){ v.include?('b') || v.include?('rc') },
+  'python' => ->(v){ %w[a b rc].any?{ |w| v.include?(w) } },
   'golang' => ->(v){ %w[beta rc].any?{ |w| v.include?(w) } },
   'kubectl' => ->(v){ v.include?('rc') },
+  'tmux' => ->(v){ v.include?('rc') },
 }
 
 tool_versions = read_tool_versions
@@ -36,7 +37,7 @@ tool_versions.each do |(plugin, versions)|
     else
       "#{latest_version} <- #{versions.join(', ')}".red
     end
-    
+
     "#{plugin}: #{colorized}"
   end
 end
