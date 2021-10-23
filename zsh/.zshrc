@@ -32,7 +32,7 @@ _install_zinit() {
 }
 
 benchmark() {
-    for i in $(seq 1 10); do /usr/bin/time $SHELL -i -c "exit"; done
+    for i in $(seq 1 10); do time $SHELL -i -c "exit"; done
 }
 
 check() {
