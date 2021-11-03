@@ -27,7 +27,7 @@ _install_vim_plug() {
 
 _install_zinit() {
     echo "==> install zinit"
-    git clone https://github.com/zdharma/zinit.git "$HOME/.zinit/bin"
+    git clone https://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin"
     echo "==> zinit installed"
 }
 
@@ -126,7 +126,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       chuwy/zsh-secrets \
       hlissner/zsh-autopair \
       jreese/zsh-titles \
-      zdharma/fast-syntax-highlighting
+      zdharma-continuum/fast-syntax-highlighting
 
     # fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets,
     # such as zsh-autosuggestions or fast-syntax-highlighting!!
@@ -155,7 +155,7 @@ if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
       ver"v0.16.1" puma/puma-dev
 
     zinit wait"2" lucid as"program" for \
-      ver"748a7db" atload"alias ping='prettyping'" denilsonsa/prettyping
+      ver"748a7dbc57eed25a99b96cc0e618169b82770155" atload"alias ping='prettyping'" denilsonsa/prettyping
 
     # [[theme]]
     zinit ice depth"1" atload"source $HOME/.p10k.zsh"
