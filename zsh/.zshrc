@@ -1,34 +1,86 @@
 #!/usr/bin/env zsh
 
+if [[ -z $HOME ]]; then
+    echo "\$HOME is not set. abort."
+    exit 1
+fi
+
+DOTFILES="$HOME/.local/share/dotfiles"
+
 _install_asdf() {
     echo "==> install asdf"
-    git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
+    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
     echo "==> asdf installed"
+}
+
+_install_crates() {
+    local crates
+    
+    crates=(
+        du-dust:0.6.2
+        lsd:0.20.1
+        procs:0.11.10
+        tokei:12.1.2
+        xsv:0.13.0
+        zoxide:0.7.9
+    )
+
+    if (( $+commands[cargo] )); then
+        local name
+        local version
+
+        for line in $crates; do
+            name="$(echo $line | awk -F: '{print $1}')"
+            version="$(echo $line | awk -F: '{print $2}')"
+            cargo install $name --version $version
+        done
+    fi
+}
+
+_install_plugins() {
+    local plugins
+    
+    plugins=(
+        ohmyzsh/ohmyzsh
+        romkatv/zsh-defer
+        zsh-users/zsh-autosuggestions
+        zsh-users/zsh-completions
+        zsh-users/zsh-syntax-highlighting
+        MichaelAquilina/zsh-auto-notify
+        MichaelAquilina/zsh-you-should-use
+        chuwy/zsh-secrets
+        hlissner/zsh-autopair
+        jreese/zsh-titles
+        Aloxaf/fzf-tab
+        romkatv/powerlevel10k
+    )
+
+    mkdir -p $DOTFILES
+
+    pushd $DOTFILES > /dev/null
+
+    local basename
+    for plugin in $plugins; do
+        basename="$(echo $plugin | awk -F/ '{print $2}')"
+        [[ ! -d "$DOTFILES/$basename" ]] && git clone --depth 1 "https://github.com/$plugin.git" $DOTFILES/$basename
+    done
+
+    popd > /dev/null
 }
 
 _install_tpm() {
     echo "==> install tpm"
-    git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm --branch v3.0.0
+    [[ ! -d "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm --branch v3.0.0
     echo "==> tpm installed"
 }
 
 _install_vim_plug() {
     echo "==> install vim-plug"
-
-    if [[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
-        echo "==> vim-plug installed. remove ${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim to re-install. abort."
-        return 1
+    if [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
+        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
+            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
-
-    curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
-      --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     echo "==> vim-plug installed"
-}
-
-_install_zinit() {
-    echo "==> install zinit"
-    git clone https://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin"
-    echo "==> zinit installed"
 }
 
 benchmark() {
@@ -36,14 +88,25 @@ benchmark() {
 }
 
 check() {
-    file $(which direnv)
-    file $(which xsv)
-    file $(which lsd)
-    file $(which tokei)
-    file $(which zoxide)
-    file $(which dust)
-    file $(which procs)
-    file $(which puma-dev)
+    local binaries
+    binaries=(
+        direnv
+        xsv
+        lsd
+        tokei
+        zoxide
+        dust
+        procs
+        puma-dev
+    )
+
+    for binary in $binaries; do
+        if (( $+commands[$binary] )); then
+            file "$(which $binary)"
+        else
+            echo "$binary not found"
+        fi
+    done
 }
 
 decrypt() {
@@ -61,123 +124,135 @@ restore() {
 }
 
 setup() {
-    _install_zinit
     _install_asdf
     _install_vim_plug
     _install_tpm
+    _install_plugins
+    _install_crates
 }
 
-if [[ -f "$HOME/.zinit/bin/zinit.zsh" ]]; then
-    source "$HOME/.zinit/bin/zinit.zsh"
+update-plugins() {
+    pushd $DOTFILES > /dev/null
+    for d in */; do
+        echo "update $d"
+        pushd $d > /dev/null
+        git pull
+        popd > /dev/null
+    done
+    popd > /dev/null
+}
 
-    # [[plugins]]
+# wrap initialization in an anonymous function to prevent variable leak
+function() {
+    if [[ -d "$DOTFILES" ]]; then
+        local libraries
 
-    # ref: https://github.com/asdf-vm/asdf/issues/692
-    autoload -U +X bashcompinit && bashcompinit
+        pushd $DOTFILES > /dev/null
 
-    # synchronously load the following libraries / plugins
-    zinit for \
-      OMZL::functions.zsh \
-      OMZL::clipboard.zsh \
-      OMZL::compfix.zsh \
-      OMZL::completion.zsh \
-      OMZL::correction.zsh \
-      OMZL::directories.zsh \
-      OMZL::git.zsh \
-      OMZL::history.zsh \
-      OMZL::key-bindings.zsh \
-      OMZL::misc.zsh \
-      OMZL::prompt_info_functions.zsh \
-      OMZL::termsupport.zsh \
-      atload"DISABLE_LS_COLORS=true" OMZL::theme-and-appearance.zsh \
-      OMZP::asdf \
-      zsh-users/zsh-autosuggestions
+        # ref: https://github.com/asdf-vm/asdf/issues/692
+        autoload -U +X bashcompinit && bashcompinit
 
-    # asynchronously load the following libraries / plugins
-    zinit wait lucid for \
-      if"[[ $OSTYPE = *darwin* ]]" OMZP::brew \
-      OMZP::command-not-found \
-      OMZP::common-aliases \
-      OMZP::docker-compose \
-      OMZP::fzf \
-      OMZP::gem \
-      OMZP::git \
-      OMZP::golang \
-      OMZP::gitignore \
-      OMZP::gpg-agent \
-      OMZP::helm \
-      OMZP::kubectl \
-      atload"PIP_REQUIRE_VIRTUALENV=1" OMZP::pip \
-      OMZP::python \
-      OMZP::ruby \
-      OMZP::rails \
-      OMZP::virtualenvwrapper
+        source zsh-defer/zsh-defer.plugin.zsh
 
-    zinit wait lucid as"completion" for \
-      OMZP::docker/_docker \
-      OMZP::rails/_rails
+        # [library]
+        libraries=(
+            functions
+            clipboard
+            compfix
+            completion
+            correction
+            directories
+            git
+            history
+            key-bindings
+            misc
+            prompt_info_functions
+            termsupport
+        )
+        for library in $libraries; do
+            source ohmyzsh/lib/$library.zsh
+        done
 
-    zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-      zsh-users/zsh-completions
+        export DISABLE_LS_COLORS=true
+        source ohmyzsh/lib/theme-and-appearance.zsh
 
-    zinit wait lucid for \
-      if"[[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] ))" MichaelAquilina/zsh-auto-notify \
-      atload"YSU_HARDCORE=1" MichaelAquilina/zsh-you-should-use \
-      chuwy/zsh-secrets \
-      hlissner/zsh-autopair \
-      jreese/zsh-titles \
-      zdharma-continuum/fast-syntax-highlighting
+        # [plugins]
+        # $DOTFILES is required because we have left $DOTFILES when the file is actually sourced
+        zsh-defer source "$DOTFILES/ohmyzsh/plugins/asdf/asdf.plugin.zsh"
+        zsh-defer source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+        zsh-defer source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-    # fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets,
-    # such as zsh-autosuggestions or fast-syntax-highlighting!!
-    zinit wait lucid for \
-      Aloxaf/fzf-tab
+        [[ $OSTYPE = *darwin ]] && zsh-defer source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
 
-    # ref: https://remysharp.com/2018/08/23/cli-improved
-    zinit as"program" from"gh-r" for \
-      ver"v2.28.0" mv"direnv* -> direnv" atload'eval "$(direnv hook zsh)"' direnv/direnv
+        local plugins
+        
+        plugins=(
+            command-not-found
+            common-aliases
+            docker-compose
+            fzf
+            gem
+            git
+            golang
+            gitignore
+            gpg-agent
+            helm
+            kubectl
+            python
+            ruby
+            # rails
+            virtualenvwrapper
+        )
+        for plugin in $plugins; do
+            zsh-defer source "$DOTFILES/ohmyzsh/plugins/$plugin/$plugin.plugin.zsh"
+        done
 
-    if [[ $OSTYPE = *darwin* ]]; then
-        local procs_bpick="*-mac*" \
-          tokei_bpick="*-x86_64-apple-darwin*"
-    else
-        local procs_bpick="*-lnx*" \
-          tokei_bpick="*-x86_64-unknown-linux-gnu*"
+        export PIP_REQUIRE_VIRTUALENV=1
+        zsh-defer source "$DOTFILES/ohmyzsh/plugins/pip/pip.plugin.zsh"
+
+        zsh-defer source "$DOTFILES/zsh-completions/zsh-completions.plugin.zsh"
+
+        if [[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] )); then
+            zsh-defer source "$DOTFILES/zsh-auto-notify/zsh-auto-notify.plugin.zsh"
+        fi
+
+        export YSU_HARDCORE=1
+        zsh-defer source "$DOTFILES/zsh-you-should-use/you-should-use.plugin.zsh"
+
+        zsh-defer source "$DOTFILES/zsh-secrets/zsh-secrets.plugin.zsh"
+        zsh-defer source "$DOTFILES/zsh-autopair/zsh-autopair.plugin.zsh"
+        zsh-defer source "$DOTFILES/zsh-titles/titles.plugin.zsh"
+        zsh-defer source "$DOTFILES/fzf-tab/fzf-tab.plugin.zsh"
+
+        [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
+        source "$DOTFILES/powerlevel10k/powerlevel10k.zsh-theme"
+
+        popd > /dev/null
     fi
 
-    zinit wait"2" lucid as"program" from"gh-r" for \
-      ver"0.13.0" BurntSushi/xsv \
-      ver"0.20.1" mv"lsd-*/lsd -> lsd" atload"alias ls='lsd'" Peltoche/lsd \
-      ver"v12.1.2" bpick"$tokei_bpick" XAMPPRocky/tokei \
-      ver"v0.5.0" mv"zoxide-* -> zoxide" pick"zoxide" atload'eval "$(zoxide init zsh)"' ajeetdsouza/zoxide \
-      ver"v0.5.4" mv"dust-*/dust -> dust" atload"alias du='dust'" bootandy/dust \
-      ver"v0.11.3" bpick"$procs_bpick" atload"alias ps='procs'" dalance/procs \
-      ver"v0.16.1" puma/puma-dev
 
-    zinit wait"2" lucid as"program" for \
-      ver"748a7dbc57eed25a99b96cc0e618169b82770155" atload"alias ping='prettyping'" denilsonsa/prettyping
+    # [zsh] configuration for history
+    setopt histfindnodups histignorealldups histignorespace histsavenodups
 
-    # [[theme]]
-    zinit ice depth"1" atload"source $HOME/.p10k.zsh"
-    zinit load romkatv/powerlevel10k
-fi
+    # [tmuxifier]
+    [[ -d "$HOME/.tmuxifier" ]] && eval "$($HOME/.tmuxifier/bin/tmuxifier init -)"
 
-# [zsh] configuration about history
-setopt histfindnodups histignorealldups histignorespace histsavenodups
+    # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
+    (( $+commands[bat] )) && alias cat="bat"
+    (( $+commands[fd] )) && alias find="fd"
+    (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
+    (( $+commands[lsd] )) && alias ls="lsd"
+    (( $+commands[procs] )) && alias ps="procs"
+    (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
-# [tmuxifier]
-[[ -d "$HOME/.tmuxifier" ]] && eval "$($HOME/.tmuxifier/bin/tmuxifier init -)"
+    # [my] executables
+    [[ -d "$HOME/bin" ]] && path+="$HOME/bin"
 
-# [[aliases]]
+    # [my] private configuration
+    [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
-# ref: https://remysharp.com/2018/08/23/cli-improved
-(( $+commands[bat] )) && alias cat="bat"
-(( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-
-# [my] executables
-[[ -d "$HOME/bin" ]] && path+="$HOME/bin"
-
-# [my] private configuration
-[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local" || true
+    # prevent result of shorthand expression from being exit status
+    true
+}
 
 # vim: set foldlevel=0 foldmethod=marker:
