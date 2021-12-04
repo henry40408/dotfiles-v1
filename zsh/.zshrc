@@ -189,6 +189,7 @@ function() {
         plugins=(
             command-not-found
             common-aliases
+            direnv
             docker-compose
             fzf
             gem
