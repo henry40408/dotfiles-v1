@@ -182,7 +182,7 @@ function() {
         zsh-defer source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
         zsh-defer source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-        [[ $OSTYPE = *darwin ]] && zsh-defer source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
+        [[ $OSTYPE = *darwin* ]] && zsh-defer source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
 
         local plugins
         
