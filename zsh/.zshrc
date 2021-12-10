@@ -9,13 +9,13 @@ DOTFILES="$HOME/.local/share/dotfiles"
 
 _install_asdf() {
     echo "==> install asdf"
-    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.8.0
+    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.9.0
     echo "==> asdf installed"
 }
 
 _install_crates() {
     local crates
-    
+
     crates=(
         du-dust:0.6.2
         lsd:0.20.1
@@ -39,7 +39,7 @@ _install_crates() {
 
 _install_plugins() {
     local plugins
-    
+
     plugins=(
         ohmyzsh/ohmyzsh
         romkatv/zsh-defer
@@ -185,7 +185,7 @@ function() {
         [[ $OSTYPE = *darwin* ]] && zsh-defer source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
 
         local plugins
-        
+
         plugins=(
             command-not-found
             common-aliases
