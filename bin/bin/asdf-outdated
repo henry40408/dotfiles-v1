@@ -1,24 +1,38 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'optparse'
 require_relative 'asdf-lib'
 
 ignore_patterns = {
+  'consul' => ->(v) { v.include?('-rc') },
   'python' => ->(v){ %w[a b rc].any?{ |w| v.include?(w) } },
   'golang' => ->(v){ %w[beta rc].any?{ |w| v.include?(w) } },
   'kubectl' => ->(v){ v.include?('rc') },
   'tmux' => ->(v){ v.include?('rc') },
 }
 
+options = {}
+OptionParser.new do |opts|
+  opts.on('-v', '--verbose', 'Verbose')
+  opts.on('-h', '--help', 'Help') do |_h|
+    puts opts
+    exit
+  end
+end.parse!(into: options)
+
 tool_versions = read_tool_versions
 
-if ARGV.size > 0
-  tool_versions = tool_versions.select{ |(p, _vs)| ARGV.include?(p) }
+filtered_argv = ARGV.map(&:strip)
+if filtered_argv.size > 0
+  tool_versions = tool_versions.select{ |(p, _vs)| filtered_argv.include?(p) }
 end
 
 threads = []
 tool_versions.each do |(plugin, versions)|
   threads << Thread.new do
+    puts "==> [-] checking #{plugin}" if options[:verbose]
+
     newer_versions = IO.popen("asdf list all #{plugin}")
       .read.lines.map(&:strip)
       .select{ |v| Gem::Version.correct?(v) }
@@ -38,7 +52,9 @@ tool_versions.each do |(plugin, versions)|
       "#{latest_version} <- #{versions.join(', ')}".red
     end
 
-    "#{plugin}: #{colorized}"
+    result = "#{plugin}: #{colorized}"
+    puts "==> [v] done checking #{plugin}" if options[:verbose]
+    result
   end
 end
 

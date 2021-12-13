@@ -2,8 +2,18 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'optparse'
 
 require_relative 'asdf-lib'
+
+options = {}
+OptionParser.new do |opts|
+  opts.on('-f', '--[no-]force', 'Purge')
+  opts.on('-h', '--help', 'Help') do |_h|
+    puts opts
+    exit
+  end
+end.parse!(into: options)
 
 def ignore_parents(dir)
   Dir.entries(File.expand_path(dir)).select{ |entry| !%w[. ..].include?(entry) }
@@ -23,7 +33,7 @@ ignore_parents("~/.asdf/installs").each do |plugin|
   ignore_parents("~/.asdf/installs/#{plugin}").each do |version|
     next if preserve_plugin && tuples.include?([plugin, version])
     full_path = File.expand_path("~/.asdf/installs/#{plugin}/#{version}")
-    FileUtils.remove_dir(full_path, true)
+    FileUtils.remove_dir(full_path, true) if options[:force]
     puts "- #{full_path}"
   end
 end
