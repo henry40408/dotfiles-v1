@@ -143,16 +143,20 @@ update-plugins() {
 }
 
 # wrap initialization in an anonymous function to prevent variable leak
-function() {
+function init() {
     if [[ -d "$DOTFILES" ]]; then
         local libraries
 
         pushd $DOTFILES > /dev/null
 
+        autoload -U +X compinit && compinit
+
         # ref: https://github.com/asdf-vm/asdf/issues/692
         autoload -U +X bashcompinit && bashcompinit
 
-        source zsh-defer/zsh-defer.plugin.zsh
+        # ref: https://github.com/romkatv/zsh-defer#is-it-possible-to-autoload-zsh-defer
+        fpath+=($DOTFILES/zsh-defer)
+        autoload -Uz zsh-defer
 
         # [library]
         libraries=(
@@ -170,11 +174,11 @@ function() {
             termsupport
         )
         for library in $libraries; do
-            source ohmyzsh/lib/$library.zsh
+            source "$DOTFILES/ohmyzsh/lib/$library.zsh"
         done
 
         export DISABLE_LS_COLORS=true
-        source ohmyzsh/lib/theme-and-appearance.zsh
+        source "$DOTFILES/ohmyzsh/lib/theme-and-appearance.zsh"
 
         # [plugins]
         # $DOTFILES is required because we have left $DOTFILES when the file is actually sourced
@@ -235,9 +239,6 @@ function() {
     # [zsh] configuration for history
     setopt histfindnodups histignorealldups histignorespace histsavenodups
 
-    # [tmuxifier]
-    [[ -d "$HOME/.tmuxifier" ]] && eval "$($HOME/.tmuxifier/bin/tmuxifier init -)"
-
     # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
     (( $+commands[bat] )) && alias cat="bat"
     (( $+commands[fd] )) && alias find="fd"
@@ -255,5 +256,7 @@ function() {
     # prevent result of shorthand expression from being exit status
     true
 }
+
+init
 
 # vim: set foldlevel=0 foldmethod=marker:
