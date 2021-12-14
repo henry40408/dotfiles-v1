@@ -1,5 +1,6 @@
 bat 0.18.3
 consul 1.10.4
+docker-compose-v1 1.29.2
 doctl 1.68.0
 deno 1.16.4
 fd 8.3.0
