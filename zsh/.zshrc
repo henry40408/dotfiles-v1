@@ -205,7 +205,7 @@ function init() {
             kubectl
             python
             ruby
-            # rails
+            rails
             virtualenvwrapper
         )
         for plugin in $plugins; do
