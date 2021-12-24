@@ -83,8 +83,16 @@ _install_vim_plug() {
     echo "==> vim-plug installed"
 }
 
+_init_zoxide() {
+    eval "$(zoxide init zsh)"
+}
+
 benchmark() {
-    for i in $(seq 1 10); do time $SHELL -i -c "exit"; done
+    if (( $+commands[hyperfine] )); then
+        /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
+    else
+        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
+    fi
 }
 
 check() {
@@ -245,7 +253,7 @@ function init() {
     (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
     (( $+commands[lsd] )) && alias ls="lsd"
     (( $+commands[procs] )) && alias ps="procs"
-    (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+    (( $+commands[zoxide] )) && zsh-defer _init_zoxide
 
     # [my] executables
     [[ -d "$HOME/bin" ]] && path+="$HOME/bin"
