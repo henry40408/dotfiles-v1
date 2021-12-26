@@ -83,10 +83,6 @@ _install_vim_plug() {
     echo "==> vim-plug installed"
 }
 
-_init_zoxide() {
-    eval "$(zoxide init zsh)"
-}
-
 benchmark() {
     if (( $+commands[hyperfine] )); then
         /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
@@ -155,16 +151,21 @@ function init() {
     if [[ -d "$DOTFILES" ]]; then
         local libraries
 
-        pushd $DOTFILES > /dev/null
-
-        autoload -U +X compinit && compinit
+        # [powerlevel10k] enable instant prompt
+        # ref: https://github.com/romkatv/powerlevel10k#instant-prompt
+        if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+            source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+        fi
 
         # ref: https://github.com/asdf-vm/asdf/issues/692
         autoload -U +X bashcompinit && bashcompinit
 
         # ref: https://github.com/romkatv/zsh-defer#is-it-possible-to-autoload-zsh-defer
-        fpath+=($DOTFILES/zsh-defer)
-        autoload -Uz zsh-defer
+        # fpath+=($DOTFILES/zsh-defer)
+        # autoload -Uz zsh-defer
+
+        # set ZSH_CACHE_DIR
+        source "$DOTFILES/ohmyzsh/oh-my-zsh.sh"
 
         # [library]
         libraries=(
@@ -190,11 +191,11 @@ function init() {
 
         # [plugins]
         # $DOTFILES is required because we have left $DOTFILES when the file is actually sourced
-        zsh-defer source "$DOTFILES/ohmyzsh/plugins/asdf/asdf.plugin.zsh"
-        zsh-defer source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
-        zsh-defer source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
+        source "$DOTFILES/ohmyzsh/plugins/asdf/asdf.plugin.zsh"
+        source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+        source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-        [[ $OSTYPE = *darwin* ]] && zsh-defer source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
+        [[ $OSTYPE = *darwin* ]] && source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
 
         local plugins
 
@@ -213,34 +214,32 @@ function init() {
             kubectl
             python
             ruby
-            rails
+            # rails
             virtualenvwrapper
         )
         for plugin in $plugins; do
-            zsh-defer source "$DOTFILES/ohmyzsh/plugins/$plugin/$plugin.plugin.zsh"
+            source "$DOTFILES/ohmyzsh/plugins/$plugin/$plugin.plugin.zsh"
         done
 
         export PIP_REQUIRE_VIRTUALENV=1
-        zsh-defer source "$DOTFILES/ohmyzsh/plugins/pip/pip.plugin.zsh"
+        source "$DOTFILES/ohmyzsh/plugins/pip/pip.plugin.zsh"
 
-        zsh-defer source "$DOTFILES/zsh-completions/zsh-completions.plugin.zsh"
+        source "$DOTFILES/zsh-completions/zsh-completions.plugin.zsh"
 
         if [[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] )); then
-            zsh-defer source "$DOTFILES/zsh-auto-notify/zsh-auto-notify.plugin.zsh"
+            source "$DOTFILES/zsh-auto-notify/zsh-auto-notify.plugin.zsh"
         fi
 
         export YSU_HARDCORE=1
-        zsh-defer source "$DOTFILES/zsh-you-should-use/you-should-use.plugin.zsh"
+        source "$DOTFILES/zsh-you-should-use/you-should-use.plugin.zsh"
 
-        zsh-defer source "$DOTFILES/zsh-secrets/zsh-secrets.plugin.zsh"
-        zsh-defer source "$DOTFILES/zsh-autopair/zsh-autopair.plugin.zsh"
-        zsh-defer source "$DOTFILES/zsh-titles/titles.plugin.zsh"
-        zsh-defer source "$DOTFILES/fzf-tab/fzf-tab.plugin.zsh"
+        source "$DOTFILES/zsh-secrets/zsh-secrets.plugin.zsh"
+        source "$DOTFILES/zsh-autopair/zsh-autopair.plugin.zsh"
+        source "$DOTFILES/zsh-titles/titles.plugin.zsh"
+        source "$DOTFILES/fzf-tab/fzf-tab.plugin.zsh"
 
         [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
         source "$DOTFILES/powerlevel10k/powerlevel10k.zsh-theme"
-
-        popd > /dev/null
     fi
 
 
@@ -253,7 +252,7 @@ function init() {
     (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
     (( $+commands[lsd] )) && alias ls="lsd"
     (( $+commands[procs] )) && alias ps="procs"
-    (( $+commands[zoxide] )) && zsh-defer _init_zoxide
+    (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
     # [my] executables
     [[ -d "$HOME/bin" ]] && path+="$HOME/bin"
