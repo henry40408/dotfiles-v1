@@ -227,7 +227,7 @@ function init() {
         source "$DOTFILES/zsh-completions/zsh-completions.plugin.zsh"
 
         if [[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] )); then
-            source "$DOTFILES/zsh-auto-notify/zsh-auto-notify.plugin.zsh"
+            source "$DOTFILES/zsh-auto-notify/auto-notify.plugin.zsh"
         fi
 
         export YSU_HARDCORE=1
