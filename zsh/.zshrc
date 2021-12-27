@@ -7,6 +7,50 @@ fi
 
 DOTFILES="$HOME/.local/share/dotfiles"
 
+benchmark() {
+    if (( $+commands[hyperfine] )); then
+        /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
+    else
+        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
+    fi
+}
+
+check() {
+    local binaries
+    binaries=(
+        direnv
+        xsv
+        lsd
+        tokei
+        zoxide
+        dust
+        procs
+        puma-dev
+    )
+
+    for binary in $binaries; do
+        if (( $+commands[$binary] )); then
+            file "$(which $binary)"
+        else
+            echo "[x] $binary not found"
+        fi
+    done
+}
+
+decrypt() {
+    eval "$(secrets decrypt environment)"
+}
+
+reload() {
+    exec zsh
+}
+
+restore() {
+    pushd $HOME/.cfg
+    stow $(ls -d */)
+    popd
+}
+
 _install_asdf() {
     echo "==> install asdf"
     [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.9.0
@@ -83,50 +127,6 @@ _install_vim_plug() {
     echo "==> vim-plug installed"
 }
 
-benchmark() {
-    if (( $+commands[hyperfine] )); then
-        /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
-    else
-        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
-    fi
-}
-
-check() {
-    local binaries
-    binaries=(
-        direnv
-        xsv
-        lsd
-        tokei
-        zoxide
-        dust
-        procs
-        puma-dev
-    )
-
-    for binary in $binaries; do
-        if (( $+commands[$binary] )); then
-            file "$(which $binary)"
-        else
-            echo "$binary not found"
-        fi
-    done
-}
-
-decrypt() {
-    eval "$(secrets decrypt environment)"
-}
-
-reload() {
-    exec zsh
-}
-
-restore() {
-    pushd $HOME/.cfg
-    stow $(ls -d */)
-    popd
-}
-
 setup() {
     _install_asdf
     _install_vim_plug
@@ -146,102 +146,116 @@ update-plugins() {
     popd > /dev/null
 }
 
-# wrap initialization in an anonymous function to prevent variable leak
-function init() {
-    if [[ -d "$DOTFILES" ]]; then
-        local libraries
+_fix_asdf() {
+    # ref: https://github.com/asdf-vm/asdf/issues/692
+    autoload -U +X bashcompinit && bashcompinit
+}
 
-        # [powerlevel10k] enable instant prompt
-        # ref: https://github.com/romkatv/powerlevel10k#instant-prompt
-        if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-            source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-        fi
+_p10k_instant_prompt() {
+    # [powerlevel10k] enable instant prompt
+    # ref: https://github.com/romkatv/powerlevel10k#instant-prompt
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
+}
 
-        # ref: https://github.com/asdf-vm/asdf/issues/692
-        autoload -U +X bashcompinit && bashcompinit
+_init_oh_my_zsh() {
+    _source_plugin "ohmyzsh/oh-my-zsh.sh" # set ZSH_CACHE_DIR
+}
 
-        # ref: https://github.com/romkatv/zsh-defer#is-it-possible-to-autoload-zsh-defer
-        # fpath+=($DOTFILES/zsh-defer)
-        # autoload -Uz zsh-defer
+_load_oh_my_zsh_libraries() {
+    local libraries=(
+        functions
+        clipboard
+        compfix
+        completion
+        correction
+        directories
+        git
+        history
+        key-bindings
+        misc
+        prompt_info_functions
+        termsupport
+    )
+    for library in $libraries; do
+        _source_plugin "ohmyzsh/lib/$library.zsh"
+    done
 
-        # set ZSH_CACHE_DIR
-        source "$DOTFILES/ohmyzsh/oh-my-zsh.sh"
+    export DISABLE_LS_COLORS=true
+    _source_plugin "ohmyzsh/lib/theme-and-appearance.zsh"
+}
 
-        # [library]
-        libraries=(
-            functions
-            clipboard
-            compfix
-            completion
-            correction
-            directories
-            git
-            history
-            key-bindings
-            misc
-            prompt_info_functions
-            termsupport
-        )
-        for library in $libraries; do
-            source "$DOTFILES/ohmyzsh/lib/$library.zsh"
-        done
+_load_oh_my_zsh_plugins() {
+    local plugins=(
+        asdf
+        command-not-found
+        common-aliases
+        direnv
+        docker-compose
+        fzf
+        gem
+        git
+        golang
+        gitignore
+        gpg-agent
+        helm
+        kubectl
+        python
+        ruby
+        # rails
+        vi-mode
+        virtualenvwrapper
+    )
+    for plugin in $plugins; do
+        _source_plugin "ohmyzsh/plugins/$plugin/$plugin.plugin.zsh"
+    done
 
-        export DISABLE_LS_COLORS=true
-        source "$DOTFILES/ohmyzsh/lib/theme-and-appearance.zsh"
+    [[ $OSTYPE = *darwin* ]] && _source_plugin "ohmyzsh/plugins/brew/brew.plugin.zsh"
 
-        # [plugins]
-        # $DOTFILES is required because we have left $DOTFILES when the file is actually sourced
-        source "$DOTFILES/ohmyzsh/plugins/asdf/asdf.plugin.zsh"
-        source "$DOTFILES/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
-        source "$DOTFILES/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    export PIP_REQUIRE_VIRTUALENV=1
+    _source_plugin "ohmyzsh/plugins/pip/pip.plugin.zsh"
+}
 
-        [[ $OSTYPE = *darwin* ]] && source "$DOTFILES/ohmyzsh/plugins/brew/brew.plugin.zsh"
+_load_theme() {
+    [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
+    _source_plugin "powerlevel10k/powerlevel10k.zsh-theme"
+}
 
-        local plugins
+_load_zsh_plugins() {
+    _source_plugin "zsh-autosuggestions/zsh-autosuggestions.zsh"
+    _source_plugin "zsh-completions/zsh-completions.plugin.zsh"
+    _source_plugin "zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
 
-        plugins=(
-            command-not-found
-            common-aliases
-            direnv
-            docker-compose
-            fzf
-            gem
-            git
-            golang
-            gitignore
-            gpg-agent
-            helm
-            kubectl
-            python
-            ruby
-            # rails
-            virtualenvwrapper
-        )
-        for plugin in $plugins; do
-            source "$DOTFILES/ohmyzsh/plugins/$plugin/$plugin.plugin.zsh"
-        done
-
-        export PIP_REQUIRE_VIRTUALENV=1
-        source "$DOTFILES/ohmyzsh/plugins/pip/pip.plugin.zsh"
-
-        source "$DOTFILES/zsh-completions/zsh-completions.plugin.zsh"
-
-        if [[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] )); then
-            source "$DOTFILES/zsh-auto-notify/auto-notify.plugin.zsh"
-        fi
-
-        export YSU_HARDCORE=1
-        source "$DOTFILES/zsh-you-should-use/you-should-use.plugin.zsh"
-
-        source "$DOTFILES/zsh-secrets/zsh-secrets.plugin.zsh"
-        source "$DOTFILES/zsh-autopair/zsh-autopair.plugin.zsh"
-        source "$DOTFILES/zsh-titles/titles.plugin.zsh"
-        source "$DOTFILES/fzf-tab/fzf-tab.plugin.zsh"
-
-        [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
-        source "$DOTFILES/powerlevel10k/powerlevel10k.zsh-theme"
+    if [[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] )); then
+        _source_plugin "zsh-auto-notify/auto-notify.plugin.zsh"
     fi
 
+    export YSU_HARDCORE=1
+    _source_plugin "zsh-you-should-use/you-should-use.plugin.zsh"
+
+    _source_plugin "zsh-autopair/zsh-autopair.plugin.zsh"
+    _source_plugin "zsh-secrets/zsh-secrets.plugin.zsh"
+    _source_plugin "fzf-tab/fzf-tab.plugin.zsh"
+    _source_plugin "zsh-titles/titles.plugin.zsh"
+}
+
+_source_plugin() {
+    source "$DOTFILES/$1"
+}
+
+_init() {
+    bindkey -v # enable vi mode
+
+    if [[ -d "$DOTFILES" ]]; then
+        _p10k_instant_prompt
+        _fix_asdf
+        _init_oh_my_zsh
+        _load_oh_my_zsh_libraries
+        _load_oh_my_zsh_plugins
+        _load_zsh_plugins
+        _load_theme
+    fi
 
     # [zsh] configuration for history
     setopt histfindnodups histignorealldups histignorespace histsavenodups
@@ -260,10 +274,9 @@ function init() {
     # [my] private configuration
     [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
-    # prevent result of shorthand expression from being exit status
-    true
+    true # prevent result of shorthand expression from being exit status
 }
 
-init
+_init
 
 # vim: set foldlevel=0 foldmethod=marker:
