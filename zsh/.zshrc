@@ -204,7 +204,6 @@ _load_oh_my_zsh_plugins() {
         python
         ruby
         # rails
-        vi-mode
         virtualenvwrapper
     )
     for plugin in $plugins; do
@@ -245,8 +244,6 @@ _source_plugin() {
 }
 
 _init() {
-    bindkey -v # enable vi mode
-
     if [[ -d "$DOTFILES" ]]; then
         _p10k_instant_prompt
         _fix_asdf
