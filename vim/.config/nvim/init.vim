@@ -2,8 +2,6 @@
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'Shougo/dein.vim'
-
 " Plugins
 
 " Language {
