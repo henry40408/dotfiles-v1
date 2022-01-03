@@ -14,7 +14,6 @@ call plug#begin('~/.vim/plugged')
     let g:syntastic_go_checkers=['golint', 'govet', 'errcheck']
     let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['go'] }
 
-    Plug 'marijnh/tern_for_vim'
     Plug 'mattn/emmet-vim'
     Plug 'mboughaba/i3config.vim'
 
@@ -54,8 +53,6 @@ call plug#begin('~/.vim/plugged')
 " }
 
 " Code Display {
-    Plug 'arcticicestudio/nord-vim'
-
     " A vim plugin to display the indention levels with thin vertical lines
     Plug 'Yggdroot/indentLine'
 
@@ -84,7 +81,6 @@ call plug#begin('~/.vim/plugged')
 " }
 
 " Interface {
-    Plug 'mbbill/undotree'
 " }
 
 " Commands {
@@ -121,60 +117,100 @@ filetype plugin indent on
 syntax on
 
 " Configuration {
-    set autoindent expandtab shiftwidth=4 tabstop=4
+    " result in spaces being used for all indentation
+    " ref: https://vim.fandom.com/wiki/Indenting_source_code
+    set expandtab shiftwidth=4 tabstop=4
+
+    " does nothing more than copy the indentation from the previous line, when starting a new line.
+    " ref: https://vim.fandom.com/wiki/Indenting_source_code
+    set autoindent
+
+    " make backspace work like most other programs
+    " ref: https://vim.fandom.com/wiki/Backspace_and_delete_problems#Backspace_key_won.27t_move_from_current_line
     set backspace=2
+
+    " Highlighting that moves with the cursor
+    " ref: https://vim.fandom.com/wiki/Highlight_current_line
     set cursorline laststatus=2 number
+    highlight CursorLine cterm=NONE ctermbg=darkgrey
+
+    " By setting the option 'hidden', you can load a buffer in a window that currently has a modified buffer.
+    " ref: http://vimdoc.sourceforge.net/htmldoc/options.html#'hidden'
     set hidden
-    set ignorecase incsearch regexpengine=1 smartcase
+
+    " Case sensitivity
+    " ref: https://vim.fandom.com/wiki/Searching#Case_sensitivity
+    set ignorecase smartcase
+
+    " Show the next match while entering a search
+    " ref: https://vim.fandom.com/wiki/Searching#Show_the_next_match_while_entering_a_search
+    set incsearch
+
+    " Vim highlights the remaining matches with the Search highlight group.
+    " ref: https://vim.fandom.com/wiki/Search_and_replace#Basic_search_and_replace
     set hlsearch
-    set list listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
+
+    " What do you use for your listchars?
+    " ref: https://www.reddit.com/r/vim/comments/4hoa6e/comment/d2ra7qh/
+    set list listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+
+    " does not change the text but simply displays it on multiple lines.
+    " ref: https://vim.fandom.com/wiki/Automatic_word_wrapping
     set wrap
 
+    " Treat words with dash as a word in Vim
+    " ref: https://til.hashrocket.com/posts/t8osyzywau-treat-words-with-dash-as-a-word-in-vim
     augroup CssHtmlGroup
         autocmd!
         autocmd filetype css,html setlocal iskeyword+=-
     augroup END
 
-    augroup GoGroup
-        autocmd!
-        autocmd BufWrite *.go GoFmt
-        autocmd BufWrite *.go GoImports
-    augroup END
-
+    " shoves all those files into three directories, rather than individual local project directories
+    " ref: https://sts10.github.io/2016/02/13/best-of-my-vimrc.html
     call system('mkdir -p ~/.vim/backup')
     call system('mkdir -p ~/.vim/swap')
     set backupdir=~/.vim/backup/
     set directory=~/.vim/swap/
-
     if has('persistent_undo')
         call system('mkdir -p ~/.vim/undo')
         set undodir=~/.vim/undo/ undofile undolevels=1000 undoreload=10000
     endif
 
+    " use SPACE as mapleader
+    " ref: https://stackoverflow.com/a/446293
+    let mapleader=" "
+    nnoremap <SPACE> <Nop>
+
+    " Map semicolon to colon
+    " ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
     vnoremap ; :
+    nnoremap ; :
+
+    " retain the visual selection after having pressed > or <
+    " ref: https://vim.fandom.com/wiki/Shifting_blocks_visually#Mappings
     vnoremap > >gv
     vnoremap < <gv
 
-    nnoremap ; :
-    nnoremap <silent> <leader>u :UndotreeToggle<CR>
+    " my mappings
     nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
     nnoremap <silent> <leader>vs :so $MYVIMRC<CR>
     nnoremap <leader>b :CtrlPBuffer<CR>
     nnoremap <leader>q :bdelete<CR>
     nnoremap <leader>r zR
 
+    " map <Esc> to exit terminal-mode
+    " ref: https://neovim.io/doc/user/nvim_terminal_emulator.html
     if has('nvim')
         tnoremap <Esc> <C-\><C-n>
     endif
 
-    " # The Silver Searcher
-    " reference: https://robots.thoughtbot.com/faster-grepping-in-vim
+    " The Silver Searcher
+    " ref: https://robots.thoughtbot.com/faster-grepping-in-vim
     if executable('ag')
         " Use ag over grep
         set grepprg=ag\ --nogroup\ --nocolor
 
-        " Use ag in CtrlP for listing files. Lightning fast and respects
-        " .gitignore
+        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
         let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
 
         " ag is fast enough that CtrlP doesn't need to cache
@@ -182,6 +218,7 @@ syntax on
     endif
 
     " bind K to grep word under cursor
+    " ref: https://thoughtbot.com/blog/faster-grepping-in-vim
     nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " }
 
