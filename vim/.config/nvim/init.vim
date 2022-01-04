@@ -69,11 +69,11 @@ call plug#begin('~/.vim/plugged')
 " }
 
 " Integrations {
+    " A Vim plugin which shows a git diff in the sign column.
+    Plug 'airblade/vim-gitgutter', { 'commit': '256702d' }
+
     " Run your tests at the speed of thought
     Plug 'janko-m/vim-test', { 'commit': 'c44be67' }
-
-    " ➕ Show a diff using Vim its sign column.
-    Plug 'mhinz/vim-signify', { 'commit': '69498f6' }
 
     " fugitive.vim: A Git wrapper so awesome, it should be illegal
     Plug 'tpope/vim-fugitive', { 'commit': 'b1c3cdf' }
@@ -200,6 +200,7 @@ syntax on
     nnoremap <leader>ga :Gwrite<CR>
     nnoremap <leader>gc :G commit<CR>
     nnoremap <leader>gd :G diff<CR>
+    nnoremap <leader>gdc :G diff --cached<CR>
     nnoremap <leader>gs :G status<CR>
     nnoremap <leader>gl :G log<CR>
 
