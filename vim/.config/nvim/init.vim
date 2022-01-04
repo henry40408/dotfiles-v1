@@ -201,8 +201,9 @@ syntax on
     nnoremap <leader>gc :G commit<CR>
     nnoremap <leader>gd :G diff<CR>
     nnoremap <leader>gdc :G diff --cached<CR>
-    nnoremap <leader>gs :G status<CR>
     nnoremap <leader>gl :G log<CR>
+    nnoremap <leader>gp :G push<CR>
+    nnoremap <leader>gs :G status<CR>
 
     " How to toggle Vim's search highlight visibility without disabling it
     " ref: https://stackoverflow.com/a/26504944
