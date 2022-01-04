@@ -16,8 +16,7 @@ benchmark() {
 }
 
 check() {
-    local binaries
-    binaries=(
+    local binaries=(
         direnv
         xsv
         lsd
@@ -58,9 +57,7 @@ _install_asdf() {
 }
 
 _install_crates() {
-    local crates
-
-    crates=(
+    local crates=(
         du-dust:0.6.2
         lsd:0.20.1
         procs:0.11.10
@@ -70,21 +67,16 @@ _install_crates() {
     )
 
     if (( $+commands[cargo] )); then
-        local name
-        local version
-
         for line in $crates; do
-            name="$(echo $line | awk -F: '{print $1}')"
-            version="$(echo $line | awk -F: '{print $2}')"
+            local name="$(echo $line | awk -F: '{print $1}')"
+            local version="$(echo $line | awk -F: '{print $2}')"
             cargo install $name --version $version
         done
     fi
 }
 
 _install_plugins() {
-    local plugins
-
-    plugins=(
+    local plugins=(
         ohmyzsh/ohmyzsh
         romkatv/zsh-defer
         zsh-users/zsh-autosuggestions
@@ -103,9 +95,8 @@ _install_plugins() {
 
     pushd $DOTFILES > /dev/null
 
-    local basename
     for plugin in $plugins; do
-        basename="$(echo $plugin | awk -F/ '{print $2}')"
+        local basename="$(echo $plugin | awk -F/ '{print $2}')"
         [[ ! -d "$DOTFILES/$basename" ]] && git clone --depth 1 "https://github.com/$plugin.git" $DOTFILES/$basename
     done
 
