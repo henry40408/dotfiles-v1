@@ -199,7 +199,13 @@ syntax on
     nnoremap <leader>r zR
     nnoremap <leader>ga :Gwrite<CR>
     nnoremap <leader>gc :G commit<CR>
+    nnoremap <leader>gd :G diff<CR>
     nnoremap <leader>gs :G status<CR>
+    nnoremap <leader>gl :G log<CR>
+
+    " How to toggle Vim's search highlight visibility without disabling it
+    " ref: https://stackoverflow.com/a/26504944
+    nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
     " map <Esc> to exit terminal-mode
     " ref: https://neovim.io/doc/user/nvim_terminal_emulator.html
