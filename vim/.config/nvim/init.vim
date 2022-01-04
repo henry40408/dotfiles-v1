@@ -195,13 +195,13 @@ syntax on
     nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
     nnoremap <silent> <leader>vs :so $MYVIMRC<CR>:echo 'Sourced!'<CR>
     nnoremap <leader>b :CtrlPBuffer<CR>
-    nnoremap <leader>q :bdelete<CR>
+    nnoremap <leader>q :q<CR>
     nnoremap <leader>r zR
     nnoremap <leader>ga :Gwrite<CR>
     nnoremap <leader>gc :G commit<CR>
     nnoremap <leader>gd :G diff<CR>
     nnoremap <leader>gdc :G diff --cached<CR>
-    nnoremap <leader>gl :G log<CR>
+    nnoremap <leader>gl :G log --oneline --decorate<CR>
     nnoremap <leader>gp :G push<CR>
     nnoremap <leader>gs :G status<CR>
 
