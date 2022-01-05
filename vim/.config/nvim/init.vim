@@ -200,13 +200,7 @@ syntax on
     nnoremap <leader>p :Files<CR>
     nnoremap <leader>q :q<CR>
     nnoremap <leader>r zR
-    nnoremap <leader>ga :Gwrite<CR>
-    nnoremap <leader>gc :G commit<CR>
-    nnoremap <leader>gd :G diff<CR>
-    nnoremap <leader>gdc :G diff --cached<CR>
-    nnoremap <leader>gl :G log --oneline --decorate<CR>
-    nnoremap <leader>gp :G push<CR>
-    nnoremap <leader>gs :G status<CR>
+    nnoremap <leader>g :Git<CR>
 
     " How to toggle Vim's search highlight visibility without disabling it
     " ref: https://stackoverflow.com/a/26504944
@@ -226,4 +220,4 @@ syntax on
 " Theme {
 " }
 
-    " vim: set foldmarker={,}:
+" vim: set foldmarker={,}:
