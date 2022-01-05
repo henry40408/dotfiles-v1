@@ -5,37 +5,37 @@ call plug#begin('~/.vim/plugged')
 " Plugins
 
 " Language {
-    Plug 'chrisbra/csv.vim', { 'commit': '9ab0921' }
-    Plug 'editorconfig/editorconfig-vim', { 'commit': '3078cd1' }
-    Plug 'elzr/vim-json', { 'commit': '3727f08' }
+    Plug 'chrisbra/csv.vim', { 'commit': '9ab092187a7046a8d0eedc7fbbce8fac38d10563' }
+    Plug 'editorconfig/editorconfig-vim', { 'commit': '3078cd10b28904e57d878c0d0dab42aa0a9fdc89' }
+    Plug 'elzr/vim-json', { 'commit': '3727f089410e23ae113be6222e8a08dd2613ecf2' }
 
-    Plug 'fatih/vim-go', { 'commit': 'a319aaf' }
+    Plug 'fatih/vim-go', { 'commit': 'a319aaf6bf652dadb197807e4629ff5b1750a17b' }
     let g:go_list_type='quickfix'
     let g:syntastic_go_checkers=['golint', 'govet', 'errcheck']
     let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['go'] }
 
-    Plug 'mattn/emmet-vim', { 'commit': 'def5d57' }
-    Plug 'mboughaba/i3config.vim', { 'commit': '5c753c5' }
+    Plug 'mattn/emmet-vim', { 'commit': 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' }
+    Plug 'mboughaba/i3config.vim', { 'commit': '5c753c56c033d3b17e5005a67cdb9653bbb88ba7' }
 
-    Plug 'mxw/vim-jsx', { 'commit': '8879e0d' }
+    Plug 'mxw/vim-jsx', { 'commit': '8879e0d9c5ba0e04ecbede1c89f63b7a0efa24af' }
     let g:jsx_ext_required=0
 
-    Plug 'plasticboy/vim-markdown', { 'commit': '8e5d86f' }
+    Plug 'plasticboy/vim-markdown', { 'commit': '8e5d86f7b85234d3d1b4207dceebc43a768ed5d4' }
     let g:markdown_fenced_languages=['bash=sh', 'css', 'elixir', 'html', 'javascript', 'json', 'jsx', 'python', 'ruby', 'yaml']
     let g:vim_markdown_conceal=0
 
-    Plug 'scrooloose/nerdcommenter', { 'commit': '9fffd4c' }
+    Plug 'scrooloose/nerdcommenter', { 'commit': '9fffd4c022da39a324a2eee2a0939db66db7c553' }
 
     " A solid language pack for Vim.
-    Plug 'sheerun/vim-polyglot', { 'commit': 'c96947b' }
+    Plug 'sheerun/vim-polyglot', { 'commit': 'c96947b1c64c56f70125a9bac9c006f69e45d5d3' }
     let g:polyglot_disabled=['json', 'markdown']
 
     " ragtag.vim: ghetto HTML/XML mappings (formerly allml.vim)
-    Plug 'tpope/vim-ragtag', { 'commit': 'b8966c4' }
+    Plug 'tpope/vim-ragtag', { 'commit': 'b8966c4f6503a8baaec39e17bd0bf38b2aadc9b2' }
 
-    Plug 'tpope/vim-rails', { 'commit': '3bac023' }
+    Plug 'tpope/vim-rails', { 'commit': '3bac0233a49d2a00805c66bf17d3e2ea114b05d1' }
 
-    Plug 'vim-syntastic/syntastic', { 'commit': '2c4b33f' }
+    Plug 'vim-syntastic/syntastic', { 'commit': '2c4b33f6e6679fb5f3824d9cd38d4813c71a19a3' }
     let g:syntastic_always_populate_loc_list=1
     let g:syntastic_auto_loc_list=1
     let g:syntastic_check_on_open=1
@@ -47,25 +47,25 @@ call plug#begin('~/.vim/plugged')
 
 " ## Completion {
     " A code-completion engine for Vim
-    Plug 'ycm-core/YouCompleteMe', { 'commit': 'c0e82e9' }
+    Plug 'ycm-core/YouCompleteMe', { 'commit': 'c0e82e91a4ca780dad67f7bb8f6067a1cc11f580' }
 
     " endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
-    Plug 'tpope/vim-endwise', { 'commit': '4289889' }
+    Plug 'tpope/vim-endwise', { 'commit': '4289889a2622f9bc7c594a6dd79763781f63dfb5' }
 " }
 
 " Code Display {
     " A vim plugin to display the indention levels with thin vertical lines
-    Plug 'Yggdroot/indentLine', { 'commit': '5617a1c' }
+    Plug 'Yggdroot/indentLine', { 'commit': '5617a1cf7d315e6e6f84d825c85e3b669d220bfa' }
 
-    Plug 'vim-airline/vim-airline', { 'commit': '332d449' }
-    Plug 'vim-airline/vim-airline-themes', { 'commit': '97cf3e6' }
+    Plug 'vim-airline/vim-airline', { 'commit': '332d44948a3c737272172d0eae0bf5b940e72459' }
+    Plug 'vim-airline/vim-airline-themes', { 'commit': '97cf3e6e638f936187d5f6e9b5eb1bdf0a4df256' }
     let g:airline#extensions#tabline#enabled = 1
     let g:airline_symbols_ascii = 1
 
     " A Vim plugin to colorize all text in the form #rrggbb or #rgb.
-    Plug 'chrisbra/Colorizer', { 'commit': '826d569' }
+    Plug 'chrisbra/Colorizer', { 'commit': '826d5691ac7d36589591314621047b1b9d89ed34' }
 
-    Plug 'kien/ctrlp.vim', { 'commit': '564176f' }
+    Plug 'kien/ctrlp.vim', { 'commit': '564176f01d7f3f7f8ab452ff4e1f5314de7b0981' }
     let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|(_build|deps|node_modules))$'
     let g:ctrlp_map='<leader>p'
     let g:ctrlp_working_path_mode='w'
@@ -73,13 +73,13 @@ call plug#begin('~/.vim/plugged')
 
 " Integrations {
     " A Vim plugin which shows a git diff in the sign column.
-    Plug 'airblade/vim-gitgutter', { 'commit': '256702d' }
+    Plug 'airblade/vim-gitgutter', { 'commit': '256702dd1432894b3607d3de6cd660863b331818' }
 
     " Run your tests at the speed of thought
-    Plug 'janko-m/vim-test', { 'commit': 'c44be67' }
+    Plug 'janko-m/vim-test', { 'commit': 'c44be6765edb81834797e66ad206f83e190bdd49' }
 
     " fugitive.vim: A Git wrapper so awesome, it should be illegal
-    Plug 'tpope/vim-fugitive', { 'commit': 'b1c3cdf' }
+    Plug 'tpope/vim-fugitive', { 'commit': 'b1c3cdffc94c2cbe48777db5cf8bc9156b17d070' }
 " }
 
 " Interface {
@@ -87,31 +87,32 @@ call plug#begin('~/.vim/plugged')
 
 " Commands {
     " A Narrow Region Plugin for vim (like Emacs Narrow Region)
-    Plug 'chrisbra/NrrwRgn', { 'commit': 'be7f063' }
+    Plug 'chrisbra/NrrwRgn', { 'commit': 'be7f06308bddd493d436372ee71d6b366af97fbb' }
 
-    Plug 'easymotion/vim-easymotion', { 'commit': 'd75d959' }
-    Plug 'ntpeters/vim-better-whitespace', { 'commit': 'c5afbe9' }
-    Plug 'terryma/vim-multiple-cursors', { 'commit': '6456718' }
-    Plug 'tpope/vim-repeat', { 'commit': '24afe92' }
-    Plug 'tpope/vim-surround', { 'commit': 'aeb9332' }
-    Plug 'tpope/vim-unimpaired', { 'commit': 'e4006d6' }
+    Plug 'easymotion/vim-easymotion', { 'commit': 'd75d9591e415652b25d9e0a3669355550325263d' }
+
+    Plug 'ntpeters/vim-better-whitespace', { 'commit': 'c5afbe91d29c5e3be81d5125ddcdc276fd1f1322' }
+    Plug 'terryma/vim-multiple-cursors', { 'commit': '6456718e1d30b42c04b920c5413ca44f68f08759' }
+    Plug 'tpope/vim-repeat', { 'commit': '24afe922e6a05891756ecf331f39a1f6743d3d5a' }
+    Plug 'tpope/vim-surround', { 'commit': 'aeb933272e72617f7c4d35e1f003be16836b948d' }
+    Plug 'tpope/vim-unimpaired', { 'commit': 'e4006d68cd4f390efef935bc09be0ce3bd022e72' }
 
     " Vim plugin that provides additional text objects
-    Plug 'wellle/targets.vim', { 'commit': '8d6ff29' }
+    Plug 'wellle/targets.vim', { 'commit': '8d6ff2984cdfaebe5b7a6eee8f226a6dd1226f2d' }
 " }
 
 " Other {
 " }
 
 " Uncategorized {
-    Plug 'AndrewRadev/splitjoin.vim', { 'commit': '0f45bfd' }
+    Plug 'AndrewRadev/splitjoin.vim', { 'commit': '0f45bfd7d6a8acb7d6ac126001a27190851bf3f5' }
 
     " Plugin for vim to enabling opening a file in a given line
-    Plug 'bogado/file-line', { 'commit': '559088a' }
+    Plug 'bogado/file-line', { 'commit': '559088afaf10124ea663ee0f4f73b1de48fb1632' }
 
     " Rainbow Parentheses Improved, shorter code, no level limit, smooth and
     " fast, powerful configuration.
-    Plug 'luochen1990/rainbow', { 'commit': 'c18071e' }
+    Plug 'luochen1990/rainbow', { 'commit': 'c18071e5c7790928b763c2e88c487dfc93d84a15' }
 " }
 
 call plug#end()
