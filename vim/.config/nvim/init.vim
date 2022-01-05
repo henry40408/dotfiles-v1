@@ -64,11 +64,6 @@ call plug#begin('~/.vim/plugged')
 
     " A Vim plugin to colorize all text in the form #rrggbb or #rgb.
     Plug 'chrisbra/Colorizer', { 'commit': '826d5691ac7d36589591314621047b1b9d89ed34' }
-
-    Plug 'kien/ctrlp.vim', { 'commit': '564176f01d7f3f7f8ab452ff4e1f5314de7b0981' }
-    let g:ctrlp_custom_ignore='\v[\/](\.(git|hg|svn)|(_build|deps|node_modules))$'
-    let g:ctrlp_map='<leader>p'
-    let g:ctrlp_working_path_mode='w'
 " }
 
 " Integrations {
@@ -83,6 +78,9 @@ call plug#begin('~/.vim/plugged')
 " }
 
 " Interface {
+    " fzf :heart: vim
+    Plug 'junegunn/fzf', { 'commit': '9cb7a364a31bdb882d873807774bdcf6fad0c9e4' }
+    Plug 'junegunn/fzf.vim', { 'commit': 'd6aa21476b2854694e6aa7b0941b8992a906c5ec' }
 " }
 
 " Commands {
@@ -198,7 +196,8 @@ syntax on
     " my mappings
     nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
     nnoremap <silent> <leader>vs :so $MYVIMRC<CR>:echo 'Sourced!'<CR>
-    nnoremap <leader>b :CtrlPBuffer<CR>
+    nnoremap <leader>b :Buffers<CR>
+    nnoremap <leader>p :Files<CR>
     nnoremap <leader>q :q<CR>
     nnoremap <leader>r zR
     nnoremap <leader>ga :Gwrite<CR>
@@ -219,19 +218,6 @@ syntax on
         tnoremap <Esc> <C-\><C-n>
     endif
 
-    " The Silver Searcher
-    " ref: https://robots.thoughtbot.com/faster-grepping-in-vim
-    if executable('ag')
-        " Use ag over grep
-        set grepprg=ag\ --nogroup\ --nocolor
-
-        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-        let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
-
-        " ag is fast enough that CtrlP doesn't need to cache
-        let g:ctrlp_use_caching=0
-    endif
-
     " bind K to grep word under cursor
     " ref: https://thoughtbot.com/blog/faster-grepping-in-vim
     nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -240,4 +226,4 @@ syntax on
 " Theme {
 " }
 
-" vim: set foldmarker={,}:
+    " vim: set foldmarker={,}:
