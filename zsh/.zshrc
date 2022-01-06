@@ -4,11 +4,14 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+# Checkout after oh-my-zsh is cloned
+OMZ_COMMIT=67cc59b
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -26,7 +29,7 @@ ZSH_THEME="robbyrussell"
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
@@ -70,32 +73,196 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    asdf
+    command-not-found
+    common-aliases
+    direnv
+    docker-compose
+    fzf
+    gem
+    git
+    gitignore
+    golang
+    gpg-agent
+    helm
+    kubectl
+    pip
+    python
+    rails
+    ruby
+    virtualenvwrapper
+)
+
+# pip plugin
+PIP_REQUIRE_VIRTUALENV=1
+
+# external plugins and themes
+#
+# format:
+#     (plugins|themes):owner/repo[@commit][:alternative_basename]
+#
+# example #1:
+#     themes:romkatv/powerlevel10k@e1c52e0
+#
+# 1. "themes" or "plugins"
+# 2. git clone https://github.com/romkatv/powerlevel10k.git to themes/powerlevel10k
+# 3. git checkout e1c52e0 in themes/powerlevel10k
+#
+# example #2:
+#     plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
+#
+# 1. "themes" or "plugins"
+# 2. git clone https://github.com/MichaelAquilina/zsh-you-should-use.git to plugins/you-should-use
+# 3. git checkout e1c52e0 in plugins/you-should-use
+# 4. add alias "you-should-use" to plugins list instead
+my_plugins=(
+    plugins:Aloxaf/fzf-tab@e85f76a
+    plugins:MichaelAquilina/zsh-auto-notify@fb38802:auto-notify
+    plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
+    plugins:chuwy/zsh-secrets@1d01c9d
+    plugins:hlissner/zsh-autopair@9d003fc
+    plugins:jreese/zsh-titles@b7d46d7:titles
+    plugins:zsh-users/zsh-autosuggestions@a411ef3
+    plugins:zsh-users/zsh-completions@20f3cd5
+    plugins:zsh-users/zsh-syntax-highlighting@c7caf57
+    themes:romkatv/powerlevel10k@e1c52e0
+)
+
+# platform-specific plugins
+function() {
+    [[ "$OSTYPE" = "darwin" ]] && plugins+=(brew)
+}
+
+# add external plugins to oh-my-zsh plugin list
+function() {
+    for p in $my_plugins; do
+        local category="$(echo $p | awk -F: '{print $1}')"
+        if [[ "$category" != "plugins" ]]; then
+            continue
+        fi
+        local basename="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}' | awk -F/ '{print $2}')"
+        local alt_basename="$(echo $p | awk -F: '{print $3}')"
+        if [[ -z "$alt_basename" ]]; then
+            plugins+=($basename)
+        else
+            plugins+=($alt_basename)
+        fi
+    done
+}
+
+# powerlevel10k configuration must be loaded before oh my zsh
+source $HOME/.p10k.zsh
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
+_install_oh_my_zsh() {
+    echo "==> install oh my zsh"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+    pushd $ZSH > /dev/null
+    [[ ! -z "$OMZ_COMMIT" ]] && git checkout $OMZ_COMMIT
+    popd > /dev/null
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+    echo "==> oh my zsh installed"
+}
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+_install_tpm() {
+    echo "==> install tpm"
+    [[ ! -d "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm --branch v3.0.0
+    echo "==> tpm installed"
+}
+
+_install_vim_plug() {
+    local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
+    echo "==> install vim-plug"
+    if [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
+        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
+            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$commit/plug.vim
+    fi
+    echo "==> vim-plug installed"
+}
+
+benchmark() {
+    if (( $+commands[hyperfine] )); then
+        /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
+    else
+        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
+    fi
+}
+
+decrypt() {
+    eval "$(secrets decrypt environment)"
+}
+
+install-plugins() {
+    if [[ -z "$ZSH_CUSTOM" ]]; then
+        echo "\$ZSH_CUSTOM is not set. abort"
+        return
+    fi
+
+    pushd $ZSH_CUSTOM > /dev/null
+
+    for p in $my_plugins; do
+        local category="$(echo $p | awk -F: '{print $1}')"
+        local repo="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}')"
+        local alt_basename="$(echo $p | awk -F: '{print $3}')"
+
+        # use alternative basename instead of basename if alternative basename is given
+        if [[ -z "$alt_basename" ]]; then
+            local basename="$(echo $repo | awk -F/ '{print $2}')"
+        else
+            local basename="$alt_basename"
+        fi
+        local dest="$category/$basename"
+
+        if [[ -d "$dest" ]]; then
+            echo "==> $basename installed"
+        else
+            git clone https://github.com/$repo.git $dest
+        fi
+
+        pushd $dest > /dev/null
+        local ref="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $2}')"
+        [[ ! -z "$ref" ]] && git checkout $ref
+        popd > /dev/null
+    done
+
+    popd > /dev/null
+}
+
+reload() {
+    exec /usr/bin/env zsh
+}
+
+restore() {
+    pushd $HOME/.cfg
+    stow $(ls -d */)
+    popd
+}
+
+setup() {
+    _install_oh_my_zsh
+    _install_tpm
+    _install_vim_plug
+}
+
+function() {
+    # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
+    (( $+commands[bat] )) && alias cat="bat"
+    (( $+commands[fd] )) && alias find="fd"
+    (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
+    (( $+commands[lsd] )) && alias ls="lsd"
+    (( $+commands[procs] )) && alias ps="procs"
+    (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+
+    # [my] private configuration
+    [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+    true # prevent result of shorthand expression from being exit status
+}
+
+# vim: set foldlevel=0 foldmethod=marker:
