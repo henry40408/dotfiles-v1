@@ -1,106 +1,188 @@
-#!/usr/bin/env zsh
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-if [[ -z $HOME ]]; then
-    echo "\$HOME is not set. abort."
-    exit 1
-fi
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
 
-DOTFILES="$HOME/.local/share/dotfiles"
+# Checkout after oh-my-zsh is cloned
+OMZ_COMMIT=67cc59b
 
-benchmark() {
-    if (( $+commands[hyperfine] )); then
-        /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
-    else
-        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
-    fi
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+    asdf
+    command-not-found
+    common-aliases
+    direnv
+    docker-compose
+    fzf
+    gem
+    git
+    gitignore
+    golang
+    gpg-agent
+    helm
+    kubectl
+    pip
+    python
+    rails
+    ruby
+    virtualenvwrapper
+)
+
+# pip plugin
+PIP_REQUIRE_VIRTUALENV=1
+
+# external plugins and themes
+#
+# format:
+#     (plugins|themes):owner/repo[@commit][:alternative_basename]
+#
+# example #1:
+#     themes:romkatv/powerlevel10k@e1c52e0
+#
+# 1. "themes" or "plugins"
+# 2. git clone https://github.com/romkatv/powerlevel10k.git to themes/powerlevel10k
+# 3. git checkout e1c52e0 in themes/powerlevel10k
+#
+# example #2:
+#     plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
+#
+# 1. "themes" or "plugins"
+# 2. git clone https://github.com/MichaelAquilina/zsh-you-should-use.git to plugins/you-should-use
+# 3. git checkout e1c52e0 in plugins/you-should-use
+# 4. add alias "you-should-use" to plugins list instead
+my_plugins=(
+    plugins:Aloxaf/fzf-tab@e85f76a
+    plugins:MichaelAquilina/zsh-auto-notify@fb38802:auto-notify
+    plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
+    plugins:chuwy/zsh-secrets@1d01c9d
+    plugins:hlissner/zsh-autopair@9d003fc
+    plugins:jreese/zsh-titles@b7d46d7:titles
+    plugins:zsh-users/zsh-autosuggestions@a411ef3
+    plugins:zsh-users/zsh-completions@20f3cd5
+    plugins:zsh-users/zsh-syntax-highlighting@c7caf57
+    themes:romkatv/powerlevel10k@e1c52e0
+)
+
+# platform-specific plugins
+function() {
+    [[ "$OSTYPE" = "darwin" ]] && plugins+=(brew)
 }
 
-check() {
-    local binaries=(
-        direnv
-        xsv
-        lsd
-        tokei
-        zoxide
-        dust
-        procs
-        puma-dev
-    )
-
-    for binary in $binaries; do
-        if (( $+commands[$binary] )); then
-            file "$(which $binary)"
+# add external plugins to oh-my-zsh plugin list
+function() {
+    for p in $my_plugins; do
+        local category="$(echo $p | awk -F: '{print $1}')"
+        if [[ "$category" != "plugins" ]]; then
+            continue
+        fi
+        local basename="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}' | awk -F/ '{print $2}')"
+        local alt_basename="$(echo $p | awk -F: '{print $3}')"
+        if [[ -z "$alt_basename" ]]; then
+            plugins+=($basename)
         else
-            echo "[x] $binary not found"
+            plugins+=($alt_basename)
         fi
     done
 }
 
-decrypt() {
-    eval "$(secrets decrypt environment)"
-}
+# Instant Prompt of powerlevel10k
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-reload() {
-    exec zsh
-}
+# powerlevel10k configuration must be loaded before oh my zsh
+source $HOME/.p10k.zsh
 
-restore() {
-    pushd $HOME/.cfg
-    stow $(ls -d */)
-    popd
-}
+source $ZSH/oh-my-zsh.sh
 
-_install_asdf() {
-    echo "==> install asdf"
-    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.9.0
-    echo "==> asdf installed"
-}
+# User configuration
 
-_install_crates() {
-    local crates=(
-        du-dust:0.6.2
-        lsd:0.20.1
-        procs:0.11.10
-        tokei:12.1.2
-        xsv:0.13.0
-        zoxide:0.7.9
-    )
-
-    if (( $+commands[cargo] )); then
-        for line in $crates; do
-            local name="$(echo $line | awk -F: '{print $1}')"
-            local version="$(echo $line | awk -F: '{print $2}')"
-            cargo install $name --version $version
-        done
+_install_nb() {
+    local commit=b1424544fc86a128971bbffec5046455901c9d64
+    echo "==> install nb"
+    if [[ ! -f "$HOME/bin/nb" ]]; then
+        mkdir -p "$HOME/bin"
+        curl -L https://raw.github.com/xwmx/nb/b1424544fc86a128971bbffec5046455901c9d64/nb -o ~/bin/nb && chmod +x ~/bin/nb
     fi
+    echo "==> nb installed"
 }
 
-_install_plugins() {
-    local plugins=(
-        ohmyzsh/ohmyzsh
-        romkatv/zsh-defer
-        zsh-users/zsh-autosuggestions
-        zsh-users/zsh-completions
-        zsh-users/zsh-syntax-highlighting
-        MichaelAquilina/zsh-auto-notify
-        MichaelAquilina/zsh-you-should-use
-        chuwy/zsh-secrets
-        hlissner/zsh-autopair
-        jreese/zsh-titles
-        Aloxaf/fzf-tab
-        romkatv/powerlevel10k
-    )
+_install_oh_my_zsh() {
+    echo "==> install oh my zsh"
 
-    mkdir -p $DOTFILES
+    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
 
-    pushd $DOTFILES > /dev/null
-
-    for plugin in $plugins; do
-        local basename="$(echo $plugin | awk -F/ '{print $2}')"
-        [[ ! -d "$DOTFILES/$basename" ]] && git clone --depth 1 "https://github.com/$plugin.git" $DOTFILES/$basename
-    done
-
+    pushd $ZSH > /dev/null
+    [[ ! -z "$OMZ_COMMIT" ]] && git checkout $OMZ_COMMIT
     popd > /dev/null
+
+    echo "==> oh my zsh installed"
 }
 
 _install_tpm() {
@@ -110,144 +192,81 @@ _install_tpm() {
 }
 
 _install_vim_plug() {
+    local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
     echo "==> install vim-plug"
     if [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
         curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
-            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$commit/plug.vim
     fi
     echo "==> vim-plug installed"
 }
 
-setup() {
-    _install_asdf
-    _install_vim_plug
-    _install_tpm
-    _install_plugins
-    _install_crates
+benchmark() {
+    if (( $+commands[hyperfine] )); then
+        /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
+    else
+        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
+    fi
 }
 
-update-plugins() {
-    pushd $DOTFILES > /dev/null
-    for d in */; do
-        echo "update $d"
-        pushd $d > /dev/null
-        git pull
+decrypt() {
+    eval "$(secrets decrypt environment)"
+}
+
+install-plugins() {
+    if [[ -z "$ZSH_CUSTOM" ]]; then
+        echo "\$ZSH_CUSTOM is not set. abort"
+        return
+    fi
+
+    pushd $ZSH_CUSTOM > /dev/null
+
+    for p in $my_plugins; do
+        local category="$(echo $p | awk -F: '{print $1}')"
+        local repo="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}')"
+        local alt_basename="$(echo $p | awk -F: '{print $3}')"
+
+        # use alternative basename instead of basename if alternative basename is given
+        if [[ -z "$alt_basename" ]]; then
+            local basename="$(echo $repo | awk -F/ '{print $2}')"
+        else
+            local basename="$alt_basename"
+        fi
+        local dest="$category/$basename"
+
+        if [[ -d "$dest" ]]; then
+            echo "==> $basename installed"
+        else
+            git clone https://github.com/$repo.git $dest
+        fi
+
+        pushd $dest > /dev/null
+        local ref="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $2}')"
+        [[ ! -z "$ref" ]] && git checkout $ref
         popd > /dev/null
     done
+
     popd > /dev/null
 }
 
-_fix_asdf() {
-    # ref: https://github.com/asdf-vm/asdf/issues/692
-    autoload -U +X bashcompinit && bashcompinit
+reload() {
+    exec /usr/bin/env zsh
 }
 
-_p10k_instant_prompt() {
-    # [powerlevel10k] enable instant prompt
-    # ref: https://github.com/romkatv/powerlevel10k#instant-prompt
-    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-    fi
+restore() {
+    pushd $HOME/.cfg
+    stow $(ls -d */)
+    popd
 }
 
-_init_oh_my_zsh() {
-    _source_plugin "ohmyzsh/oh-my-zsh.sh" # set ZSH_CACHE_DIR
+setup() {
+    _install_oh_my_zsh
+    _install_tpm
+    _install_vim_plug
+    _install_nb
 }
 
-_load_oh_my_zsh_libraries() {
-    local libraries=(
-        functions
-        clipboard
-        compfix
-        completion
-        correction
-        directories
-        git
-        history
-        key-bindings
-        misc
-        prompt_info_functions
-        termsupport
-    )
-    for library in $libraries; do
-        _source_plugin "ohmyzsh/lib/$library.zsh"
-    done
-
-    export DISABLE_LS_COLORS=true
-    _source_plugin "ohmyzsh/lib/theme-and-appearance.zsh"
-}
-
-_load_oh_my_zsh_plugins() {
-    local plugins=(
-        asdf
-        command-not-found
-        common-aliases
-        direnv
-        docker-compose
-        fzf
-        gem
-        git
-        golang
-        gitignore
-        gpg-agent
-        helm
-        kubectl
-        python
-        ruby
-        # rails
-        virtualenvwrapper
-    )
-    for plugin in $plugins; do
-        _source_plugin "ohmyzsh/plugins/$plugin/$plugin.plugin.zsh"
-    done
-
-    [[ $OSTYPE = *darwin* ]] && _source_plugin "ohmyzsh/plugins/brew/brew.plugin.zsh"
-
-    export PIP_REQUIRE_VIRTUALENV=1
-    _source_plugin "ohmyzsh/plugins/pip/pip.plugin.zsh"
-}
-
-_load_theme() {
-    [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
-    _source_plugin "powerlevel10k/powerlevel10k.zsh-theme"
-}
-
-_load_zsh_plugins() {
-    _source_plugin "zsh-autosuggestions/zsh-autosuggestions.zsh"
-    _source_plugin "zsh-completions/zsh-completions.plugin.zsh"
-    _source_plugin "zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
-
-    if [[ $OSTYPE = *darwin* ]] || (( $+commands[notify-send] )); then
-        _source_plugin "zsh-auto-notify/auto-notify.plugin.zsh"
-    fi
-
-    export YSU_HARDCORE=1
-    _source_plugin "zsh-you-should-use/you-should-use.plugin.zsh"
-
-    _source_plugin "zsh-autopair/zsh-autopair.plugin.zsh"
-    _source_plugin "zsh-secrets/zsh-secrets.plugin.zsh"
-    _source_plugin "fzf-tab/fzf-tab.plugin.zsh"
-    _source_plugin "zsh-titles/titles.plugin.zsh"
-}
-
-_source_plugin() {
-    source "$DOTFILES/$1"
-}
-
-_init() {
-    if [[ -d "$DOTFILES" ]]; then
-        _p10k_instant_prompt
-        _fix_asdf
-        _init_oh_my_zsh
-        _load_oh_my_zsh_libraries
-        _load_oh_my_zsh_plugins
-        _load_zsh_plugins
-        _load_theme
-    fi
-
-    # [zsh] configuration for history
-    setopt histfindnodups histignorealldups histignorespace histsavenodups
-
+function() {
     # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
     (( $+commands[bat] )) && alias cat="bat"
     (( $+commands[fd] )) && alias find="fd"
@@ -256,15 +275,10 @@ _init() {
     (( $+commands[procs] )) && alias ps="procs"
     (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
-    # [my] executables
-    [[ -d "$HOME/bin" ]] && path+="$HOME/bin"
-
     # [my] private configuration
     [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
     true # prevent result of shorthand expression from being exit status
 }
-
-_init
 
 # vim: set foldlevel=0 foldmethod=marker:
