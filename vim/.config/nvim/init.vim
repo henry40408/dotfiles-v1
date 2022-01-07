@@ -1,8 +1,5 @@
 " reference: https://dougblack.io/words/a-good-vimrc.html
 
-" disable shallow clone to checkout previous commit
-let g:plug_shallow=0
-
 call plug#begin()
 
 " Plugins
