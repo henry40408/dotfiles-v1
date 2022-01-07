@@ -151,6 +151,11 @@ function() {
     done
 }
 
+# Instant Prompt of powerlevel10k
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # powerlevel10k configuration must be loaded before oh my zsh
 source $HOME/.p10k.zsh
 
