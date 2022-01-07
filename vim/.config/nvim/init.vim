@@ -1,12 +1,15 @@
 " reference: https://dougblack.io/words/a-good-vimrc.html
 
-call plug#begin('~/.vim/plugged')
+" disable shallow clone to checkout previous commit
+let g:plug_shallow=0
+
+call plug#begin()
 
 " Plugins
 
 " Language {
     Plug 'chrisbra/csv.vim', { 'commit': '9ab092187a7046a8d0eedc7fbbce8fac38d10563' }
-    Plug 'editorconfig/editorconfig-vim', { 'commit': '3078cd10b28904e57d878c0d0dab42aa0a9fdc89' }
+    Plug 'editorconfig/editorconfig-vim', { 'commit': '1c4f781f2439469e5342217131886260c9445fc6' }
     Plug 'elzr/vim-json', { 'commit': '3727f089410e23ae113be6222e8a08dd2613ecf2' }
 
     Plug 'fatih/vim-go', { 'commit': 'a319aaf6bf652dadb197807e4629ff5b1750a17b' }
