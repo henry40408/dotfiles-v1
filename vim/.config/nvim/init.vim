@@ -24,6 +24,8 @@ call plug#begin()
     let g:markdown_fenced_languages=['bash=sh', 'css', 'elixir', 'html', 'javascript', 'json', 'jsx', 'python', 'ruby', 'yaml']
     let g:vim_markdown_conceal=0
 
+    Plug 'rust-lang/rust.vim'
+
     Plug 'scrooloose/nerdcommenter'
 
     " A solid language pack for Vim.
