@@ -97,6 +97,27 @@ plugins=(
 # pip plugin
 PIP_REQUIRE_VIRTUALENV=1
 
+# tmux plugins
+#
+# format:
+#     owner/repo@commit
+#
+# example #1:
+#     tmux-plugins/tmux-sensible@5d089e4
+#
+# 1. git clone https://github.com/tmux-plugins/tmux-sensible tmux-sensible
+# 2. git checkout 5d089e4 in tmux-sensible
+tmux_plugins=(
+    tmux-plugins/tmux-battery@5c52d4f
+    tmux-plugins/tmux-continuum@9121498
+    tmux-plugins/tmux-pain-control@32b760f
+    tmux-plugins/tmux-prefix-highlight@15acc61
+    tmux-plugins/tmux-resurrect@027960a
+    tmux-plugins/tmux-sensible@5d089e4
+    tmux-plugins/tmux-yank@1b1a436
+    Morantron/tmux-fingers@dbbf9b9
+)
+
 # external plugins and themes
 #
 # format:
@@ -116,7 +137,7 @@ PIP_REQUIRE_VIRTUALENV=1
 # 2. git clone https://github.com/MichaelAquilina/zsh-you-should-use.git to plugins/you-should-use
 # 3. git checkout e1c52e0 in plugins/you-should-use
 # 4. add alias "you-should-use" to plugins list instead
-my_plugins=(
+zsh_plugins=(
     plugins:Aloxaf/fzf-tab@e85f76a
     plugins:MichaelAquilina/zsh-auto-notify@fb38802:auto-notify
     plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
@@ -136,7 +157,7 @@ function() {
 
 # add external plugins to oh-my-zsh plugin list
 function() {
-    for p in $my_plugins; do
+    for p in $zsh_plugins; do
         local category="$(echo $p | awk -F: '{print $1}')"
         if [[ "$category" != "plugins" ]]; then
             continue
@@ -185,12 +206,6 @@ _install_oh_my_zsh() {
     echo "==> oh my zsh installed"
 }
 
-_install_tpm() {
-    echo "==> install tpm"
-    [[ ! -d "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm --branch v3.0.0
-    echo "==> tpm installed"
-}
-
 _install_vim_plug() {
     local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
     echo "==> install vim-plug"
@@ -214,6 +229,37 @@ decrypt() {
 }
 
 install-plugins() {
+    install-zsh-plugins
+    install-tmux-plugins
+}
+
+install-tmux-plugins() {
+    local plugins_dir=$HOME/.tmux/plugins
+
+    pushd $HOME/.tmux/plugins > /dev/null
+
+    for p in $tmux_plugins; do
+        local repo="$(echo $p | awk -F@ '{print $1}')"
+        local commit="$(echo $p | awk -F@ '{print $2}')"
+
+        local basename="$(echo $repo | awk -F/ '{print $2}')"
+        echo "==> install $basename"
+
+        local dest="$plugins_dir/$basename"
+
+        if [[ ! -d "$dest" ]]; then
+            git clone https://github.com/$repo.git $dest
+        fi
+
+        pushd $dest > /dev/null
+        git checkout $commit
+        popd
+    done
+
+    popd > /dev/null
+}
+
+install-zsh-plugins() {
     if [[ -z "$ZSH_CUSTOM" ]]; then
         echo "\$ZSH_CUSTOM is not set. abort"
         return
@@ -221,7 +267,7 @@ install-plugins() {
 
     pushd $ZSH_CUSTOM > /dev/null
 
-    for p in $my_plugins; do
+    for p in $zsh_plugins; do
         local category="$(echo $p | awk -F: '{print $1}')"
         local repo="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}')"
         local alt_basename="$(echo $p | awk -F: '{print $3}')"
@@ -261,7 +307,6 @@ restore() {
 
 setup() {
     _install_oh_my_zsh
-    _install_tpm
     _install_vim_plug
     _install_nb
 }
