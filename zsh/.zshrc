@@ -82,6 +82,7 @@ plugins=(
     fzf
     gem
     git
+    git-extras
     gitignore
     golang
     gpg-agent
@@ -152,7 +153,7 @@ zsh_plugins=(
 
 # platform-specific plugins
 function() {
-    [[ "$OSTYPE" = "darwin" ]] && plugins+=(brew)
+    [[ "$OSTYPE" = "darwin" || "$OSTYPE" = "darwin21.0" ]] && plugins+=(brew)
 }
 
 # add external plugins to oh-my-zsh plugin list
@@ -248,7 +249,7 @@ install-tmux-plugins() {
         local dest="$plugins_dir/$basename"
 
         if [[ ! -d "$dest" ]]; then
-            git clone https://github.com/$repo.git $dest
+            git clone --recursive https://github.com/$repo.git $dest
         fi
 
         pushd $dest > /dev/null
