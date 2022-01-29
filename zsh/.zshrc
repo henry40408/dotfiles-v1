@@ -185,16 +185,6 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-_install_nb() {
-    local commit=b1424544fc86a128971bbffec5046455901c9d64
-    echo "==> install nb"
-    if [[ ! -f "$HOME/bin/nb" ]]; then
-        mkdir -p "$HOME/bin"
-        curl -L https://raw.github.com/xwmx/nb/b1424544fc86a128971bbffec5046455901c9d64/nb -o ~/bin/nb && chmod +x ~/bin/nb
-    fi
-    echo "==> nb installed"
-}
-
 _install_oh_my_zsh() {
     echo "==> install oh my zsh"
 
@@ -309,7 +299,6 @@ restore() {
 setup() {
     _install_oh_my_zsh
     _install_vim_plug
-    _install_nb
 }
 
 function() {
