@@ -254,7 +254,6 @@ install-tmux-plugins() {
 
         pushd $dest > /dev/null
         git checkout $commit
-        git submodule update --init --recursive
         popd
     done
 
