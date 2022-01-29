@@ -316,7 +316,6 @@ setup() {
 function() {
     # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
     (( $+commands[bat] )) && alias cat="bat"
-    (( $+commands[fd] )) && alias find="fd"
     (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
     (( $+commands[lsd] )) && alias ls="lsd"
     (( $+commands[procs] )) && alias ps="procs"
