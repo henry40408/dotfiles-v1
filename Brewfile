@@ -53,7 +53,6 @@ brew "nasm"
 brew "ncdu"
 brew "neovim"
 brew "nmap"
-brew "nomad", restart_service: true
 brew "nss"
 brew "opencc"
 brew "openjdk@11"
@@ -116,19 +115,18 @@ cask "pocket-casts"
 cask "protonvpn"
 cask "quip"
 cask "signal"
-cask "sketch"
 cask "slack"
 cask "spotify"
 cask "steam"
 cask "syncthing"
 cask "telegram"
+cask "telegram-desktop"
 cask "visual-studio-code"
 cask "zoom"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
 mas "Bitwarden", id: 1352778147
-mas "Cheatsheet", id: 1468213484
 mas "DevCleaner", id: 1388020431
 mas "Disk Speed Test", id: 425264550
 mas "Drafts", id: 1435957248
