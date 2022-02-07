@@ -1,5 +1,8 @@
+crate_root=$HOME/.local
+
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# ref: https://unix.stackexchange.com/a/62581
+export -U PATH=$PATH:$crate_root
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -151,6 +154,15 @@ zsh_plugins=(
     themes:romkatv/powerlevel10k@e1c52e0
 )
 
+crates=(
+    du-dust:0.6.2
+    lsd:0.20.1
+    procs:0.11.10
+    tokei:12.1.2
+    xsv:0.13.0
+    zoxide:0.7.9
+)
+
 # platform-specific plugins
 function() {
     [[ "$OSTYPE" = "darwin" || "$OSTYPE" = "darwin21.0" ]] && plugins+=(brew)
@@ -185,28 +197,6 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-_install_oh_my_zsh() {
-    echo "==> install oh my zsh"
-
-    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
-
-    pushd $ZSH > /dev/null
-    [[ ! -z "$OMZ_COMMIT" ]] && git checkout $OMZ_COMMIT
-    popd > /dev/null
-
-    echo "==> oh my zsh installed"
-}
-
-_install_vim_plug() {
-    local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
-    echo "==> install vim-plug"
-    if [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
-        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
-            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$commit/plug.vim
-    fi
-    echo "==> vim-plug installed"
-}
-
 benchmark() {
     if (( $+commands[hyperfine] )); then
         /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
@@ -222,6 +212,26 @@ decrypt() {
 install-plugins() {
     install-zsh-plugins
     install-tmux-plugins
+}
+
+install-crates() {
+    for c in $crates; do
+        local name="$(echo $c | awk -F: '{print $1}')"
+        local version="$(echo $c | awk -F: '{print $2}')"
+        cargo install --root $crate_root $name --version $version
+    done
+}
+
+install-oh-my-zsh() {
+    echo "==> install oh my zsh"
+
+    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
+
+    pushd $ZSH > /dev/null
+    [[ ! -z "$OMZ_COMMIT" ]] && git checkout $OMZ_COMMIT
+    popd > /dev/null
+
+    echo "==> oh my zsh installed"
 }
 
 install-tmux-plugins() {
@@ -248,6 +258,16 @@ install-tmux-plugins() {
     done
 
     popd > /dev/null
+}
+
+install-vim-plug() {
+    local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
+    echo "==> install vim-plug"
+    if [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
+        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
+            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$commit/plug.vim
+    fi
+    echo "==> vim-plug installed"
 }
 
 install-zsh-plugins() {
@@ -297,8 +317,8 @@ restore() {
 }
 
 setup() {
-    _install_oh_my_zsh
-    _install_vim_plug
+    install-oh-my-zsh
+    install-vim-plug
 }
 
 function() {
