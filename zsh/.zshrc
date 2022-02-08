@@ -2,7 +2,7 @@ crate_root=$HOME/.local
 
 # If you come from bash you might have to change your $PATH.
 # ref: https://unix.stackexchange.com/a/62581
-export -U PATH=$PATH:$crate_root
+export -U PATH=$PATH:$crate_root/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
