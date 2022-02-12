@@ -209,6 +209,12 @@ decrypt() {
     eval "$(secrets decrypt environment)"
 }
 
+install-asdf() {
+    echo "==> install asdf"
+    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.9.0
+    echo "==> asdf installed"
+}
+
 install-plugins() {
     install-zsh-plugins
     install-tmux-plugins
@@ -317,6 +323,7 @@ restore() {
 }
 
 setup() {
+    install-asdf
     install-oh-my-zsh
     install-vim-plug
 }
