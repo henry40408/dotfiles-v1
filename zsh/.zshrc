@@ -155,6 +155,7 @@ zsh_plugins=(
 )
 
 crates=(
+    cross:0.2.1
     du-dust:0.6.2
     lsd:0.20.1
     procs:0.11.10
