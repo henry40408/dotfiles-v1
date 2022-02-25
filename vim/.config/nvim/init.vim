@@ -46,9 +46,6 @@ call plug#begin()
 " }
 
 " ## Completion {
-    " A code-completion engine for Vim
-    Plug 'ycm-core/YouCompleteMe'
-
     " endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
     Plug 'tpope/vim-endwise'
 " }
