@@ -8,7 +8,7 @@ export -U PATH=/opt/homebrew/bin:$HOME/bin:$PATH:$crate_root/bin
 export ZSH=$HOME/.oh-my-zsh
 
 # Checkout after oh-my-zsh is cloned
-OMZ_COMMIT=02b52a03
+OMZ_COMMIT=ef3f7c43
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
