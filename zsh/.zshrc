@@ -7,9 +7,6 @@ export -U PATH=/opt/homebrew/bin:$HOME/bin:$PATH:$crate_root/bin
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Checkout after oh-my-zsh is cloned
-OMZ_COMMIT=ef3f7c43
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -158,6 +155,7 @@ crates=(
     cross:0.2.1
     du-dust:0.6.2
     git-delta:0.12.0
+    license-generator:0.8.1
     lsd:0.20.1
     procs:0.11.10
     tokei:12.1.2
@@ -212,20 +210,28 @@ decrypt() {
 }
 
 install-asdf() {
+    local tag=v0.9.0
+
     echo "==> install asdf"
-    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.9.0
+
+    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
+
+    pushd $HOME/.asdf > /dev/null
+    git fetch
+    git checkout $tag
+    popd > /dev/null
+
     echo "==> asdf installed"
 }
 
 install-asdf-plugins() {
-    local commit=6c8da3196f79fd3fd232029db3958edee287be0f
+    local commit=b7f14156edbf509d6c3039b7295f84c7b1022c55
 
     echo "==> install asdf-plugins"
-    if [[ ! -d "$HOME/.asdf/plugins" ]]; then
-        git clone https://github.com/henry40408/asdf-plugins.git $HOME/.asdf/plugins
-    fi
+    [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git $HOME/.asdf/plugins
 
     pushd $HOME/.asdf/plugins > /dev/null
+    git fetch
     git checkout $commit
     git submodule init
     git submodule update
@@ -248,12 +254,15 @@ install-crates() {
 }
 
 install-oh-my-zsh() {
+    local commit=0f2715bb45ef025b48469817712a4cd3e23839b6
+
     echo "==> install oh my zsh"
 
     [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
 
     pushd $ZSH > /dev/null
-    [[ ! -z "$OMZ_COMMIT" ]] && git checkout $OMZ_COMMIT
+    git fetch
+    git checkout $commit
     popd > /dev/null
 
     echo "==> oh my zsh installed"
@@ -273,13 +282,11 @@ install-tmux-plugins() {
 
         local dest="$plugins_dir/$basename"
 
-        if [[ ! -d "$dest" ]]; then
-            git clone --recursive https://github.com/$repo.git $dest
-        fi
+        [[ ! -d "$dest" ]] && git clone --recursive https://github.com/$repo.git $dest
 
         pushd $dest > /dev/null
         git checkout $commit
-        popd
+        popd > /dev/null
     done
 
     popd > /dev/null
@@ -287,19 +294,18 @@ install-tmux-plugins() {
 
 install-vim-plug() {
     local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
+
     echo "==> install vim-plug"
-    if [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]]; then
+
+    [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]] && \
         curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
             --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$commit/plug.vim
-    fi
+
     echo "==> vim-plug installed"
 }
 
 install-zsh-plugins() {
-    if [[ -z "$ZSH_CUSTOM" ]]; then
-        echo "\$ZSH_CUSTOM is not set. abort"
-        return
-    fi
+    [[ -z "$ZSH_CUSTOM" ]] && echo "\$ZSH_CUSTOM is not set. abort" && return
 
     pushd $ZSH_CUSTOM > /dev/null
 
