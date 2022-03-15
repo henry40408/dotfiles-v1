@@ -217,6 +217,23 @@ install-asdf() {
     echo "==> asdf installed"
 }
 
+install-asdf-plugins() {
+    local commit=6c8da3196f79fd3fd232029db3958edee287be0f
+
+    echo "==> install asdf-plugins"
+    if [[ ! -d "$HOME/.asdf/plugins" ]]; then
+        git clone https://github.com/henry40408/asdf-plugins.git $HOME/.asdf/plugins
+    fi
+
+    pushd $HOME/.asdf/plugins > /dev/null
+    git checkout $commit
+    git submodule init
+    git submodule update
+    popd > /dev/null
+
+    echo "==> asdf-plugins installed"
+}
+
 install-plugins() {
     install-zsh-plugins
     install-tmux-plugins
@@ -326,6 +343,7 @@ restore() {
 
 setup() {
     install-asdf
+    install-asdf-plugins
     install-oh-my-zsh
     install-vim-plug
 }
