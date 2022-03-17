@@ -7,6 +7,12 @@ export -U PATH=/opt/homebrew/bin:$HOME/bin:$PATH:$crate_root/bin
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+# commits
+ASDF_TAG=v0.9.0
+ASDF_PLUGINS_COMMIT=b7f14156edbf509d6c3039b7295f84c7b1022c55
+OMZ_COMMIT=4a988c46609c4c2d32240092899ae0aae45b11a6
+VIM_PLUGIN_COMMIT=e300178a0e2fb04b56de8957281837f13ecf0b27
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -101,54 +107,54 @@ PIP_REQUIRE_VIRTUALENV=1
 # tmux plugins
 #
 # format:
-#     owner/repo@commit
+#     owner/repo:commit
 #
 # example #1:
-#     tmux-plugins/tmux-sensible@5d089e4
+#     tmux-plugins/tmux-sensible:5d089e4
 #
 # 1. git clone https://github.com/tmux-plugins/tmux-sensible tmux-sensible
 # 2. git checkout 5d089e4 in tmux-sensible
 tmux_plugins=(
-    tmux-plugins/tmux-battery@5c52d4f
-    tmux-plugins/tmux-continuum@9121498
-    tmux-plugins/tmux-pain-control@32b760f
-    tmux-plugins/tmux-prefix-highlight@15acc61
-    tmux-plugins/tmux-resurrect@027960a
-    tmux-plugins/tmux-sensible@5d089e4
-    tmux-plugins/tmux-yank@1b1a436
-    Morantron/tmux-fingers@dbbf9b9
+    tmux-plugins/tmux-battery:5c52d4f
+    tmux-plugins/tmux-continuum:9121498
+    tmux-plugins/tmux-pain-control:32b760f
+    tmux-plugins/tmux-prefix-highlight:15acc61
+    tmux-plugins/tmux-resurrect:027960a
+    tmux-plugins/tmux-sensible:5d089e4
+    tmux-plugins/tmux-yank:1b1a436
+    Morantron/tmux-fingers:dbbf9b9
 )
 
 # external plugins and themes
 #
 # format:
-#     (plugins|themes):owner/repo[@commit][:alternative_basename]
+#     (plugins|themes):owner/repo[:commit][:alternative_basename]
 #
 # example #1:
-#     themes:romkatv/powerlevel10k@e1c52e0
+#     themes:romkatv/powerlevel10k:e1c52e0
 #
 # 1. "themes" or "plugins"
 # 2. git clone https://github.com/romkatv/powerlevel10k.git to themes/powerlevel10k
 # 3. git checkout e1c52e0 in themes/powerlevel10k
 #
 # example #2:
-#     plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
+#     plugins:MichaelAquilina/zsh-you-should-use:773ae5f:you-should-use
 #
 # 1. "themes" or "plugins"
 # 2. git clone https://github.com/MichaelAquilina/zsh-you-should-use.git to plugins/you-should-use
 # 3. git checkout e1c52e0 in plugins/you-should-use
 # 4. add alias "you-should-use" to plugins list instead
 zsh_plugins=(
-    plugins:Aloxaf/fzf-tab@e85f76a
-    plugins:MichaelAquilina/zsh-auto-notify@fb38802:auto-notify
-    plugins:MichaelAquilina/zsh-you-should-use@773ae5f:you-should-use
-    plugins:chuwy/zsh-secrets@1d01c9d
-    plugins:hlissner/zsh-autopair@9d003fc
-    plugins:jreese/zsh-titles@b7d46d7:titles
-    plugins:zsh-users/zsh-autosuggestions@a411ef3
-    plugins:zsh-users/zsh-completions@20f3cd5
-    plugins:zsh-users/zsh-syntax-highlighting@c7caf57
-    themes:romkatv/powerlevel10k@e1c52e0
+    plugins:Aloxaf/fzf-tab:e85f76a
+    plugins:MichaelAquilina/zsh-auto-notify:fb38802:auto-notify
+    plugins:MichaelAquilina/zsh-you-should-use:773ae5f:you-should-use
+    plugins:chuwy/zsh-secrets:1d01c9d
+    plugins:hlissner/zsh-autopair:9d003fc
+    plugins:jreese/zsh-titles:b7d46d7:titles
+    plugins:zsh-users/zsh-autosuggestions:a411ef3
+    plugins:zsh-users/zsh-completions:20f3cd5
+    plugins:zsh-users/zsh-syntax-highlighting:c7caf57
+    themes:romkatv/powerlevel10k:e1c52e0
 )
 
 crates=(
@@ -175,8 +181,8 @@ function() {
         if [[ "$category" != "plugins" ]]; then
             continue
         fi
-        local basename="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}' | awk -F/ '{print $2}')"
-        local alt_basename="$(echo $p | awk -F: '{print $3}')"
+        local basename="$(echo $p | awk -F: '{print $2}' | awk -F/ '{print $2}')"
+        local alt_basename="$(echo $p | awk -F: '{print $4}')"
         if [[ -z "$alt_basename" ]]; then
             plugins+=($basename)
         else
@@ -210,29 +216,25 @@ decrypt() {
 }
 
 install-asdf() {
-    local tag=v0.9.0
-
     echo "==> install asdf"
 
     [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
 
     pushd $HOME/.asdf > /dev/null
     git fetch
-    git checkout $tag
+    git checkout $ASDF_TAG
     popd > /dev/null
 
     echo "==> asdf installed"
 }
 
 install-asdf-plugins() {
-    local commit=b7f14156edbf509d6c3039b7295f84c7b1022c55
-
     echo "==> install asdf-plugins"
     [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git $HOME/.asdf/plugins
 
     pushd $HOME/.asdf/plugins > /dev/null
     git fetch
-    git checkout $commit
+    git checkout $ASDF_PLUGINS_COMMIT
     git submodule init
     git submodule update
     popd > /dev/null
@@ -254,15 +256,13 @@ install-crates() {
 }
 
 install-oh-my-zsh() {
-    local commit=0f2715bb45ef025b48469817712a4cd3e23839b6
-
     echo "==> install oh my zsh"
 
     [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
 
     pushd $ZSH > /dev/null
     git fetch
-    git checkout $commit
+    git checkout $OMZ_COMMIT
     popd > /dev/null
 
     echo "==> oh my zsh installed"
@@ -274,8 +274,8 @@ install-tmux-plugins() {
     pushd $HOME/.tmux/plugins > /dev/null
 
     for p in $tmux_plugins; do
-        local repo="$(echo $p | awk -F@ '{print $1}')"
-        local commit="$(echo $p | awk -F@ '{print $2}')"
+        local repo="$(echo $p | awk -F: '{print $1}')"
+        local commit="$(echo $p | awk -F: '{print $2}')"
 
         local basename="$(echo $repo | awk -F/ '{print $2}')"
         echo "==> install $basename"
@@ -293,13 +293,11 @@ install-tmux-plugins() {
 }
 
 install-vim-plug() {
-    local commit=e300178a0e2fb04b56de8957281837f13ecf0b27
-
     echo "==> install vim-plug"
 
     [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]] && \
         curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
-            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$commit/plug.vim
+            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$VIM_PLUGIN_COMMIT/plug.vim
 
     echo "==> vim-plug installed"
 }
@@ -311,8 +309,9 @@ install-zsh-plugins() {
 
     for p in $zsh_plugins; do
         local category="$(echo $p | awk -F: '{print $1}')"
-        local repo="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $1}')"
-        local alt_basename="$(echo $p | awk -F: '{print $3}')"
+        local repo="$(echo $p | awk -F: '{print $2}')"
+        local ref="$(echo $p | awk -F: '{print $3}')"
+        local alt_basename="$(echo $p | awk -F: '{print $4}')"
 
         # use alternative basename instead of basename if alternative basename is given
         if [[ -z "$alt_basename" ]]; then
@@ -329,7 +328,6 @@ install-zsh-plugins() {
         fi
 
         pushd $dest > /dev/null
-        local ref="$(echo $p | awk -F: '{print $2}' | awk -F@ '{print $2}')"
         [[ ! -z "$ref" ]] && git checkout $ref
         popd > /dev/null
     done
