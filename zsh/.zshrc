@@ -1,5 +1,4 @@
-crate_root=$HOME/.local
-
+# shellcheck shell=bash
 # If you come from bash you might have to change your $PATH.
 # ref: https://unix.stackexchange.com/a/62581
 export -U PATH=/opt/homebrew/bin:$HOME/bin:$PATH:$crate_root/bin
@@ -17,6 +16,7 @@ VIM_PLUGIN_COMMIT=e300178a0e2fb04b56de8957281837f13ecf0b27
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# shellcheck disable=SC2034
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
@@ -102,6 +102,7 @@ plugins=(
 )
 
 # pip plugin
+# shellcheck disable=SC2034
 PIP_REQUIRE_VIRTUALENV=1
 
 # tmux plugins
@@ -157,10 +158,12 @@ zsh_plugins=(
     themes:romkatv/powerlevel10k:e1c52e0
 )
 
+crate_root=$HOME/.local
 crates=(
     cross:0.2.1
     du-dust:0.6.2
     git-delta:0.12.0
+    hyperfine:1.13.0
     license-generator:0.8.1
     lsd:0.20.1
     procs:0.11.10
@@ -176,38 +179,43 @@ function() {
 
 # add external plugins to oh-my-zsh plugin list
 function() {
-    for p in $zsh_plugins; do
-        local category="$(echo $p | awk -F: '{print $1}')"
-        if [[ "$category" != "plugins" ]]; then
-            continue
-        fi
-        local basename="$(echo $p | awk -F: '{print $2}' | awk -F/ '{print $2}')"
-        local alt_basename="$(echo $p | awk -F: '{print $4}')"
+    local category
+    local basename
+    local alt_basename
+
+    for p in "${zsh_plugins[@]}"; do
+        category="$(echo "$p" | awk -F: '{print $1}')"
+        [[ "$category" != "plugins" ]] && continue
+        basename="$(echo "$p" | awk -F: '{print $2}' | awk -F/ '{print $2}')"
+        alt_basename="$(echo "$p" | awk -F: '{print $4}')"
         if [[ -z "$alt_basename" ]]; then
-            plugins+=($basename)
+            plugins+=("$basename")
         else
-            plugins+=($alt_basename)
+            plugins+=("$alt_basename")
         fi
     done
 }
 
 # Instant Prompt of powerlevel10k
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    # shellcheck source=/dev/null
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # powerlevel10k configuration must be loaded before oh my zsh
-source $HOME/.p10k.zsh
+# shellcheck source=/dev/null
+source "$HOME/.p10k.zsh"
 
-source $ZSH/oh-my-zsh.sh
+# shellcheck source=/dev/null
+source "$ZSH/oh-my-zsh.sh"
 
 # User configuration
 
 benchmark() {
-    if (( $+commands[hyperfine] )); then
+    if (which hyperfine > /dev/null); then
         /usr/bin/env hyperfine '/usr/bin/env zsh -i -c exit'
     else
-        for i in $(seq 1 10); do time /usr/bin/env zsh -i -c "exit"; done
+        repeat 10 time /usr/bin/env zsh -i -c "exit"
     fi
 }
 
@@ -218,28 +226,39 @@ decrypt() {
 install-asdf() {
     echo "==> install asdf"
 
-    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
+    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf"
 
-    pushd $HOME/.asdf > /dev/null
+    pushd -q "$HOME/.asdf" || return
     git fetch
-    git checkout $ASDF_TAG
-    popd > /dev/null
+    git checkout "$ASDF_TAG"
+    popd -q || return
 
     echo "==> asdf installed"
 }
 
 install-asdf-plugins() {
     echo "==> install asdf-plugins"
-    [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git $HOME/.asdf/plugins
+    [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git "$HOME/.asdf/plugins"
 
-    pushd $HOME/.asdf/plugins > /dev/null
+    pushd -q "$HOME/.asdf/plugins" || return
     git fetch
-    git checkout $ASDF_PLUGINS_COMMIT
+    git checkout "$ASDF_PLUGINS_COMMIT"
     git submodule init
     git submodule update
-    popd > /dev/null
+    popd -q || return
 
     echo "==> asdf-plugins installed"
+}
+
+install-crates() {
+    local name
+    local version
+
+    for c in "${crates[@]}"; do
+        name="$(echo "$c" | awk -F: '{print $1}')"
+        version="$(echo "$c" | awk -F: '{print $2}')"
+        cargo install --root "$crate_root" "$name" --version "$version"
+    done
 }
 
 install-plugins() {
@@ -247,49 +266,47 @@ install-plugins() {
     install-tmux-plugins
 }
 
-install-crates() {
-    for c in $crates; do
-        local name="$(echo $c | awk -F: '{print $1}')"
-        local version="$(echo $c | awk -F: '{print $2}')"
-        cargo install --root $crate_root $name --version $version
-    done
-}
-
 install-oh-my-zsh() {
     echo "==> install oh my zsh"
 
-    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
+    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh "$HOME/.oh-my-zsh"
 
-    pushd $ZSH > /dev/null
+    pushd -q "$ZSH" || return
     git fetch
-    git checkout $OMZ_COMMIT
-    popd > /dev/null
+    git checkout "$OMZ_COMMIT"
+    popd -q || return
 
     echo "==> oh my zsh installed"
 }
 
 install-tmux-plugins() {
-    local plugins_dir=$HOME/.tmux/plugins
+    local plugins_dir
+    local repo
+    local commit
+    local basename
+    local dest
 
-    pushd $HOME/.tmux/plugins > /dev/null
+    plugins_dir="$HOME/.tmux/plugins"
 
-    for p in $tmux_plugins; do
-        local repo="$(echo $p | awk -F: '{print $1}')"
-        local commit="$(echo $p | awk -F: '{print $2}')"
+    pushd "$HOME/.tmux/plugins" || return
 
-        local basename="$(echo $repo | awk -F/ '{print $2}')"
+    for p in "${tmux_plugins[@]}"; do
+        repo="$(echo "$p" | awk -F: '{print $1}')"
+        commit="$(echo "$p" | awk -F: '{print $2}')"
+
+        basename="$(echo "$repo" | awk -F/ '{print $2}')"
         echo "==> install $basename"
 
-        local dest="$plugins_dir/$basename"
+        dest="$plugins_dir/$basename"
 
-        [[ ! -d "$dest" ]] && git clone --recursive https://github.com/$repo.git $dest
+        [[ ! -d "$dest" ]] && git clone --recursive https://github.com/"$repo".git "$dest"
 
-        pushd $dest > /dev/null
-        git checkout $commit
-        popd > /dev/null
+        pushd -q "$dest" || return
+        git checkout "$commit"
+        popd -q || return
     done
 
-    popd > /dev/null
+    popd -q || return
 }
 
 install-vim-plug() {
@@ -303,36 +320,45 @@ install-vim-plug() {
 }
 
 install-zsh-plugins() {
+    local category
+    local repo
+    local ref
+    local alt_basename
+    local basename
+    local dest
+
     [[ -z "$ZSH_CUSTOM" ]] && echo "\$ZSH_CUSTOM is not set. abort" && return
 
-    pushd $ZSH_CUSTOM > /dev/null
+    pushd -q "$ZSH_CUSTOM" || return
 
-    for p in $zsh_plugins; do
-        local category="$(echo $p | awk -F: '{print $1}')"
-        local repo="$(echo $p | awk -F: '{print $2}')"
-        local ref="$(echo $p | awk -F: '{print $3}')"
-        local alt_basename="$(echo $p | awk -F: '{print $4}')"
+    for p in "${zsh_plugins[@]}"; do
+
+        category="$(echo "$p" | awk -F: '{print $1}')"
+        repo="$(echo "$p" | awk -F: '{print $2}')"
+        ref="$(echo "$p" | awk -F: '{print $3}')"
+        alt_basename="$(echo "$p" | awk -F: '{print $4}')"
 
         # use alternative basename instead of basename if alternative basename is given
         if [[ -z "$alt_basename" ]]; then
-            local basename="$(echo $repo | awk -F/ '{print $2}')"
+            basename="$(echo "$repo" | awk -F/ '{print $2}')"
         else
-            local basename="$alt_basename"
+            basename="$alt_basename"
         fi
-        local dest="$category/$basename"
+
+        dest="$category/$basename"
 
         if [[ -d "$dest" ]]; then
             echo "==> $basename installed"
         else
-            git clone https://github.com/$repo.git $dest
+            git clone https://github.com/"$repo".git "$dest"
         fi
 
-        pushd $dest > /dev/null
-        [[ ! -z "$ref" ]] && git checkout $ref
-        popd > /dev/null
+        pushd -q "$dest" || return
+        [[ -n "$ref" ]] && git checkout "$ref"
+        popd -q || return
     done
 
-    popd > /dev/null
+    popd -q || return
 }
 
 reload() {
@@ -340,9 +366,14 @@ reload() {
 }
 
 restore() {
-    pushd $HOME/.cfg
+    pushd "$HOME/.cfg" || return
+
+    # 1. quoting ls command leads unexpected behavior
+    # 2. do not prefix subdirectory with dash
+    # shellcheck disable=SC2046,SC2035
     stow $(ls -d */)
-    popd
+
+    popd || return
 }
 
 setup() {
@@ -354,13 +385,14 @@ setup() {
 
 function() {
     # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
-    (( $+commands[bat] )) && alias cat="bat"
-    (( $+commands[fzf] )) && alias preview="fzf --preview 'bat --color \"always\" {}'"
-    (( $+commands[lsd] )) && alias ls="lsd"
-    (( $+commands[procs] )) && alias ps="procs"
-    (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+    (which bat &> /dev/null) && alias cat="bat"
+    (which fzf &> /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
+    (which lsd &> /dev/null) && alias ls="lsd"
+    (which procs &> /dev/null) && alias ps="procs"
+    (which zoxide &> /dev/null) && eval "$(zoxide init zsh)"
 
     # [my] private configuration
+    # shellcheck source=/dev/null
     [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
     true # prevent result of shorthand expression from being exit status
