@@ -13,7 +13,7 @@ mkcert 1.4.3
 nodejs 16.13.1 17.5.0 10.24.1
 python 3.7.12 3.10.2 2.7.18
 ripgrep 13.0.0
-ruby 3.1.0 2.5.9
+ruby 3.1.0 2.5.9 2.6.6
 rust 1.58.1
 terraform 1.1.6
 tflint 0.34.1
