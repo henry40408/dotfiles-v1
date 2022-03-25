@@ -1,4 +1,7 @@
 # shellcheck shell=bash
+
+crate_root=$HOME/.local
+
 # If you come from bash you might have to change your $PATH.
 # ref: https://unix.stackexchange.com/a/62581
 export -U PATH=/opt/homebrew/bin:$HOME/bin:$PATH:$crate_root/bin
@@ -158,7 +161,6 @@ zsh_plugins=(
     themes:romkatv/powerlevel10k:e1c52e0
 )
 
-crate_root=$HOME/.local
 crates=(
     cross:0.2.1
     du-dust:0.6.2
