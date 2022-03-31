@@ -154,7 +154,7 @@ zsh_plugins=(
     plugins:MichaelAquilina/zsh-you-should-use:773ae5f:you-should-use
     plugins:chuwy/zsh-secrets:1d01c9d
     plugins:hlissner/zsh-autopair:9d003fc
-    plugins:jreese/zsh-titles:b7d46d7:titles
+    # plugins:jreese/zsh-titles:b7d46d7:titles
     plugins:zsh-users/zsh-autosuggestions:a411ef3
     plugins:zsh-users/zsh-completions:20f3cd5
     plugins:zsh-users/zsh-syntax-highlighting:c7caf57
