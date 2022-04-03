@@ -8,7 +8,6 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/command-not-found"
 tap "homebrew/core"
-tap "homebrew/livecheck"
 tap "homebrew/services"
 tap "puma/puma"
 tap "robotsandpencils/made"
@@ -22,14 +21,13 @@ brew "awscli"
 brew "bandwhich"
 brew "bash"
 brew "cocoapods"
-brew "coreutils", link: false
+brew "coreutils"
 brew "diff-so-fancy"
 brew "direnv"
 brew "gnutls"
 brew "ffmpeg"
 brew "fish"
 brew "fzf"
-brew "gdu"
 brew "git"
 brew "git-extras"
 brew "gnupg", link: false
@@ -142,3 +140,4 @@ mas "RunCat", id: 1429033973
 mas "Things", id: 904280696
 mas "Unsplash Wallpapers", id: 1284863847
 mas "Welly", id: 1521402269
+mas "WireGuard", id: 1451685025
