@@ -12,7 +12,7 @@ export ZSH=$HOME/.oh-my-zsh
 # commits
 ASDF_TAG=v0.9.0
 ASDF_PLUGINS_COMMIT=5655827e9396b941a2e8dd9a167bd44b57fc2c2c
-OMZ_COMMIT=4dce175e0e4a678b7f93be80c64247c8f5fbab3e
+OMZ_COMMIT=b3999a4b156185b617a5608317497399f88dc8fe
 VIM_PLUGIN_COMMIT=e300178a0e2fb04b56de8957281837f13ecf0b27
 
 # Set name of the theme to load --- if set to "random", it will
