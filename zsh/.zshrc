@@ -92,6 +92,7 @@ plugins=(
     gem
     git
     git-extras
+    git-flow
     gitignore
     golang
     gpg-agent
