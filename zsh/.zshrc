@@ -102,7 +102,6 @@ plugins=(
     python
     rails
     ruby
-    virtualenvwrapper
 )
 
 # pip plugin
