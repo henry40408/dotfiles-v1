@@ -11,7 +11,7 @@ export ZSH=$HOME/.oh-my-zsh
 
 # commits
 ASDF_TAG=v0.9.0
-ASDF_PLUGINS_COMMIT=35239db9790c076a58bb59502fe5be17a455bd2e
+ASDF_PLUGINS_COMMIT=3dc95b0dfbc5e3e1715371e7442091aa820822e0
 OMZ_COMMIT=b3999a4b156185b617a5608317497399f88dc8fe
 VIM_PLUGIN_COMMIT=e300178a0e2fb04b56de8957281837f13ecf0b27
 
@@ -240,7 +240,7 @@ install-asdf() {
 
 install-asdf-plugins() {
     echo "==> install asdf-plugins"
-    [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git "$HOME/.asdf/plugins"
+    [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git --branch plugins "$HOME/.asdf/plugins"
 
     pushd -q "$HOME/.asdf/plugins" || return
     git fetch
