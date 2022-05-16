@@ -12,11 +12,12 @@ ignore_patterns = {
     'consul': lambda v: re.search(r'-(alpha|beta|rc|)|\+ent', v),
     'flutter': lambda v: re.search(r'-dev|pre', v),
     'golang': lambda v: re.search(r'beta|rc', v),
-    'nodejs': lambda v: re.search(r'lts', v),
+    'helm': lambda v: re.search(r'rc', v),
     'kubectl': lambda v: re.search(r'alpha|beta|rc', v),
+    'nodejs': lambda v: re.search(r'lts', v),
     'python': lambda v: not re.match(r'^\d', v) or re.search(r'a|b|dev|rc', v),
     'ruby': lambda v: not re.match(r'^\d', v) or re.search(r'-dev|-preview', v),
-    'terraform': lambda v: re.search(r'alpha', v),
+    'terraform': lambda v: re.search(r'alpha|beta|rc', v),
     'tmux': lambda v: re.search(r'rc|to_merge', v),
 }
 
