@@ -11,9 +11,9 @@ export ZSH=$HOME/.oh-my-zsh
 
 # commits
 ASDF_TAG=v0.9.0
-ASDF_PLUGINS_COMMIT=3dc95b0dfbc5e3e1715371e7442091aa820822e0
+ASDF_PLUGINS_COMMIT=99311b74dddcf8ab9a47a740b91e4843f52e4de5
 OMZ_COMMIT=b3999a4b156185b617a5608317497399f88dc8fe
-VIM_PLUGIN_COMMIT=e300178a0e2fb04b56de8957281837f13ecf0b27
+VIM_PACKER_COMMIT=4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -311,14 +311,17 @@ install-tmux-plugins() {
     popd -q || return
 }
 
-install-vim-plug() {
-    echo "==> install vim-plug"
-
-    [[ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]] && \
-        curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" \
-            --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/$VIM_PLUGIN_COMMIT/plug.vim
-
-    echo "==> vim-plug installed"
+install-vim-packer() {
+    local root
+    root="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/pack/packer/start/packer.nvim"
+    echo "==> install vim packer"
+    if [[ ! -d "$root" ]]; then
+        git clone https://github.com/wbthomason/packer.nvim $root
+    fi
+    pushd -q $root
+    git checkout $VIM_PACKER_COMMIT
+    popd -q
+    echo "==> vim packer installed"
 }
 
 install-zsh-plugins() {
@@ -382,7 +385,7 @@ setup() {
     install-asdf
     install-asdf-plugins
     install-oh-my-zsh
-    install-vim-plug
+    install-vim-packer
 }
 
 function() {
