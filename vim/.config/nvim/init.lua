@@ -53,7 +53,11 @@ local function neovim_plugins(use)
   -- Nvim Treesitter configurations and abstraction layer
   use({ 'nvim-treesitter/nvim-treesitter', commit = 'c004155', config = [[require('config.treesitter')]] })
   -- Show code context
-  use({ 'nvim-treesitter/nvim-treesitter-context', commit = 'a791652', config = [[require('config.treesittercontext')]] })
+  use({
+    'nvim-treesitter/nvim-treesitter-context',
+    commit = 'a791652',
+    config = [[require('config.treesittercontext')]],
+  })
   -- Neovim plugin to preview the contents of the registers
   use({ 'tversteeg/registers.nvim', commit = 'f354159' })
   -- Make Vim handle line and column numbers in file names with a minimum of fuss
@@ -80,12 +84,12 @@ local function lsp_plugins(use)
   use({ 'hrsh7th/cmp-nvim-lsp', commit = 'affe808' })
   -- nvim-cmp source for path
   use({ 'hrsh7th/cmp-path', commit = '466b6b8' })
-  -- nvim-cmp source for vim-vsnip
-  use({ 'hrsh7th/cmp-vsnip', commit = '0abfa18' })
+  -- luasnip completion source for nvim-cmp
+  use({ 'saadparwaiz1/cmp_luasnip', commit = 'a9de941' })
   -- A completion plugin for neovim coded in Lua
   use({ 'hrsh7th/nvim-cmp', commit = 'cd694b8', config = [[require('config.cmp')]] })
-  -- Snippet plugin for vim/nvim that supports LSP/VSCode's snippet format
-  use({ 'hrsh7th/vim-vsnip', commit = '8f199ef' })
+  -- Snippet Engine for Neovim written in Lua
+  use({ 'L3MON4D3/LuaSnip', commit = '07cf1a1' })
   -- Quickstart configurations for the Nvim LSP client
   use({ 'neovim/nvim-lspconfig', commit = '629f45d', config = [[require('config.lsp')]] })
   -- Repo to hold a bunch of info & extension callbacks for built-in LSP

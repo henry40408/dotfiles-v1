@@ -1,7 +1,11 @@
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 local map_key = vim.keymap.set
 local lsp = require('lspconfig')
 
 lsp.rust_analyzer.setup({
+  capabilities = capabilities,
   settings = {
     ['rust-analyzer'] = {
       assist = {
@@ -16,6 +20,10 @@ lsp.rust_analyzer.setup({
       },
     },
   },
+})
+
+lsp.tsserver.setup({
+  capabilities = capabilities,
 })
 
 --ref: https://sharksforarms.dev/posts/neovim-rust/
