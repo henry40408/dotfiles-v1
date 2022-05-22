@@ -127,6 +127,7 @@ tmux_plugins=(
     tmux-plugins/tmux-sensible:5d089e4
     tmux-plugins/tmux-yank:1b1a436
     Morantron/tmux-fingers:dbbf9b9
+    mattdavis90/base16-tmux:810ba8f
 )
 
 # external plugins and themes
