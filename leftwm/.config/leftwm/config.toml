@@ -32,9 +32,9 @@ focus_new_windows = true
 # keybindgins
 keybind = [
   { command = "CloseWindow", value = "", modifier = ["modkey"], key = "q" },
-  { command = "Execute", value = "gnome-terminal", modifier = ["modkey"], key = "Return" },
+  { command = "Execute", value = "gnome-terminal", modifier = ["modkey"], key = "t" },
   { command = "Execute", value = "loginctl kill-session $XDG_SESSION_ID", modifier = ["modkey", "Shift"], key = "x" },
-  { command = "Execute", value = "rofi -dpi 192 -theme Arc-Dark -combi-modi window,ssh,drun -show combi -show-icon", modifier = [
+  { command = "Execute", value = "rofi -dpi 192 -theme Arc-Dark -combi-modi window,drun,run,ssh -show combi -show-icon", modifier = [
     "modkey"
   ], key = "d" },
   { command = "Execute", value = "slock", modifier = ["modkey", "Control"], key = "l" },
