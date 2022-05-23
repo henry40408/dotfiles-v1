@@ -31,11 +31,13 @@ focus_behaviour = "Sloppy"
 focus_new_windows = true
 # keybindgins
 keybind = [
-  { command = "CloseWindow", value = "", modifier = ["modkey", "Shift"], key = "q" },
-  { command = "Execute", value = "gnome-terminal", modifier = ["modkey", "Shift"], key = "Return" },
+  { command = "CloseWindow", value = "", modifier = ["modkey"], key = "q" },
+  { command = "Execute", value = "gnome-terminal", modifier = ["modkey"], key = "Return" },
   { command = "Execute", value = "loginctl kill-session $XDG_SESSION_ID", modifier = ["modkey", "Shift"], key = "x" },
+  { command = "Execute", value = "rofi -dpi 192 -theme Arc-Dark -combi-modi window,ssh,drun -show combi -show-icon", modifier = [
+    "modkey"
+  ], key = "d" },
   { command = "Execute", value = "slock", modifier = ["modkey", "Control"], key = "l" },
-  { command = "Execute", value = "dmenu_run", modifier = ["modkey"], key = "p" },
   { command = "FocusWindowDown", value = "", modifier = ["modkey"], key = "Down" },
   { command = "FocusWindowDown", value = "", modifier = ["modkey"], key = "j" },
   { command = "FocusWindowUp", value = "", modifier = ["modkey"], key = "Up" },
@@ -53,6 +55,7 @@ keybind = [
   { command = "GotoTag", value = "7", modifier = ["modkey"], key = "7" },
   { command = "GotoTag", value = "8", modifier = ["modkey"], key = "8" },
   { command = "GotoTag", value = "9", modifier = ["modkey"], key = "9" },
+  { command = "HardReload", value = "", modifier = ["modkey", "Shift"], key = "r" },
   { command = "MoveToLastWorkspace", value = "", modifier = ["modkey", "Shift"], key = "w" },
   { command = "MoveToTag", value = "1", modifier = ["modkey", "Shift"], key = "1" },
   { command = "MoveToTag", value = "2", modifier = ["modkey", "Shift"], key = "2" },
@@ -72,6 +75,6 @@ keybind = [
   { command = "NextLayout", value = "", modifier = ["modkey", "Control"], key = "k" },
   { command = "PreviousLayout", value = "", modifier = ["modkey", "Control"], key = "Down" },
   { command = "PreviousLayout", value = "", modifier = ["modkey", "Control"], key = "j" },
-  { command = "SoftReload", value = "", modifier = ["modkey", "Shift"], key = "r" },
+  { command = "SoftReload", value = "", modifier = ["modkey"], key = "r" },
   { command = "SwapTags", value = "", modifier = ["modkey"], key = "w" },
 ]
