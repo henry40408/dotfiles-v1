@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+SCRIPTPATH="$( cd "$(dirname "$0")" || exit ; pwd -P )"
+
+leftwm-command "UnloadTheme"
+
+pkill compton
+pkill picom
+pkill polybar
+
+# vim: ft=bash
