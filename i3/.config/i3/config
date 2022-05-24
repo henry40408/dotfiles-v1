@@ -53,11 +53,10 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 2e3440
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3blocks killall -SIGUSR1 i3blocks
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3blocks
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3blocks
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3blocks
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3blocks
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle &&
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -236,8 +235,8 @@ bindsym $mod+x exec --no-startup-id i3lock -c 282a36
 # suspend immediately, refer https://nparsons.uk/blog/automatic-i3lock-on-suspend for auto i3lock after suspend
 bindsym $mod+Shift+x exec --no-startup-id systemctl suspend
 
-bindsym --whole-window $mod+button4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3blocks
-bindsym --whole-window $mod+button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3blocks
+bindsym --whole-window $mod+button4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
+bindsym --whole-window $mod+button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
 
 for_window [class="jetbrains-toolbox"] floating enable
 

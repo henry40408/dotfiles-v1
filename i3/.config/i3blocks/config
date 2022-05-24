@@ -25,7 +25,8 @@ command=echo "&#xf0a0; $(/usr/share/i3blocks/disk)"
 command=echo "&#xf817; $(/usr/share/i3blocks/iface)"
 
 [volume]
-command=echo "&#xf028; $(pactl list sinks | grep '^[[:space:]]Volume:' | awk '{print "L" $5 " R" $12}')"
+command=echo "&#xf028; $(pactl list sinks | grep '^[[:space:]]Volume:' | awk '{print $5 ":" $12}')"
+interval=1
 
 [date]
 command=echo "&#xf017; $(date +"%Y-%m-%d %a %H:%M")"
