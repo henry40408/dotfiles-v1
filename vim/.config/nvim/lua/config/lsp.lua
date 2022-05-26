@@ -26,6 +26,10 @@ lsp.tsserver.setup({
   capabilities = capabilities,
 })
 
+lsp.pylsp.setup({
+  capabilities = capabilities,
+})
+
 --ref: https://sharksforarms.dev/posts/neovim-rust/
 local opts = { noremap = true, silent = true }
 map_key('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
