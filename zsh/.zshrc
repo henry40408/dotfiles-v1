@@ -170,6 +170,7 @@ crates=(
     license-generator:0.8.1
     lsd:0.20.1
     procs:0.11.10
+    stylua:0.13.1
     tokei:12.1.2
     xsv:0.13.0
     zoxide:0.7.9
