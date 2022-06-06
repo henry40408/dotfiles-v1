@@ -292,6 +292,8 @@ install-tmux-plugins() {
 
     plugins_dir="$HOME/.tmux/plugins"
 
+    mkdir -p $plugins_dir
+
     pushd "$HOME/.tmux/plugins" || return
 
     for p in "${tmux_plugins[@]}"; do
