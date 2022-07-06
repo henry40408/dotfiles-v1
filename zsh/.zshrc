@@ -292,18 +292,6 @@ install-lunar-vim() {
     popd -q
 }
 
-lvim() {
-    XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
-    XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-    XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
-
-    LUNARVIM_RUNTIME_DIR="${LUNARVIM_RUNTIME_DIR:-"$XDG_DATA_HOME/lunarvim"}"
-    LUNARVIM_CONFIG_DIR="${LUNARVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/lvim"}"
-    LUNARVIM_CACHE_DIR="${LUNARVIM_CACHE_DIR:-"$XDG_CACHE_HOME/lvim"}"
-
-    nvim -u "$LUNARVIM_RUNTIME_DIR/lvim/init.lua" "$@"
-}
-
 install-oh-my-zsh() {
     echo "==> install oh my zsh"
 
