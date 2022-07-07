@@ -266,12 +266,9 @@ install-crates() {
     done
 }
 
-install-plugins() {
-    install-zsh-plugins
-    install-tmux-plugins
-}
-
 install-lunar-vim() {
+    install-vim-packer
+
     XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
     XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
     XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
@@ -290,6 +287,11 @@ install-lunar-vim() {
     pushd -q $LUNARVIM_BASE_DIR
     git checkout $LUNARVIM_BASE_DIR
     popd -q
+}
+
+install-plugins() {
+    install-zsh-plugins
+    install-tmux-plugins
 }
 
 install-oh-my-zsh() {
@@ -429,4 +431,4 @@ function() {
     true # prevent result of shorthand expression from being exit status
 }
 
-# vim: set foldlevel=0 foldmethod=marker:
+# vim: set ts=4 sw=4:
