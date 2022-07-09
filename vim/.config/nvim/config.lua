@@ -8,6 +8,7 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.bufferline.options.always_show_bufferline = true
 lvim.builtin.notify.active = true
+lvim.builtin.lualine.sections.lualine_z = { "location" }
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.terminal.active = true
@@ -32,7 +33,7 @@ lvim.plugins = {
   -- Neovim plugin for building a sync base16 colorscheme. Includes support for Treesitter and LSP highlight groups.
   { "RRethy/nvim-base16", commit = "da2a27c" },
   -- Next-generation motion plugin using incremental input processing, allowing for unparalleled speed with minimal cognitive effort
-  { "ggandor/lightspeed.nvim", commit = "a4b4277", event = "BufRead" },
+  { "ggandor/lightspeed.nvim", commit = "a4b4277" },
   -- EditorConfig plugin for Neovim
   { "gpanders/editorconfig.nvim", commit = "495d3e2" },
   -- Indent guides for Neovim
