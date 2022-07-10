@@ -12,6 +12,7 @@ export ZSH=$HOME/.oh-my-zsh
 # commits
 ASDF_TAG=v0.9.0
 ASDF_PLUGINS_COMMIT=99311b74dddcf8ab9a47a740b91e4843f52e4de5
+LUNAR_VIM_COMMIT=48320e5f882a911707c56baf3865f663acb39f08
 OMZ_COMMIT=b3999a4b156185b617a5608317497399f88dc8fe
 VIM_PACKER_COMMIT=4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2
 
@@ -265,6 +266,29 @@ install-crates() {
     done
 }
 
+install-lunar-vim() {
+    install-vim-packer
+
+    XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
+    XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+    XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+
+    LUNARVIM_RUNTIME_DIR="${LUNARVIM_RUNTIME_DIR:-"$XDG_DATA_HOME/lunarvim"}"
+    LUNARVIM_CONFIG_DIR="${LUNARVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/lvim"}"
+    LUNARVIM_CACHE_DIR="${LUNARVIM_CACHE_DIR:-"$XDG_CACHE_HOME/lvim"}"
+
+    mkdir -p $LUNARVIM_RUNTIME_DIR
+    mkdir -p $LUNARVIM_CONFIG_DIR
+    mkdir -p $LUNARVIM_CACHE_DIR
+
+    LUNARVIM_BASE_DIR="${LUNARVIM_BASE_DIR:-"$LUNARVIM_RUNTIME_DIR/lvim"}"
+
+    [[ ! -d "$LUNARVIM_BASE_DIR" ]] && git clone https://github.com/LunarVim/LunarVim "$LUNARVIM_BASE_DIR"
+    pushd -q $LUNARVIM_BASE_DIR
+    git checkout $LUNARVIM_BASE_DIR
+    popd -q
+}
+
 install-plugins() {
     install-zsh-plugins
     install-tmux-plugins
@@ -407,4 +431,4 @@ function() {
     true # prevent result of shorthand expression from being exit status
 }
 
-# vim: set foldlevel=0 foldmethod=marker:
+# vim: set ts=4 sw=4:

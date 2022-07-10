@@ -4,3 +4,14 @@
 	signingkey = 2316687+henry40408@users.noreply.github.com
 [commit]
 	gpgsign = yes
+[core]
+  editor = lvim
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[merge]
+  conflictstyle = diff3
+[diff]
+  colorMoved = default
+[delta]
+  side-by-side = true
