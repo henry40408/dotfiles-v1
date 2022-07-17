@@ -64,3 +64,11 @@ lvim.plugins = {
 -- ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
 vim.keymap.set("n", ";", ":", {})
 vim.keymap.set("v", ";", ":", {})
+
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  {
+    command = "autopep8",
+    filetypes = { "python" },
+  },
+}
