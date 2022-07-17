@@ -15,3 +15,5 @@
   colorMoved = default
 [delta]
   side-by-side = true
+[pull]
+	rebase = false
