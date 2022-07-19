@@ -1,17 +1,21 @@
-lvim.log.level = "warn"
-lvim.format_on_save = true
 lvim.colorscheme = "base16-bright"
-
+lvim.format_on_save = true
 lvim.leader = "space"
+lvim.log.level = "warn"
 
-lvim.builtin.alpha.active = true
-lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.bufferline.options.always_show_bufferline = true
+
+local comp = require "lvim.core.lualine.components"
+
+lvim.builtin.lualine.options.component_separators = { left = "", right = "" }
+lvim.builtin.lualine.options.section_separators = { left = "", right = "" }
+lvim.builtin.lualine.sections.lualine_b = { comp.branch, comp.filename }
+lvim.builtin.lualine.sections.lualine_c = { comp.diagnostics }
+lvim.builtin.lualine.sections.lualine_x = { comp.diff, comp.treesitter, comp.lsp }
+lvim.builtin.lualine.sections.lualine_z = { comp.scrollbar }
+lvim.builtin.lualine.style = "default"
+
 lvim.builtin.notify.active = true
-lvim.builtin.lualine.sections.lualine_z = { "location" }
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.terminal.active = true
 lvim.builtin.terminal.open_mapping = [[<c-\>]]
 
 lvim.builtin.treesitter.ensure_installed = {
@@ -26,7 +30,6 @@ lvim.builtin.treesitter.ensure_installed = {
   "typescript",
   "yaml",
 }
-lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
 lvim.plugins = {
@@ -65,6 +68,7 @@ lvim.plugins = {
 vim.keymap.set("n", ";", ":", {})
 vim.keymap.set("v", ";", ":", {})
 
+-- Enable autopep8 for Python
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   {
