@@ -16,6 +16,7 @@ lvim.builtin.lualine.sections.lualine_z = { comp.scrollbar }
 lvim.builtin.lualine.style = "default"
 
 lvim.builtin.notify.active = true
+lvim.builtin.terminal.active = true
 lvim.builtin.terminal.open_mapping = [[<c-\>]]
 
 lvim.builtin.treesitter.ensure_installed = {
