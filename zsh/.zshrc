@@ -10,11 +10,11 @@ export -U PATH=/opt/homebrew/bin:$HOME/bin:$PATH:$crate_root/bin
 export ZSH=$HOME/.oh-my-zsh
 
 # commits
-ASDF_TAG=v0.9.0
-ASDF_PLUGINS_COMMIT=99311b74dddcf8ab9a47a740b91e4843f52e4de5
-LUNAR_VIM_COMMIT=1.1.4
-OMZ_COMMIT=b3999a4b156185b617a5608317497399f88dc8fe
-VIM_PACKER_COMMIT=4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2
+ASDF_REF=v0.9.0
+ASDF_PLUGINS_REF=99311b74dddcf8ab9a47a740b91e4843f52e4de5
+LUNAR_VIM_REF=1.1.4
+OMZ_REF=b3999a4b156185b617a5608317497399f88dc8fe
+VIM_PACKER_REF=4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -172,7 +172,6 @@ crates=(
     lsd:0.20.1
     procs:0.11.10
     stylua:0.13.1
-    taplo-cli:0.6.9
     tokei:12.1.2
     xsv:0.13.0
     zoxide:0.7.9
@@ -229,31 +228,22 @@ decrypt() {
     eval "$(secrets decrypt environment)"
 }
 
-install-asdf() {
-    echo "==> install asdf"
+git-clone-checkout() {
+    echo "==> clone $1 to $2"
+    [[ ! -d "$2" ]] && git clone --recursive "$1" "$2"
 
-    [[ ! -d "$HOME/.asdf" ]] && git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf"
-
-    pushd -q "$HOME/.asdf" || return
-    git fetch
-    git checkout "$ASDF_TAG"
+    pushd -q "$2" || return
+    echo "==> checkout $3"
+    [[ -n "$3" ]] && git fetch origin && git checkout "$3"
     popd -q || return
+}
 
-    echo "==> asdf installed"
+install-asdf() {
+    git-clone-checkout "https://github.com/asdf-vm/asdf.git" "$HOME/.asdf" "$ASDF_REF"
 }
 
 install-asdf-plugins() {
-    echo "==> install asdf-plugins"
-    [[ ! -d "$HOME/.asdf/plugins" ]] && git clone https://github.com/henry40408/asdf-plugins.git --branch plugins "$HOME/.asdf/plugins"
-
-    pushd -q "$HOME/.asdf/plugins" || return
-    git fetch
-    git checkout "$ASDF_PLUGINS_COMMIT"
-    git submodule init
-    git submodule update
-    popd -q || return
-
-    echo "==> asdf-plugins installed"
+    git-clone-checkout "https://github.com/henry40408/asdf-plugins.git" "$HOME/.asdf/plugins" "$ASDF_PLUGINS_REF"
 }
 
 install-crates() {
@@ -270,24 +260,28 @@ install-crates() {
 install-lunar-vim() {
     install-vim-packer
 
-    XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
-    XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-    XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+    local xdg_data_home
+    local xdg_cache_home
+    local xdg_config_home
+    xdg_data_home="${XDG_DATA_HOME:-"$HOME/.local/share"}"
+    xdg_cache_home="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+    xdg_config_home="${XDG_CONFIG_HOME:-"$HOME/.config"}"
 
-    LUNARVIM_RUNTIME_DIR="${LUNARVIM_RUNTIME_DIR:-"$XDG_DATA_HOME/lunarvim"}"
-    LUNARVIM_CONFIG_DIR="${LUNARVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/lvim"}"
-    LUNARVIM_CACHE_DIR="${LUNARVIM_CACHE_DIR:-"$XDG_CACHE_HOME/lvim"}"
+    local lunarvim_runtime_dir
+    local lunarvim_config_dir
+    local lunarvim_cache_dir
+    lunarvim_runtime_dir="${LUNARVIM_RUNTIME_DIR:-"$xdg_data_home/lunarvim"}"
+    lunarvim_config_dir="${LUNARVIM_CONFIG_DIR:-"$xdg_config_home/lvim"}"
+    lunarvim_cache_dir="${LUNARVIM_CACHE_DIR:-"$xdg_cache_home/lvim"}"
 
-    mkdir -p $LUNARVIM_RUNTIME_DIR
-    mkdir -p $LUNARVIM_CONFIG_DIR
-    mkdir -p $LUNARVIM_CACHE_DIR
+    mkdir -p "$lunarvim_runtime_dir"
+    mkdir -p "$lunarvim_config_dir"
+    mkdir -p "$lunarvim_cache_dir"
 
-    LUNARVIM_BASE_DIR="${LUNARVIM_BASE_DIR:-"$LUNARVIM_RUNTIME_DIR/lvim"}"
+    local lunarvim_base_dir
+    lunarvim_base_dir="${LUNARVIM_BASE_DIR:-"$lunarvim_runtime_dir/lvim"}"
 
-    [[ ! -d "$LUNARVIM_BASE_DIR" ]] && git clone https://github.com/LunarVim/LunarVim "$LUNARVIM_BASE_DIR"
-    pushd -q $LUNARVIM_BASE_DIR
-    git checkout $LUNAR_VIM_COMMIT
-    popd -q
+    git-clone-checkout "https://github.com/LunarVim/LunarVim" "$lunarvim_base_dir" "$LUNAR_VIM_REF"
 }
 
 install-plugins() {
@@ -296,16 +290,7 @@ install-plugins() {
 }
 
 install-oh-my-zsh() {
-    echo "==> install oh my zsh"
-
-    [[ ! -d "$ZSH" ]] && git clone https://github.com/ohmyzsh/ohmyzsh "$HOME/.oh-my-zsh"
-
-    pushd -q "$ZSH" || return
-    git fetch
-    git checkout "$OMZ_COMMIT"
-    popd -q || return
-
-    echo "==> oh my zsh installed"
+    git-clone-checkout "https://github.com/ohmyzsh/ohmyzsh" "$ZSH" "$OMZ_REF"
 }
 
 install-tmux-plugins() {
@@ -317,7 +302,7 @@ install-tmux-plugins() {
 
     plugins_dir="$HOME/.tmux/plugins"
 
-    mkdir -p $plugins_dir
+    mkdir -p "$plugins_dir"
 
     pushd "$HOME/.tmux/plugins" || return
 
@@ -326,15 +311,9 @@ install-tmux-plugins() {
         commit="$(echo "$p" | awk -F: '{print $2}')"
 
         basename="$(echo "$repo" | awk -F/ '{print $2}')"
-        echo "==> install $basename"
-
         dest="$plugins_dir/$basename"
 
-        [[ ! -d "$dest" ]] && git clone --recursive https://github.com/"$repo".git "$dest"
-
-        pushd -q "$dest" || return
-        git checkout "$commit"
-        popd -q || return
+        git-clone-checkout "https://github.com/$repo" "$dest" "$commit"
     done
 
     popd -q || return
@@ -343,14 +322,7 @@ install-tmux-plugins() {
 install-vim-packer() {
     local root
     root="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/pack/packer/start/packer.nvim"
-    echo "==> install vim packer"
-    if [[ ! -d "$root" ]]; then
-        git clone https://github.com/wbthomason/packer.nvim $root
-    fi
-    pushd -q $root
-    git checkout $VIM_PACKER_COMMIT
-    popd -q
-    echo "==> vim packer installed"
+    git-clone-checkout "https://github.com/wbthomason/packer.nvim" "$root" "$VIM_PACKER_REF"
 }
 
 install-zsh-plugins() {
@@ -366,7 +338,6 @@ install-zsh-plugins() {
     pushd -q "$ZSH_CUSTOM" || return
 
     for p in "${zsh_plugins[@]}"; do
-
         category="$(echo "$p" | awk -F: '{print $1}')"
         repo="$(echo "$p" | awk -F: '{print $2}')"
         ref="$(echo "$p" | awk -F: '{print $3}')"
@@ -381,15 +352,7 @@ install-zsh-plugins() {
 
         dest="$category/$basename"
 
-        if [[ -d "$dest" ]]; then
-            echo "==> $basename installed"
-        else
-            git clone https://github.com/"$repo".git "$dest"
-        fi
-
-        pushd -q "$dest" || return
-        [[ -n "$ref" ]] && git checkout "$ref"
-        popd -q || return
+        git-clone-checkout "https://github.com/$repo" "$dest" "$ref"
     done
 
     popd -q || return
@@ -414,7 +377,8 @@ setup() {
     install-asdf
     install-asdf-plugins
     install-oh-my-zsh
-    install-vim-packer
+    install-plugins
+    install-lunar-vim
 }
 
 function() {
