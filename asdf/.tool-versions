@@ -1,23 +1,23 @@
 bat 0.21.0
-consul 1.12.0
-deno 1.21.3
-doctl 1.75.0
-fd 8.3.2
-fzf 0.30.0
-gcloud 385.0.0
-github-cli 2.10.1
-golang 1.18.2
-helm 3.8.2 2.17.0
-k9s 0.25.18
-kubectl 1.24.0
+consul 1.12.3
+deno 1.24.1
+doctl 1.78.0
+fd 8.4.0
+fzf 0.32.0
+gcloud 396.0.0
+github-cli 2.14.3
+golang 1.19
+helm 3.9.2 2.17.0
+k9s 0.26.3
+kubectl 1.24.3
 mkcert 1.4.4
 neovim 0.7.2
-nodejs 16.14.2 18.1.0 10.24.1
-python 3.7.12 3.10.4 2.7.18
+nodejs 16.14.2 18.7.0 10.24.1
+python 3.7.12 3.10.6 2.7.18
 ripgrep 13.0.0
 ruby 3.1.1 2.5.9 2.6.6
-rust 1.60.0 1.59.0
-terraform 1.1.9
-tflint 0.36.2
-tmux 3.2a
+rust 1.62.1 1.59.0
+terraform 1.2.6
+tflint 0.39.1
+tmux 3.3a
 yarn 1.22.19
