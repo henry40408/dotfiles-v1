@@ -33,13 +33,20 @@ lvim.builtin.treesitter.ensure_installed = {
 }
 lvim.builtin.treesitter.highlight.enabled = true
 
+-- use rust-tools instead
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer" })
+
 lvim.plugins = {
   -- Neovim plugin for building a sync base16 colorscheme. Includes support for Treesitter and LSP highlight groups.
   { "RRethy/nvim-base16", commit = "da2a27c" },
   -- Next-generation motion plugin using incremental input processing, allowing for unparalleled speed with minimal cognitive effort
   { "ggandor/lightspeed.nvim", commit = "a4b4277" },
   -- EditorConfig plugin for Neovim
-  { "gpanders/editorconfig.nvim", commit = "495d3e2" },
+  { "gpanders/editorconfig.nvim", commit = "495d3e2", config = function()
+    require("fidget").setup()
+  end },
+  --  Standalone UI for nvim-lsp progress
+  { "j-hui/fidget.nvim", commit = "492492e" },
   -- Indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -60,6 +67,24 @@ lvim.plugins = {
   { "troydm/zoomwintab.vim", commit = "7a354f3" },
   -- Neovim plugin to preview the contents of the registers
   { "tversteeg/registers.nvim", commit = "f354159" },
+  -- Tools for better development in rust using neovim's builtin lsp
+  {
+    "simrat39/rust-tools.nvim",
+    commit = "11dcd67",
+    config = function()
+      local lsp_installer_servers = require "nvim-lsp-installer.servers"
+      local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
+      require("rust-tools").setup({
+        tools = {},
+        server = {
+          cmd_env = requested_server._default_options.cmd_env,
+          on_attach = require("lvim.lsp").common_on_attach,
+          on_init = require("lvim.lsp").common_on_init,
+        },
+      })
+    end,
+    ft = { "rust", "rs" }
+  },
   -- Make Vim handle line and column numbers in file names with a minimum of fuss
   { "wsdjeg/vim-fetch", commit = "0a6ab17" }
 }
