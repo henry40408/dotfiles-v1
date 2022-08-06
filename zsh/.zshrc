@@ -238,12 +238,23 @@ git-clone-checkout() {
     popd -q || return
 }
 
+git-submodule-update() {
+    pushd -q "$1" || return
+    git submodule update
+    popd -q || return
+}
+
 install-asdf() {
     git-clone-checkout "https://github.com/asdf-vm/asdf.git" "$HOME/.asdf" "$ASDF_REF"
 }
 
 install-asdf-plugins() {
-    git-clone-checkout "https://github.com/henry40408/asdf-plugins.git" "$HOME/.asdf/plugins" "$ASDF_PLUGINS_REF"
+    local asdf_plugins
+
+    asdf_plugins="$HOME/.asdf/plugins"
+
+    git-clone-checkout "https://github.com/henry40408/asdf-plugins.git" "$asdf_plugins" "$ASDF_PLUGINS_REF"
+    git-submodule-update "$asdf_plugins"
 }
 
 install-crates() {
