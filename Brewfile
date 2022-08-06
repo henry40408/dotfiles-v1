@@ -70,6 +70,7 @@ brew "stow"
 brew "the_silver_searcher"
 brew "tig"
 brew "tldr"
+brew "utf8proc"
 brew "virtualenvwrapper"
 brew "watch"
 brew "watchman"
@@ -92,7 +93,6 @@ cask "discord"
 cask "emacs"
 cask "firefox"
 cask "font-jetbrains-mono-nerd-font"
-cask "fork"
 cask "genymotion"
 cask "gpg-suite-no-mail"
 cask "iina"
@@ -124,7 +124,6 @@ cask "zoom"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
-mas "Bitwarden", id: 1352778147
 mas "DevCleaner", id: 1388020431
 mas "Disk Speed Test", id: 425264550
 mas "Drafts", id: 1435957248
