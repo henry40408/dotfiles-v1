@@ -39,8 +39,10 @@ vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyz
 lvim.plugins = {
   -- Neovim plugin for building a sync base16 colorscheme. Includes support for Treesitter and LSP highlight groups.
   { "RRethy/nvim-base16", commit = "da2a27c" },
-  -- Next-generation motion plugin using incremental input processing, allowing for unparalleled speed with minimal cognitive effort
-  { "ggandor/lightspeed.nvim", commit = "a4b4277" },
+  -- A unified, minimal, extensible interface for lightning-fast movements in the visible editor area
+  { "ggandor/leap.nvim", commit = "b9bc061", config = function()
+    require('leap').set_default_keymaps()
+  end },
   -- EditorConfig plugin for Neovim
   { "gpanders/editorconfig.nvim", commit = "495d3e2", config = function()
     require("fidget").setup()
@@ -94,11 +96,22 @@ lvim.plugins = {
 vim.keymap.set("n", ";", ":", {})
 vim.keymap.set("v", ";", ":", {})
 
--- Enable autopep8 for Python
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
+  {
+    command = "prettier",
+    filetypes = { "javascript" }
+  },
   {
     command = "autopep8",
     filetypes = { "python" },
   },
+}
+
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  {
+    command = "eslint",
+    filetypes = { "javascript" }
+  }
 }
