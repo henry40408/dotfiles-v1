@@ -124,12 +124,12 @@ cask "zoom"
 mas "Affinity Designer", id: 824171161
 mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
+mas "Bitwarden", id: 1352778147
 mas "DevCleaner", id: 1388020431
 mas "Disk Speed Test", id: 425264550
 mas "Drafts", id: 1435957248
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
-mas "NextDNS", id: 1464122853
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Pocket", id: 568494494
