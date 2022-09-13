@@ -1,9 +1,9 @@
 [user]
-	name = Heng-Yi Wu
-	email = 2316687+henry40408@users.noreply.github.com
-	signingkey = 2316687+henry40408@users.noreply.github.com
+  name = Heng-Yi Wu
+  email = 2316687+henry40408@users.noreply.github.com
+  signingkey = 2316687+henry40408@users.noreply.github.com
 [commit]
-	gpgsign = yes
+  gpgsign = yes
 [core]
   editor = lvim
   pager = delta
@@ -16,4 +16,4 @@
 [delta]
   side-by-side = true
 [pull]
-	rebase = false
+  rebase = false
