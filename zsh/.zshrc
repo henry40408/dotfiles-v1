@@ -165,7 +165,7 @@ zsh_plugins=(
 )
 
 crates=(
-    cross:0.2.1
+    cross:0.2.4
     du-dust:0.6.2
     git-delta:0.12.0
     hyperfine:1.13.0
