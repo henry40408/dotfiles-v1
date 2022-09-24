@@ -165,6 +165,7 @@ zsh_plugins=(
 )
 
 crates=(
+    cargo-outdated:0.11.1
     cross:0.2.4
     du-dust:0.6.2
     git-delta:0.12.0
