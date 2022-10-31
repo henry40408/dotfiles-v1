@@ -403,6 +403,9 @@ function() {
     (which procs &> /dev/null) && alias ps="procs"
     (which zoxide &> /dev/null) && eval "$(zoxide init zsh)"
 
+    # [haskell]
+    [[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
+
     # [my] private configuration
     # shellcheck source=/dev/null
     [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
