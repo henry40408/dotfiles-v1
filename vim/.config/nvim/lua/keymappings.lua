@@ -17,3 +17,5 @@ map_key('n', '<Leader>q', '<cmd>q<CR>', { noremap = true, silent = true })
 map_key('n', '<Leader>ve', '<cmd>e $MYVIMRC<CR>', { noremap = true, silent = true })
 local c = sf('<cmd>so $MYVIMRC<CR><cmd>PackerCompile<CR><cmd>echo "sourced %s"<CR>', os.getenv('MYVIMRC'))
 map_key('n', '<Leader>vs', c, { noremap = true, silent = true })
+
+map_key('n', '<Leader>lf', '<cmd>lua vim.lsp.buf.format()<CR>')

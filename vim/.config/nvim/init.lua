@@ -22,6 +22,8 @@ local function neovim_plugins(use)
   use({ 'akinsho/toggleterm.nvim', commit = 'c525442', config = [[require('config.toggleterm')]] })
   -- WhichKey is a lua plugin for Neovim 0.5 that displays a popup with possible key bindings of the command you started typing
   use({ 'folke/which-key.nvim', commit = 'bd4411a', config = [[require('config.whichkey')]] })
+  -- A unified, minimal, extensible interface for lightning-fast movements in the visible editor area
+  use({ 'ggandor/leap.nvim', commit = 'b9bc061', config = [[require('config.leap')]] })
   -- EditorConfig plugin for Neovim
   use({ 'gpanders/editorconfig.nvim', commit = '495d3e2' })
   -- lua `fork` of vim-web-devicons for neovim
@@ -94,6 +96,10 @@ local function lsp_plugins(use)
   use({ 'neovim/nvim-lspconfig', commit = '629f45d', config = [[require('config.lsp')]] })
   -- Repo to hold a bunch of info & extension callbacks for built-in LSP
   use({ 'nvim-lua/lsp_extensions.nvim', commit = '4011f4a' })
+  -- Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.
+  use({ 'williamboman/mason.nvim', commit = 'd85d71e', config = [[require('config.mason')]] })
+  -- Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim. Strongly recommended for Windows users.
+  use({ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d', config = [[require('config.mason-lspconfig')]] })
 end
 
 -- ref: https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua

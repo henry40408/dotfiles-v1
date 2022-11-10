@@ -30,6 +30,10 @@ lsp.pylsp.setup({
   capabilities = capabilities,
 })
 
+lsp.sumneko_lua.setup({
+  capabilities = capabilities,
+})
+
 --ref: https://sharksforarms.dev/posts/neovim-rust/
 local opts = { noremap = true, silent = true }
 map_key('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
