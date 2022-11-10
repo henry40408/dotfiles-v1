@@ -12,9 +12,8 @@ export ZSH=$HOME/.oh-my-zsh
 # commits
 ASDF_REF=v0.9.0
 ASDF_PLUGINS_REF=90f6b9962769f2cf78673fdb189013a99afe20c4
-LUNAR_VIM_REF=1.1.4
 OMZ_REF=b3999a4b156185b617a5608317497399f88dc8fe
-VIM_PACKER_REF=4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2
+VIM_PACKER_REF=14571611c06e757f4f5fe46b82657417645c74dc
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -269,33 +268,6 @@ install-crates() {
         version="$(echo "$c" | awk -F: '{print $2}')"
         cargo install --root "$crate_root" "$name" --version "$version"
     done
-}
-
-install-lunar-vim() {
-    install-vim-packer
-
-    local xdg_data_home
-    local xdg_cache_home
-    local xdg_config_home
-    xdg_data_home="${XDG_DATA_HOME:-"$HOME/.local/share"}"
-    xdg_cache_home="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-    xdg_config_home="${XDG_CONFIG_HOME:-"$HOME/.config"}"
-
-    local lunarvim_runtime_dir
-    local lunarvim_config_dir
-    local lunarvim_cache_dir
-    lunarvim_runtime_dir="${LUNARVIM_RUNTIME_DIR:-"$xdg_data_home/lunarvim"}"
-    lunarvim_config_dir="${LUNARVIM_CONFIG_DIR:-"$xdg_config_home/lvim"}"
-    lunarvim_cache_dir="${LUNARVIM_CACHE_DIR:-"$xdg_cache_home/lvim"}"
-
-    mkdir -p "$lunarvim_runtime_dir"
-    mkdir -p "$lunarvim_config_dir"
-    mkdir -p "$lunarvim_cache_dir"
-
-    local lunarvim_base_dir
-    lunarvim_base_dir="${LUNARVIM_BASE_DIR:-"$lunarvim_runtime_dir/lvim"}"
-
-    git-clone-checkout "https://github.com/LunarVim/LunarVim" "$lunarvim_base_dir" "$LUNAR_VIM_REF"
 }
 
 install-plugins() {
