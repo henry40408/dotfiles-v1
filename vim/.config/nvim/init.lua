@@ -1,14 +1,12 @@
 local function vim_plugins(use)
   -- Base16 for Vim
   use({ 'chriskempson/base16-vim', commit = '6191622', config = [[require('config.base16vim')]] })
-  -- Vim motion on speed!
-  use({ 'easymotion/vim-easymotion', commit = 'b3cfab2' })
   -- Rainbow Parentheses Improved, shorter code, no level limit, smooth and fast, powerful configuration
   use({ 'luochen1990/rainbow', commit = 'c18071e', setup = [[require('setup.rainbow')]] })
   -- Better whitespace highlighting for Vim
   use({ 'ntpeters/vim-better-whitespace', commit = 'c5afbe9' })
   -- Git commands in nvim
-  use({ 'tpope/vim-fugitive', commit = '5b62c75', config = [[require('config.fugitive')]] })
+  use({ 'tpope/vim-fugitive', commit = '5b62c75' })
   -- surround.vim: Delete/change/add parentheses/quotes/XML-tags/much more with ease
   use({ 'tpope/vim-surround', commit = 'bf3480d' })
   -- unimpaired.vim: Pairs of handy bracket mappings
@@ -26,6 +24,8 @@ local function neovim_plugins(use)
   use({ 'ggandor/leap.nvim', commit = 'b9bc061', config = [[require('config.leap')]] })
   -- EditorConfig plugin for Neovim
   use({ 'gpanders/editorconfig.nvim', commit = '495d3e2' })
+  -- Standalone UI for nvim-lsp progress
+  use({ 'j-hui/fidget.nvim', commit = '492492e', config = [[require('config.fidget')]] })
   -- lua `fork` of vim-web-devicons for neovim
   use({ 'kyazdani42/nvim-web-devicons', commit = 'cde67b5' })
   -- Git integration for buffers
@@ -105,7 +105,7 @@ end
 -- ref: https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua
 local function setup_packer(use)
   -- A use-package inspired plugin manager for Neovim
-  use({ 'wbthomason/packer.nvim', commit = '145716', config = [[require('config.packer')]] })
+  use({ 'wbthomason/packer.nvim', commit = '145716' })
   vim_plugins(use)
   neovim_plugins(use)
   telescope_plugins(use)
