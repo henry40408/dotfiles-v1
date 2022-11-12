@@ -181,7 +181,10 @@ crates=(
 
 # platform-specific plugins
 function() {
-    [[ "$OSTYPE" = "darwin" || "$OSTYPE" = "darwin21.0" ]] && plugins+=(brew)
+    if [[ $OSTYPE == darwin* ]]; then
+        export HOMEBREW_NO_AUTO_UPDATE=1
+        plugins+=(brew)
+    fi
 }
 
 # add external plugins to oh-my-zsh plugin list
