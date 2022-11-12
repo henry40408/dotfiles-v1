@@ -24,7 +24,7 @@ wk.register({
   h = { '<cmd>nohls<CR>', 'Clean search highlight' },
   l = {
     name = 'LSP',
-    f = { '<cmd>lua vim.lsp.buf.formatting()<CR>', 'LSP Format' },
+    f = { '<cmd>lua vim.lsp.buf.format()<CR>', 'LSP Format' },
     i = { '<cmd>LspInfo<CR>', 'LSP Info' },
   },
   p = {
