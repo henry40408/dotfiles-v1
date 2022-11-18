@@ -259,10 +259,10 @@ function C.whichkey()
 
   local wk = require('which-key')
   wk.register({
-    c = { '<cmd>close<CR>', 'Close window' },
     b = {
       name = 'Buffer',
-      d = { '<cmd>bdelete<CR>', 'Close buffer' },
+      b = { '<C-^>', 'Jump buffer', noremap = true },
+      k = { '<cmd>bdelete<CR>', 'Kill buffer' },
     },
     f = {
       name = 'Telescope',
@@ -287,7 +287,6 @@ function C.whichkey()
       c = { '<cmd>PackerCompile<CR>', 'Packer compile' },
       s = { '<cmd>PackerSync<CR>', 'Packer synchronize' },
     },
-    q = { '<cmd>quit<CR>', 'Quit' },
     v = {
       name = 'Configuration',
       e = { '<cmd>edit $MYVIMRC<CR>', 'Edit configuration' },
