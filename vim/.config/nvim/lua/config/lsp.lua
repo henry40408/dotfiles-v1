@@ -4,6 +4,10 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 local map_key = vim.keymap.set
 local lsp = require('lspconfig')
 
+lsp.clangd.setup({
+  capabilities = capabilities,
+})
+
 lsp.rust_analyzer.setup({
   capabilities = capabilities,
   settings = {
