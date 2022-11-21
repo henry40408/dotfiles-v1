@@ -85,6 +85,8 @@ function C.indent_blankline()
     },
     show_trailing_blankline_indent = false,
   })
+  vim.cmd([[highlight IndentBlanklineIndent1 guibg=#121212 gui=nocombine]])
+  vim.cmd([[highlight IndentBlanklineIndent2 guibg=#212121 gui=nocombine]])
 end
 
 function C.leap()
@@ -98,9 +100,18 @@ function C.lsp()
   local map_key = vim.keymap.set
   local lsp = require('lspconfig')
 
-  lsp.clangd.setup({
-    capabilities = capabilities,
-  })
+  local servers = {
+    'bashls',
+    'clangd',
+    'tsserver',
+    'pylsp',
+  }
+
+  for _, v in ipairs(servers) do
+    lsp[v].setup({
+      capabilities = capabilities,
+    })
+  end
 
   lsp.rust_analyzer.setup({
     capabilities = capabilities,
@@ -118,14 +129,6 @@ function C.lsp()
         },
       },
     },
-  })
-
-  lsp.tsserver.setup({
-    capabilities = capabilities,
-  })
-
-  lsp.pylsp.setup({
-    capabilities = capabilities,
   })
 
   lsp.sumneko_lua.setup({
@@ -201,6 +204,7 @@ end
 function C.mason_lspconfig()
   require('mason-lspconfig').setup({
     ensure_installed = {
+      'bashls',
       'eslint',
       'jsonls',
       'pyright',
@@ -261,8 +265,12 @@ function C.whichkey()
   wk.register({
     b = {
       name = 'Buffer',
-      b = { '<C-^>', 'Jump buffer', noremap = true },
+      b = { '<C-^>', 'Jump buffer' },
       k = { '<cmd>bdelete<CR>', 'Kill buffer' },
+    },
+    c = {
+      name = 'Comment',
+      c = { '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>', 'Toggle line comment' },
     },
     f = {
       name = 'Telescope',
@@ -271,10 +279,13 @@ function C.whichkey()
       f = { '<cmd>Telescope find_files hidden=true<CR>', 'Find files (including hidden)' },
       g = { '<cmd>Telescope live_grep<CR>', 'Live grep' },
       h = { '<cmd>Telescope help_tags<CR>', 'Find documentation' },
+      k = { '<cmd>Telescope keymaps<CR>', 'Find keymaps' },
       s = { '<cmd>Telescope colorscheme enable_preview=true<CR>', 'Find colorscheme' },
     },
     g = {
       name = 'Git',
+      p = { '<cmd>Gitsigns preview_hunk<CR>', 'Preview hunk' },
+      r = { '<cmd>Gitsigns reset_hunk<CR>', 'Restore hunk' },
       s = { '<cmd>Git<CR>', 'Git status' },
     },
     h = { '<cmd>nohls<CR>', 'Clean search highlight' },
@@ -282,9 +293,10 @@ function C.whichkey()
       name = 'LSP',
       f = { '<cmd>lua vim.lsp.buf.format()<CR>', 'LSP Format' },
       i = { '<cmd>LspInfo<CR>', 'LSP Info' },
+      r = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'LSP Rename' },
     },
     p = {
-      c = { '<cmd>PackerCompile<CR>', 'Packer compile' },
+      c = { '<cmd>PackerCompile<CR><cmd>echo "Packer compiled."<CR>', 'Packer compile' },
       s = { '<cmd>PackerSync<CR>', 'Packer synchronize' },
     },
     v = {
@@ -299,9 +311,9 @@ function C.whichkey()
   }, { prefix = '<leader>' })
 end
 
-local setup = {}
+local S = {}
 
-function setup.rainbow()
+function S.rainbow()
   vim.g.rainbow_active = 1
 end
 
@@ -309,7 +321,7 @@ local function vim_plugins(use)
   -- Base16 for Vim
   use({ 'chriskempson/base16-vim', commit = '6191622', config = C.base16vim })
   -- Rainbow Parentheses Improved, shorter code, no level limit, smooth and fast, powerful configuration
-  use({ 'luochen1990/rainbow', commit = 'c18071e', setup = setup.rainbow })
+  use({ 'luochen1990/rainbow', commit = 'c18071e', setup = S.rainbow })
   -- Better whitespace highlighting for Vim
   use({ 'ntpeters/vim-better-whitespace', commit = 'c5afbe9' })
   -- Git commands in nvim
@@ -434,66 +446,61 @@ function F.augroups()
 end
 
 function F.keymappings()
-  local map_key = vim.keymap.set
-
   -- Map semicolon to colon
   -- ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
-  map_key('n', ';', ':', {})
-  map_key('v', ';', ':', {})
+  vim.keymap.set('n', ';', ':', {})
+  vim.keymap.set('v', ';', ':', {})
 
   -- Retain the visual selection after having pressed > or <
   -- ref: https://vim.fandom.com/wiki/Shifting_blocks_visually#Mappings
-  map_key('v', '>', '>gv', { noremap = true })
-  map_key('v', '<', '<gv', { noremap = true })
+  vim.keymap.set('v', '>', '>gv', { noremap = true })
+  vim.keymap.set('v', '<', '<gv', { noremap = true })
 end
 
 function F.options()
-  local c = vim.cmd
-  local o = vim.opt
-
   -- Using the mouse for Vim in an xterm
   -- ref: https://vim.fandom.com/wiki/Using_the_mouse_for_Vim_in_an_xterm
-  o.mouse = 'a'
+  vim.opt.mouse = 'a'
 
   -- Result in spaces being used for all indentation
   -- ref: https://vim.fandom.com/wiki/Indenting_source_code
-  o.expandtab = true
-  o.shiftwidth = 4
-  o.tabstop = 4
+  vim.opt.expandtab = true
+  vim.opt.shiftwidth = 4
+  vim.opt.tabstop = 4
 
   -- Does nothing more than copy the indentation from the previous line, when starting a new line
   -- ref: https://vim.fandom.com/wiki/Indenting_source_code
-  o.autoindent = true
+  vim.opt.autoindent = true
 
   -- Make backspace work like most other programs
   -- ref: https://vim.fandom.com/wiki/Backspace_and_delete_problems#Backspace_key_won.27t_move_from_current_line
-  o.backspace = 'indent,eol,start'
+  vim.opt.backspace = 'indent,eol,start'
 
   -- Highlighting that moves with the cursor
   -- ref: https://vim.fandom.com/wiki/Highlight_current_line
-  o.laststatus = 2
-  o.cursorline = true
-  o.number = true
+  vim.opt.laststatus = 2
+  vim.opt.cursorline = true
+  vim.opt.number = true
   -- ref: https://github.com/neovim/neovim/issues/18160
-  c([[highlight CursorLine guibg=#111111]])
+  vim.cmd([[highlight CursorLine guibg=#111111]])
 
   -- By setting the option 'hidden', you can load a buffer in a window that currently has a modified buffer
   -- ref: http://vimdoc.sourceforge.net/htmldoc/options.html#'hidden'
-  o.hidden = true
+  vim.opt.hidden = true
 
   -- Case sensitivity
   -- ref: https://vim.fandom.com/wiki/Searching#Case_sensitivity
-  o.ignorecase = true
-  o.smartcase = true
+  vim.opt.ignorecase = true
+  vim.opt.smartcase = true
 
   -- Show the next match while entering a search
   -- ref: https://vim.fandom.com/wiki/Searching#Show_the_next_match_while_entering_a_search
-  o.incsearch = true
+  vim.opt.incsearch = true
 
   -- What do you use for your listchars?
   -- ref: https://www.reddit.com/r/vim/comments/4hoa6e/comment/d2ra7qh/
-  o.list = true
-  o.listchars = {
+  vim.opt.list = true
+  vim.opt.listchars = {
     eol = '⤶',
     extends = '›',
     nbsp = '·',
@@ -504,44 +511,43 @@ function F.options()
 
   -- Vim highlights the remaining matches with the Search highlight group
   -- ref: https://vim.fandom.com/wiki/Search_and_replace#Basic_search_and_replace
-  o.hlsearch = true
+  vim.opt.hlsearch = true
 
   -- Does not change the text but simply displays it on multiple lines
   -- ref: https://vim.fandom.com/wiki/Automatic_word_wrapping
-  o.wrap = true
+  vim.opt.wrap = true
 
   -- With custom background highlight
   -- ref: https://github.com/lukas-reineke/indent-blankline.nvim/tree/8567ac8ccd19ee41a6ec55bf044884799fa3f56b
-  o.termguicolors = true
-  c([[highlight IndentBlanklineIndent1 guibg=#121212 gui=nocombine]])
-  c([[highlight IndentBlanklineIndent2 guibg=#212121 gui=nocombine]])
+  vim.opt.termguicolors = true
 end
 
 function F.shoval()
   -- shoves all those files into three directories, rather than individual local project directories
   -- ref: https://sts10.github.io/2016/02/13/best-of-my-vimrc.html
 
-  local sf = string.format
-  local c = vim.call
-  local o = vim.opt
-  local h = os.getenv('HOME')
+  local home = os.getenv('HOME')
 
-  c('system', sf('mkdir -p %s/.vim/backup', h))
-  o.backupdir = sf([[%s/.vim/backup]], h)
+  vim.call('system', string.format('mkdir -p %s/.vim/backup', home))
+  vim.opt.backupdir = string.format([[%s/.vim/backup]], home)
 
-  c('system', sf('mkdir -p %s/.vim/swap', h))
-  o.directory = sf([[%s/.vim/swap]], h)
+  vim.call('system', string.format('mkdir -p %s/.vim/swap', home))
+  vim.opt.directory = string.format([[%s/.vim/swap]], home)
 
-  local d = sf('%s/.vim/undo', h)
-  c('system', sf('mkdir -p %s', d))
-  o.undodir = d
-  o.undofile = true
-  o.undolevels = 1000
-  o.undoreload = 1000
+  local undo = string.format('%s/.vim/undo', home)
+  vim.call('system', string.format('mkdir -p %s', undo))
+  vim.opt.undodir = undo
+  vim.opt.undofile = true
+  vim.opt.undolevels = 1000
+  vim.opt.undoreload = 1000
 end
 
-for _, v in pairs(F) do
-  v()
+function F.init()
+  F.augroups()
+  F.keymappings()
+  F.options()
+  F.shoval()
+  require('packer').startup(setup_packer)
 end
 
-require('packer').startup(setup_packer)
+F.init()
