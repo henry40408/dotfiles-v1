@@ -1,14 +1,18 @@
-local C = {}
+local M = {}
 
-function C.base16vim()
+function M.config_base16vim()
   vim.cmd([[colorscheme base16-irblack]])
 end
 
-function C.comment()
+function M.config_comment()
   require('Comment').setup()
+
+  local opts = { silent = true }
+  vim.keymap.set('n', '<leader>/', '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>', opts)
+  vim.keymap.set('x', '<leader>/', '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>')
 end
 
-function C.cmp()
+function M.config_cmp()
   -- ref: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
   local luasnip = require('luasnip')
   local cmp = require('cmp')
@@ -54,11 +58,18 @@ function C.cmp()
   })
 end
 
-function C.fidget()
+function M.config_fidget()
   require('fidget').setup()
 end
 
-function C.gitsigns()
+function M.config_fugitive()
+  local opts = { silent = true }
+  vim.keymap.set('n', '<leader>gg', '<cmd>Git<CR>', opts)
+  vim.keymap.set('n', '<leader>gp', '<cmd>Gitsigns preview_hunk<CR>', opts)
+  vim.keymap.set('n', '<leader>gr', '<cmd>Gitsigns reset_hunk<CR>', opts)
+end
+
+function M.config_gitsigns()
   require('gitsigns').setup({
     signcolumn = true,
     current_line_blame = true,
@@ -72,7 +83,7 @@ function C.gitsigns()
   })
 end
 
-function C.indent_blankline()
+function M.config_indent_blankline()
   require('indent_blankline').setup({
     char = '',
     char_highlight_list = {
@@ -89,29 +100,20 @@ function C.indent_blankline()
   vim.cmd([[highlight IndentBlanklineIndent2 guibg=#212121 gui=nocombine]])
 end
 
-function C.leap()
+function M.config_leap()
   require('leap').set_default_keymaps()
 end
 
-function C.lsp()
+function M.config_lsp()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-  local map_key = vim.keymap.set
   local lsp = require('lspconfig')
 
-  local servers = {
-    'bashls',
-    'clangd',
-    'tsserver',
-    'pylsp',
-  }
-
-  for _, v in ipairs(servers) do
-    lsp[v].setup({
-      capabilities = capabilities,
-    })
-  end
+  lsp.bashls.setup({ capabilities = capabilities })
+  lsp.clangd.setup({ capabilities = capabilities })
+  lsp.pylsp.setup({ capabilities = capabilities })
+  lsp.tsserver.setup({ capabilities = capabilities })
 
   lsp.rust_analyzer.setup({
     capabilities = capabilities,
@@ -145,20 +147,26 @@ function C.lsp()
     }
   })
 
-  --ref: https://sharksforarms.dev/posts/neovim-rust/
+  -- ref: https://sharksforarms.dev/posts/neovim-rust/
   local opts = { noremap = true, silent = true }
-  map_key('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  map_key('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  map_key('n', 'gD', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  map_key('n', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  map_key('n', '1gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  map_key('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  map_key('n', 'g0', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-  map_key('n', 'gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
-  map_key('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.keymap.set('n', '<leader>lI', '<cmd>LspInstallInfo<cr>', opts)
+  vim.keymap.set('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+  vim.keymap.set('n', '<leader>lf', '<cmd>lua vim.lsp.buf.format{ async = true }<cr>', opts)
+  vim.keymap.set('n', '<leader>li', '<cmd>LspInfo<cr>', opts)
+  vim.keymap.set('n', '<leader>lj', '<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>', opts)
+  vim.keymap.set('n', '<leader>lk', '<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>', opts)
+  vim.keymap.set('n', '<leader>lq', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+  vim.keymap.set('n', '<leader>lr', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+  vim.keymap.set('n', '<leader>ls', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.keymap.set('n', 'gI', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 end
 
-function C.lualine()
+function M.config_lualine()
   require('lualine').setup({
     options = { theme = 'onedark', component_separators = '', section_separators = '' },
     sections = {
@@ -177,31 +185,22 @@ function C.lualine()
       lualine_z = { 'location' },
     },
     inactive_sections = {
-      lualine_a = {},
-      lualine_b = {},
       lualine_c = { { 'filename', path = 1 } },
       lualine_x = { 'location' },
-      lualine_y = {},
-      lualine_z = {},
     },
     tabline = {
       lualine_a = {
         { 'buffers', mode = 2 },
       },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {},
     },
   })
 end
 
-function C.mason()
+function M.config_mason()
   require('mason').setup()
 end
 
-function C.mason_lspconfig()
+function M.config_mason_lspconfig()
   require('mason-lspconfig').setup({
     ensure_installed = {
       'bashls',
@@ -218,7 +217,7 @@ function C.mason_lspconfig()
   })
 end
 
-function C.telescope()
+function M.config_telescope()
   require('telescope').setup({
     defaults = {
       layout_config = {
@@ -235,16 +234,21 @@ function C.telescope()
       },
     },
   })
+  vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>')
+  vim.keymap.set('n', '<leader>ff', '<cmd>Telescope git_files<CR>')
+  vim.keymap.set('n', '<leader>fF', '<cmd>Telescope find_files hidden=true<CR>')
+  vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<CR>')
+  vim.keymap.set('n', '<leader>ft', '<cmd>Telescope live_grep<CR>')
 end
 
-function C.toggleterm()
+function M.config_toggleterm()
   require('toggleterm').setup({
     open_mapping = [[<c-\>]],
     direction = 'float',
   })
 end
 
-function C.treesitter()
+function M.config_treesitter()
   require('nvim-treesitter.configs').setup({
     ensure_installed = { 'lua', 'rust' },
     highlight = { enable = true },
@@ -253,98 +257,51 @@ function C.treesitter()
   })
 end
 
-function C.treesitter_context()
+function M.config_treesitter_context()
   require('treesitter-context').setup()
 end
 
-function C.whichkey()
-  local sf = string.format
-  local source_cmd = sf('<cmd>source $MYVIMRC<CR><cmd>echo "sourced %s"<CR>', os.getenv('MYVIMRC'))
-
-  local wk = require('which-key')
-  wk.register({
-    b = {
-      name = 'Buffer',
-      b = { '<C-^>', 'Jump buffer' },
-      k = { '<cmd>bdelete<CR>', 'Kill buffer' },
-    },
-    c = {
-      name = 'Comment',
-      c = { '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>', 'Toggle line comment' },
-    },
-    f = {
-      name = 'Telescope',
-      b = { '<cmd>Telescope buffers<CR>', 'Find buffers' },
-      c = { '<cmd>Telescope commands<CR>', 'Find commands' },
-      f = { '<cmd>Telescope find_files hidden=true<CR>', 'Find files (including hidden)' },
-      g = { '<cmd>Telescope live_grep<CR>', 'Live grep' },
-      h = { '<cmd>Telescope help_tags<CR>', 'Find documentation' },
-      k = { '<cmd>Telescope keymaps<CR>', 'Find keymaps' },
-      s = { '<cmd>Telescope colorscheme enable_preview=true<CR>', 'Find colorscheme' },
-    },
-    g = {
-      name = 'Git',
-      p = { '<cmd>Gitsigns preview_hunk<CR>', 'Preview hunk' },
-      r = { '<cmd>Gitsigns reset_hunk<CR>', 'Restore hunk' },
-      s = { '<cmd>Git<CR>', 'Git status' },
-    },
-    h = { '<cmd>nohls<CR>', 'Clean search highlight' },
-    l = {
-      name = 'LSP',
-      f = { '<cmd>lua vim.lsp.buf.format()<CR>', 'LSP Format' },
-      i = { '<cmd>LspInfo<CR>', 'LSP Info' },
-      r = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'LSP Rename' },
-    },
-    p = {
-      c = { '<cmd>PackerCompile<CR><cmd>echo "Packer compiled."<CR>', 'Packer compile' },
-      s = { '<cmd>PackerSync<CR>', 'Packer synchronize' },
-    },
-    v = {
-      name = 'Configuration',
-      e = { '<cmd>edit $MYVIMRC<CR>', 'Edit configuration' },
-      s = { source_cmd, 'Reload configuration' },
-    },
-    z = {
-      name = 'Zoom',
-      z = { '<cmd>call zoomwintab#Toggle()<CR>', 'Toggle zoom win tab' }
-    }
-  }, { prefix = '<leader>' })
+function M.config_whichkey()
+  require('which-key').setup()
 end
 
-local S = {}
+function M.config_zoomwintab()
+  local opts = { silent = true }
+  vim.keymap.set('n', '<leader>z', '<cmd>call zoomwintab#Toggle()<CR>', opts)
+end
 
-function S.rainbow()
+function M.setup_rainbow()
   vim.g.rainbow_active = 1
 end
 
-local function vim_plugins(use)
+function M.use_vim_plugins(use)
   -- Base16 for Vim
-  use({ 'chriskempson/base16-vim', commit = '6191622', config = C.base16vim })
+  use({ 'chriskempson/base16-vim', commit = '6191622', config = M.config_base16vim })
   -- Rainbow Parentheses Improved, shorter code, no level limit, smooth and fast, powerful configuration
-  use({ 'luochen1990/rainbow', commit = 'c18071e', setup = S.rainbow })
+  use({ 'luochen1990/rainbow', commit = 'c18071e', setup = M.setup_rainbow })
   -- Better whitespace highlighting for Vim
   use({ 'ntpeters/vim-better-whitespace', commit = 'c5afbe9' })
   -- Git commands in nvim
-  use({ 'tpope/vim-fugitive', commit = '5b62c75' })
+  use({ 'tpope/vim-fugitive', commit = '5b62c75', config = M.config_fugitive })
   -- surround.vim: Delete/change/add parentheses/quotes/XML-tags/much more with ease
   use({ 'tpope/vim-surround', commit = 'bf3480d' })
   -- unimpaired.vim: Pairs of handy bracket mappings
   use({ 'tpope/vim-unimpaired', commit = '9842718' })
   -- zoomwintab vim plugin
-  use({ 'troydm/zoomwintab.vim', commit = '7a354f3' })
+  use({ 'troydm/zoomwintab.vim', commit = '7a354f3', config = M.config_zoomwintab })
 end
 
-local function neovim_plugins(use)
+function M.use_neovim_plugins(use)
   -- A neovim lua plugin to help easily manage multiple terminal windows
-  use({ 'akinsho/toggleterm.nvim', commit = 'c525442', config = C.toggleterm })
+  use({ 'akinsho/toggleterm.nvim', commit = 'c525442', config = M.config_toggleterm })
   -- WhichKey is a lua plugin for Neovim 0.5 that displays a popup with possible key bindings of the command you started typing
-  use({ 'folke/which-key.nvim', commit = 'bd4411a', config = C.whichkey })
+  use({ 'folke/which-key.nvim', commit = 'bd4411a', config = M.config_whichkey })
   -- A unified, minimal, extensible interface for lightning-fast movements in the visible editor area
-  use({ 'ggandor/leap.nvim', commit = 'b9bc061', config = C.leap })
+  use({ 'ggandor/leap.nvim', commit = 'b9bc061', config = M.config_leap })
   -- EditorConfig plugin for Neovim
   use({ 'gpanders/editorconfig.nvim', commit = '495d3e2' })
   -- Standalone UI for nvim-lsp progress
-  use({ 'j-hui/fidget.nvim', commit = '492492e', config = C.fidget })
+  use({ 'j-hui/fidget.nvim', commit = '492492e', config = M.config_fidget })
   -- lua `fork` of vim-web-devicons for neovim
   use({ 'kyazdani42/nvim-web-devicons', commit = 'cde67b5' })
   -- Git integration for buffers
@@ -352,16 +309,16 @@ local function neovim_plugins(use)
     'lewis6991/gitsigns.nvim',
     commit = '9ff7dfb',
     requires = { 'nvim-lua/plenary.nvim' },
-    config = C.gitsigns,
+    config = M.config_gitsigns,
   })
   -- Indent guides for Neovim
   use({
     'lukas-reineke/indent-blankline.nvim',
     commit = '8567ac8',
-    config = C.indent_blankline,
+    config = M.config_indent_blankline,
   })
   -- // Smart and powerful comment plugin for neovim. Supports treesitter, dot repeat, left-right/up-down motions, hooks, and more
-  use({ 'numToStr/Comment.nvim', commit = '40f5587', config = C.comment })
+  use({ 'numToStr/Comment.nvim', commit = 'cd1c381', config = M.config_comment })
   -- All the lua functions I don't want to write twice
   use({ 'nvim-lua/plenary.nvim', commit = 'bbd13b1' })
   -- A blazing fast and easy to configure neovim statusline plugin written in pure lua
@@ -369,16 +326,16 @@ local function neovim_plugins(use)
     'nvim-lualine/lualine.nvim',
     commit = 'a4e4517',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-    config = C.lualine,
+    config = M.config_lualine,
   })
   -- Nvim Treesitter configurations and abstraction layer
-  use({ 'nvim-treesitter/nvim-treesitter', commit = '1942f35', config = C.treesitter })
+  use({ 'nvim-treesitter/nvim-treesitter', commit = '1942f35', config = M.config_treesitter })
   -- Show code context
   use({
     'nvim-treesitter/nvim-treesitter-context',
     commit = 'a791652',
     requires = { 'nvim-treesitter/nvim-treesitter' },
-    config = C.treesitter_context,
+    config = M.config_treesitter_context,
   })
   -- Neovim plugin to preview the contents of the registers
   use({ 'tversteeg/registers.nvim', commit = 'f354159' })
@@ -386,18 +343,18 @@ local function neovim_plugins(use)
   use({ 'wsdjeg/vim-fetch', commit = '0a6ab17' })
 end
 
-local function telescope_plugins(use)
+function M.use_telescope_plugins(use)
   -- Find, Filter, Preview, Pick. All lua, all the time
   use({
     'nvim-telescope/telescope.nvim',
     commit = '01fc5a9',
     requires = { 'nvim-lua/plenary.nvim' },
-    config = C.telescope,
+    config = M.config_telescope,
   })
   use({ 'nvim-telescope/telescope-fzf-native.nvim', commit = '2330a7e', run = 'make' })
 end
 
-local function lsp_plugins(use)
+function M.use_lsp_plugins(use)
   -- nvim-cmp source for buffer words
   use({ 'hrsh7th/cmp-buffer', commit = '12463cf' })
   -- nvim-cmp source for vim's cmdline
@@ -409,32 +366,30 @@ local function lsp_plugins(use)
   -- luasnip completion source for nvim-cmp
   use({ 'saadparwaiz1/cmp_luasnip', commit = 'a9de941' })
   -- A completion plugin for neovim coded in Lua
-  use({ 'hrsh7th/nvim-cmp', commit = 'cd694b8', config = C.cmp })
+  use({ 'hrsh7th/nvim-cmp', commit = 'cd694b8', config = M.config_cmp })
   -- Snippet Engine for Neovim written in Lua
   use({ 'L3MON4D3/LuaSnip', commit = '07cf1a1' })
   -- Quickstart configurations for the Nvim LSP client
-  use({ 'neovim/nvim-lspconfig', commit = '629f45d', config = C.lsp })
+  use({ 'neovim/nvim-lspconfig', commit = '629f45d', config = M.config_lsp })
   -- Repo to hold a bunch of info & extension callbacks for built-in LSP
   use({ 'nvim-lua/lsp_extensions.nvim', commit = '4011f4a' })
   -- Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.
-  use({ 'williamboman/mason.nvim', commit = 'd85d71e', config = C.mason })
+  use({ 'williamboman/mason.nvim', commit = 'd85d71e', config = M.config_mason })
   -- Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim. Strongly recommended for Windows users.
-  use({ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d', config = C.mason_lspconfig })
+  use({ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d', config = M.config_mason_lspconfig })
 end
 
 -- ref: https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua
-local function setup_packer(use)
+function M.setup_packer(use)
   -- A use-package inspired plugin manager for Neovim
   use({ 'wbthomason/packer.nvim', commit = '145716' })
-  vim_plugins(use)
-  neovim_plugins(use)
-  telescope_plugins(use)
-  lsp_plugins(use)
+  M.use_vim_plugins(use)
+  M.use_neovim_plugins(use)
+  M.use_telescope_plugins(use)
+  M.use_lsp_plugins(use)
 end
 
-local F = {}
-
-function F.augroups()
+function M.augroups()
   -- Treat words with dash as a word in Vim
   -- ref: https://til.hashrocket.com/posts/t8osyzywau-treat-words-with-dash-as-a-word-in-vim
   local chg = vim.api.nvim_create_augroup('CssHtmlGroup', { clear = true })
@@ -445,7 +400,7 @@ function F.augroups()
   })
 end
 
-function F.keymappings()
+function M.keymappings()
   -- Map semicolon to colon
   -- ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
   vim.keymap.set('n', ';', ':', {})
@@ -455,9 +410,19 @@ function F.keymappings()
   -- ref: https://vim.fandom.com/wiki/Shifting_blocks_visually#Mappings
   vim.keymap.set('v', '>', '>gv', { noremap = true })
   vim.keymap.set('v', '<', '<gv', { noremap = true })
+
+  -- ref: https://github.com/LunarVim/nvim-basic-ide/blob/fa51853c0890bf9992b6fc880025853772ecbdb0/lua/user/keymaps.lua
+  local opts = { silent = true }
+  vim.keymap.set('', '<Space>', '<Nop>', opts)
+  vim.g.mapleader = ' '
+
+  vim.keymap.set('n', '<leader>h', '<cmd>nohls<CR>', opts)
+  vim.keymap.set('n', '<leader>ve', '<cmd>edit $MYVIMRC<CR>', opts)
+  vim.keymap.set('n', '<leader>se', '<cmd>source $MYVIMRC<CR><cmd>PackerCompile<CR><cmd>echo $MYVIMRC "sourced"<CR>',
+    opts)
 end
 
-function F.options()
+function M.options()
   -- Using the mouse for Vim in an xterm
   -- ref: https://vim.fandom.com/wiki/Using_the_mouse_for_Vim_in_an_xterm
   vim.opt.mouse = 'a'
@@ -522,7 +487,7 @@ function F.options()
   vim.opt.termguicolors = true
 end
 
-function F.shoval()
+function M.shoval()
   -- shoves all those files into three directories, rather than individual local project directories
   -- ref: https://sts10.github.io/2016/02/13/best-of-my-vimrc.html
 
@@ -542,12 +507,12 @@ function F.shoval()
   vim.opt.undoreload = 1000
 end
 
-function F.init()
-  F.augroups()
-  F.keymappings()
-  F.options()
-  F.shoval()
-  require('packer').startup(setup_packer)
+function M.init()
+  M.augroups()
+  M.keymappings()
+  M.options()
+  M.shoval()
+  require('packer').startup(M.setup_packer)
 end
 
-F.init()
+M.init()
