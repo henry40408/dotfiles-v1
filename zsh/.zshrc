@@ -367,7 +367,6 @@ setup() {
     install-asdf-plugins
     install-oh-my-zsh
     install-plugins
-    install-lunar-vim
 }
 
 function() {
