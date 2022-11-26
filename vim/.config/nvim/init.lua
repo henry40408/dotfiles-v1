@@ -1,5 +1,9 @@
 local M = {}
 
+function M.config_autopairs()
+  require('nvim-autopairs').setup()
+end
+
 function M.config_base16vim()
   vim.cmd([[colorscheme base16-irblack]])
 end
@@ -396,6 +400,8 @@ function M.use_neovim_plugins(use)
   })
   -- Neovim plugin to preview the contents of the registers
   use({ 'tversteeg/registers.nvim', commit = 'f354159' })
+  -- autopairs for neovim written by lua
+  use({ 'windwp/nvim-autopairs', commit = '4fc96c8', config = M.config_autopairs })
   -- Make Vim handle line and column numbers in file names with a minimum of fuss
   use({ 'wsdjeg/vim-fetch', commit = '0a6ab17' })
 end
