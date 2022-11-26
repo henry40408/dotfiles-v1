@@ -69,6 +69,10 @@ def check_version(plugin, versions):
         print(f'{plugin}: {bcolors.WARNING}no latest version{bcolors.ENDC}')
         return
 
+    for version in versions:
+        if version not in newer_versions:
+            print(f'{plugin}: {bcolors.WARNING}{version} not found{bcolors.ENDC}')
+
     latest_version = newer_versions[-1]
     if latest_version in versions:
         print(f'{plugin}: {bcolors.OKGREEN}up-to-date{bcolors.ENDC}')
