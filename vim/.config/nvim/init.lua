@@ -165,12 +165,6 @@ end
 function M.config_lualine()
   local window_width_limit = 100
 
-  -- https://github.com/LunarVim/LunarVim/blob/4d03f65caece1d2f7a25258fe4f37b189be2c6e9/lua/lvim/core/lualine/colors.lua
-  local colors = {
-    green = '#98be65',
-    red = '#ec5f67',
-  }
-
   -- https://github.com/LunarVim/LunarVim/blob/4d03f65caece1d2f7a25258fe4f37b189be2c6e9/lua/lvim/core/lualine/conditions.lua
   local conditions = {
     hide_in_width = function()
@@ -223,7 +217,7 @@ function M.config_lualine()
       color = function()
         local buf = vim.api.nvim_get_current_buf()
         local ts = vim.treesitter.highlighter.active[buf]
-        return { fg = ts and not vim.tbl_isempty(ts) and colors.green or colors.red }
+        return { fg = ts and not vim.tbl_isempty(ts) and 'green' or 'red' }
       end,
       cond = conditions.hide_in_width,
     },
@@ -534,7 +528,7 @@ function M.options()
   vim.opt.cursorline = true
   vim.opt.number = true
   -- https://github.com/neovim/neovim/issues/18160
-  vim.cmd([[highlight CursorLine guibg=#111111]])
+  vim.api.nvim_set_hl(0, 'CursorLine', { bg = 'lightgrey' })
 
   -- By setting the option 'hidden', you can load a buffer in a window that currently has a modified buffer
   -- http://vimdoc.sourceforge.net/htmldoc/options.html#'hidden'
