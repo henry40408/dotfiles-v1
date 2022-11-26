@@ -87,6 +87,11 @@ function M.config_gitsigns()
   })
 end
 
+function M.config_illuminate()
+  require('illuminate').configure()
+  vim.api.nvim_set_hl(0, 'IlluminatedWordText', { bg = 'darkblue' })
+end
+
 function M.config_indent_blankline()
   require('indent_blankline').setup({
     show_current_context = true,
@@ -347,6 +352,8 @@ function M.use_vim_plugins(use)
 end
 
 function M.use_neovim_plugins(use)
+  -- illuminate.vim - (Neo)Vim plugin for automatically highlighting other uses of the word under the cursor using either LSP, Tree-sitter, or regex matching.
+  use({ 'RRethy/vim-illuminate', commit = 'a6d0b28', config = M.config_illuminate })
   -- A neovim lua plugin to help easily manage multiple terminal windows
   use({ 'akinsho/toggleterm.nvim', commit = 'c525442', config = M.config_toggleterm })
   -- WhichKey is a lua plugin for Neovim 0.5 that displays a popup with possible key bindings of the command you started typing
