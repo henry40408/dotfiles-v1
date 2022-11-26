@@ -1,4 +1,13 @@
+local status_ok, impatient = pcall(require, "impatient")
+if status_ok then
+  impatient.enable_profile()
+end
+
 local M = {}
+
+function M.config_autopairs()
+  require('nvim-autopairs').setup()
+end
 
 function M.config_base16vim()
   vim.cmd([[colorscheme base16-irblack]])
@@ -83,6 +92,11 @@ function M.config_gitsigns()
   })
 end
 
+function M.config_illuminate()
+  require('illuminate').configure()
+  vim.api.nvim_set_hl(0, 'IlluminatedWordText', { bg = 'darkblue' })
+end
+
 function M.config_indent_blankline()
   require('indent_blankline').setup({
     show_current_context = true,
@@ -161,12 +175,6 @@ end
 function M.config_lualine()
   local window_width_limit = 100
 
-  -- https://github.com/LunarVim/LunarVim/blob/4d03f65caece1d2f7a25258fe4f37b189be2c6e9/lua/lvim/core/lualine/colors.lua
-  local colors = {
-    green = '#98be65',
-    red = '#ec5f67',
-  }
-
   -- https://github.com/LunarVim/LunarVim/blob/4d03f65caece1d2f7a25258fe4f37b189be2c6e9/lua/lvim/core/lualine/conditions.lua
   local conditions = {
     hide_in_width = function()
@@ -219,7 +227,7 @@ function M.config_lualine()
       color = function()
         local buf = vim.api.nvim_get_current_buf()
         local ts = vim.treesitter.highlighter.active[buf]
-        return { fg = ts and not vim.tbl_isempty(ts) and colors.green or colors.red }
+        return { fg = ts and not vim.tbl_isempty(ts) and 'green' or 'red' }
       end,
       cond = conditions.hide_in_width,
     },
@@ -349,6 +357,8 @@ function M.use_vim_plugins(use)
 end
 
 function M.use_neovim_plugins(use)
+  -- illuminate.vim - (Neo)Vim plugin for automatically highlighting other uses of the word under the cursor using either LSP, Tree-sitter, or regex matching.
+  use({ 'RRethy/vim-illuminate', commit = 'a6d0b28', config = M.config_illuminate })
   -- A neovim lua plugin to help easily manage multiple terminal windows
   use({ 'akinsho/toggleterm.nvim', commit = 'c525442', config = M.config_toggleterm })
   -- WhichKey is a lua plugin for Neovim 0.5 that displays a popup with possible key bindings of the command you started typing
@@ -368,6 +378,8 @@ function M.use_neovim_plugins(use)
     requires = { 'nvim-lua/plenary.nvim' },
     config = M.config_gitsigns,
   })
+  -- Improve startup time for Neovim
+  use({ 'lewis6991/impatient.nvim', commit = 'd3dd30f' })
   -- Indent guides for Neovim
   use({
     'lukas-reineke/indent-blankline.nvim',
@@ -396,6 +408,8 @@ function M.use_neovim_plugins(use)
   })
   -- Neovim plugin to preview the contents of the registers
   use({ 'tversteeg/registers.nvim', commit = 'f354159' })
+  -- autopairs for neovim written by lua
+  use({ 'windwp/nvim-autopairs', commit = '4fc96c8', config = M.config_autopairs })
   -- Make Vim handle line and column numbers in file names with a minimum of fuss
   use({ 'wsdjeg/vim-fetch', commit = '0a6ab17' })
 end
@@ -408,7 +422,12 @@ function M.use_telescope_plugins(use)
     requires = { 'nvim-lua/plenary.nvim' },
     config = M.config_telescope,
   })
-  use({ 'nvim-telescope/telescope-fzf-native.nvim', commit = '2330a7e', run = 'make' })
+  use({
+    'nvim-telescope/telescope-fzf-native.nvim',
+    commit = '2330a7e',
+    requires = { 'nvim-telescope/telescope.nvim' },
+    run = 'make',
+  })
 end
 
 function M.use_lsp_plugins(use)
@@ -433,7 +452,12 @@ function M.use_lsp_plugins(use)
   -- Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.
   use({ 'williamboman/mason.nvim', commit = 'd85d71e', config = M.config_mason })
   -- Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim. Strongly recommended for Windows users.
-  use({ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d', config = M.config_mason_lspconfig })
+  use({
+    'williamboman/mason-lspconfig.nvim',
+    commit = 'a910b4d',
+    require = { 'williamboman/mason.nvim' },
+    config = M.config_mason_lspconfig
+  })
 end
 
 -- https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua
@@ -518,7 +542,7 @@ function M.options()
   vim.opt.cursorline = true
   vim.opt.number = true
   -- https://github.com/neovim/neovim/issues/18160
-  vim.cmd([[highlight CursorLine guibg=#111111]])
+  vim.api.nvim_set_hl(0, 'CursorLine', { bg = 'lightgrey' })
 
   -- By setting the option 'hidden', you can load a buffer in a window that currently has a modified buffer
   -- http://vimdoc.sourceforge.net/htmldoc/options.html#'hidden'
@@ -587,3 +611,5 @@ function M.init()
 end
 
 M.init()
+
+-- vim: set ts=2 sw=2:
