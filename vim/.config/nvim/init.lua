@@ -414,7 +414,12 @@ function M.use_telescope_plugins(use)
     requires = { 'nvim-lua/plenary.nvim' },
     config = M.config_telescope,
   })
-  use({ 'nvim-telescope/telescope-fzf-native.nvim', commit = '2330a7e', run = 'make' })
+  use({
+    'nvim-telescope/telescope-fzf-native.nvim',
+    commit = '2330a7e',
+    requires = { 'nvim-telescope/telescope.nvim' },
+    run = 'make',
+  })
 end
 
 function M.use_lsp_plugins(use)
@@ -439,7 +444,12 @@ function M.use_lsp_plugins(use)
   -- Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.
   use({ 'williamboman/mason.nvim', commit = 'd85d71e', config = M.config_mason })
   -- Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim. Strongly recommended for Windows users.
-  use({ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d', config = M.config_mason_lspconfig })
+  use({
+    'williamboman/mason-lspconfig.nvim',
+    commit = 'a910b4d',
+    require = { 'williamboman/mason.nvim' },
+    config = M.config_mason_lspconfig
+  })
 end
 
 -- https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua
@@ -593,3 +603,5 @@ function M.init()
 end
 
 M.init()
+
+-- vim: set ts=2 sw=2:
