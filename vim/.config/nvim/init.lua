@@ -8,12 +8,12 @@ function M.config_comment()
   require('Comment').setup()
 
   local opts = { silent = true }
-  vim.keymap.set('n', '<leader>/', '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>', opts)
-  vim.keymap.set('x', '<leader>/', '<ESC><CMD>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>')
+  vim.keymap.set('n', '<leader>/', [[<cmd>lua require('Comment.api').toggle.linewise.current()<CR>]], opts)
+  vim.keymap.set('x', '<leader>/', [[<ESC><CMD>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>]])
 end
 
 function M.config_cmp()
-  -- ref: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
+  -- https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
   local luasnip = require('luasnip')
   local cmp = require('cmp')
   cmp.setup({
@@ -85,19 +85,11 @@ end
 
 function M.config_indent_blankline()
   require('indent_blankline').setup({
-    char = '',
-    char_highlight_list = {
-      'IndentBlanklineIndent1',
-      'IndentBlanklineIndent2',
-    },
-    space_char_highlight_list = {
-      'IndentBlanklineIndent1',
-      'IndentBlanklineIndent2',
-    },
-    show_trailing_blankline_indent = false,
+    show_current_context = true,
+    show_current_context_start = true,
+    show_end_of_line = true,
+    space_char_blankline = ' ',
   })
-  vim.cmd([[highlight IndentBlanklineIndent1 guibg=#121212 gui=nocombine]])
-  vim.cmd([[highlight IndentBlanklineIndent2 guibg=#212121 gui=nocombine]])
 end
 
 function M.config_leap()
@@ -147,7 +139,7 @@ function M.config_lsp()
     }
   })
 
-  -- ref: https://sharksforarms.dev/posts/neovim-rust/
+  -- https://github.com/LunarVim/nvim-basic-ide/blob/39022efc787978c451ee5324888f240c142f6ef3/lua/user/lsp/handlers.lua#L54-L72
   local opts = { noremap = true, silent = true }
   vim.keymap.set('n', '<leader>lI', '<cmd>LspInstallInfo<cr>', opts)
   vim.keymap.set('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
@@ -167,27 +159,92 @@ function M.config_lsp()
 end
 
 function M.config_lualine()
+  local window_width_limit = 100
+
+  -- https://github.com/LunarVim/LunarVim/blob/4d03f65caece1d2f7a25258fe4f37b189be2c6e9/lua/lvim/core/lualine/colors.lua
+  local colors = {
+    green = '#98be65',
+    red = '#ec5f67',
+  }
+
+  -- https://github.com/LunarVim/LunarVim/blob/4d03f65caece1d2f7a25258fe4f37b189be2c6e9/lua/lvim/core/lualine/conditions.lua
+  local conditions = {
+    hide_in_width = function()
+      return vim.o.columns > window_width_limit
+    end,
+  }
+
+  local components = {
+    -- https://github.com/LunarVim/LunarVim/blob/30c65cfd74756954779f3ea9d232938e642bc07f/lua/lvim/core/lualine/components.lua#L113-L162
+    lsp = {
+      function(msg)
+        msg = msg or 'LS inactive'
+        local buf_clients = vim.lsp.buf_get_clients()
+        if next(buf_clients) == nil then
+          -- TODO: clean up this if statement
+          if type(msg) == 'boolean' or #msg == 0 then
+            return 'LS inactive'
+          end
+          return msg
+        end
+        local buf_client_names = {}
+        for _, client in pairs(buf_clients) do
+          table.insert(buf_client_names, client.name)
+        end
+        local unique_client_names = vim.fn.uniq(buf_client_names)
+        return string.format('[%s]', table.concat(unique_client_names, ','))
+      end,
+      color = { gui = 'bold' },
+      cond = conditions.hide_in_width,
+    },
+    -- https://github.com/LunarVim/LunarVim/blob/30c65cfd74756954779f3ea9d232938e642bc07f/lua/lvim/core/lualine/components.lua#L187-L199
+    scrollbar = {
+      function()
+        local current_line = vim.fn.line '.'
+        local total_lines = vim.fn.line '$'
+        local chars = { '__', '▁▁', '▂▂', '▃▃', '▄▄', '▅▅', '▆▆', '▇▇', '██' }
+        local line_ratio = current_line / total_lines
+        local index = math.ceil(line_ratio * #chars)
+        return chars[index]
+      end,
+      padding = { left = 0, right = 0 },
+      color = 'SLProgress',
+      cond = nil,
+    },
+    -- https://github.com/LunarVim/LunarVim/blob/57c159fe3c4aec49aeb5a4df78275e7092fc21fa/lua/lvim/core/lualine/components.lua#L83-L93
+    treesitter = {
+      function()
+        return ''
+      end,
+      color = function()
+        local buf = vim.api.nvim_get_current_buf()
+        local ts = vim.treesitter.highlighter.active[buf]
+        return { fg = ts and not vim.tbl_isempty(ts) and colors.green or colors.red }
+      end,
+      cond = conditions.hide_in_width,
+    },
+  }
+
   require('lualine').setup({
     options = { theme = 'onedark', component_separators = '', section_separators = '' },
     sections = {
       lualine_a = { 'mode' },
-      lualine_b = {
-        'branch',
-        { 'diff' },
-      },
-      lualine_c = { 'filename' },
+      lualine_b = { 'branch' },
+      lualine_c = { 'diff' },
       lualine_x = {
         { 'diagnostics', sources = { 'nvim_diagnostic' } },
-        { 'fileformat' },
+        components.treesitter,
+        components.lsp,
+        'fileformat',
         'filetype',
       },
-      lualine_y = { 'progess' },
-      lualine_z = { 'location' },
+      lualine_y = { 'location' },
+      lualine_z = {
+        'progess',
+        components.scrollbar,
+      },
     },
-    inactive_sections = {
-      lualine_c = { { 'filename', path = 1 } },
-      lualine_x = { 'location' },
-    },
+    inactive_sections = {},
     tabline = {
       lualine_a = {
         { 'buffers', mode = 2 },
@@ -223,7 +280,7 @@ function M.config_telescope()
       layout_config = {
         horizontal = {
           preview_width = 0.6,
-          width = 0.99,
+          width = 0.8,
         },
       },
     },
@@ -250,7 +307,7 @@ end
 
 function M.config_treesitter()
   require('nvim-treesitter.configs').setup({
-    ensure_installed = { 'lua', 'rust' },
+    ensure_installed = { 'lua', 'python', 'rust' },
     highlight = { enable = true },
     incremental_selection = { enable = true },
     indent = { enabled = true },
@@ -276,7 +333,7 @@ end
 
 function M.use_vim_plugins(use)
   -- Base16 for Vim
-  use({ 'chriskempson/base16-vim', commit = '6191622', config = M.config_base16vim })
+  use({ 'chriskempson/base16-vim', commit = '6191622' })
   -- Rainbow Parentheses Improved, shorter code, no level limit, smooth and fast, powerful configuration
   use({ 'luochen1990/rainbow', commit = 'c18071e', setup = M.setup_rainbow })
   -- Better whitespace highlighting for Vim
@@ -379,91 +436,105 @@ function M.use_lsp_plugins(use)
   use({ 'williamboman/mason-lspconfig.nvim', commit = 'a910b4d', config = M.config_mason_lspconfig })
 end
 
--- ref: https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua
+-- https://github.com/nvim-lua/kickstart.nvim/blob/fd7f05d872092673ef6a883f72edbf859d268a2e/init.lua
 function M.setup_packer(use)
   -- A use-package inspired plugin manager for Neovim
   use({ 'wbthomason/packer.nvim', commit = '145716' })
   M.use_vim_plugins(use)
   M.use_neovim_plugins(use)
+  M.config_base16vim()
   M.use_telescope_plugins(use)
   M.use_lsp_plugins(use)
 end
 
 function M.augroups()
   -- Treat words with dash as a word in Vim
-  -- ref: https://til.hashrocket.com/posts/t8osyzywau-treat-words-with-dash-as-a-word-in-vim
-  local chg = vim.api.nvim_create_augroup('CssHtmlGroup', { clear = true })
+  -- https://til.hashrocket.com/posts/t8osyzywau-treat-words-with-dash-as-a-word-in-vim
+  local css_html_group = vim.api.nvim_create_augroup('CssHtmlGroup', { clear = true })
   vim.api.nvim_create_autocmd('filetype', {
     pattern = 'css,html',
-    group = chg,
+    group = css_html_group,
     command = 'setlocal iskeyword+=-',
+  })
+
+  -- https://github.com/ntpeters/vim-better-whitespace/issues/158
+  local vimrc_group = vim.api.nvim_create_augroup('vimrc', { clear = true })
+  vim.api.nvim_create_autocmd('TermOpen', {
+    pattern = '*',
+    group = vimrc_group,
+    command = 'DisableWhitespace',
   })
 end
 
 function M.keymappings()
   -- Map semicolon to colon
-  -- ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
+  -- https://vim.fandom.com/wiki/Map_semicolon_to_colon
   vim.keymap.set('n', ';', ':', {})
   vim.keymap.set('v', ';', ':', {})
 
   -- Retain the visual selection after having pressed > or <
-  -- ref: https://vim.fandom.com/wiki/Shifting_blocks_visually#Mappings
+  -- https://vim.fandom.com/wiki/Shifting_blocks_visually#Mappings
   vim.keymap.set('v', '>', '>gv', { noremap = true })
   vim.keymap.set('v', '<', '<gv', { noremap = true })
 
-  -- ref: https://github.com/LunarVim/nvim-basic-ide/blob/fa51853c0890bf9992b6fc880025853772ecbdb0/lua/user/keymaps.lua
+  -- https://github.com/LunarVim/nvim-basic-ide/blob/fa51853c0890bf9992b6fc880025853772ecbdb0/lua/user/keymaps.lua
   local opts = { silent = true }
   vim.keymap.set('', '<Space>', '<Nop>', opts)
   vim.g.mapleader = ' '
 
   vim.keymap.set('n', '<leader>h', '<cmd>nohls<CR>', opts)
   vim.keymap.set('n', '<leader>ve', '<cmd>edit $MYVIMRC<CR>', opts)
-  vim.keymap.set('n', '<leader>se', '<cmd>source $MYVIMRC<CR><cmd>PackerCompile<CR><cmd>echo $MYVIMRC "sourced"<CR>',
-    opts)
+
+  local cmd = [[
+    <cmd>source $MYVIMRC<CR>
+    <cmd>PackerCompile<CR>
+    <cmd>echo $MYVIMRC 'sourced'<CR>
+    ]]
+  vim.keymap.set('n', '<leader>vs', cmd, opts)
 end
 
 function M.options()
   -- Using the mouse for Vim in an xterm
-  -- ref: https://vim.fandom.com/wiki/Using_the_mouse_for_Vim_in_an_xterm
+  -- https://vim.fandom.com/wiki/Using_the_mouse_for_Vim_in_an_xterm
   vim.opt.mouse = 'a'
 
   -- Result in spaces being used for all indentation
-  -- ref: https://vim.fandom.com/wiki/Indenting_source_code
+  -- https://vim.fandom.com/wiki/Indenting_source_code
   vim.opt.expandtab = true
   vim.opt.shiftwidth = 4
   vim.opt.tabstop = 4
 
   -- Does nothing more than copy the indentation from the previous line, when starting a new line
-  -- ref: https://vim.fandom.com/wiki/Indenting_source_code
+  -- https://vim.fandom.com/wiki/Indenting_source_code
   vim.opt.autoindent = true
 
   -- Make backspace work like most other programs
-  -- ref: https://vim.fandom.com/wiki/Backspace_and_delete_problems#Backspace_key_won.27t_move_from_current_line
+  -- https://vim.fandom.com/wiki/Backspace_and_delete_problems#Backspace_key_won.27t_move_from_current_line
   vim.opt.backspace = 'indent,eol,start'
 
   -- Highlighting that moves with the cursor
-  -- ref: https://vim.fandom.com/wiki/Highlight_current_line
+  -- https://vim.fandom.com/wiki/Highlight_current_line
   vim.opt.laststatus = 2
   vim.opt.cursorline = true
   vim.opt.number = true
-  -- ref: https://github.com/neovim/neovim/issues/18160
+  -- https://github.com/neovim/neovim/issues/18160
   vim.cmd([[highlight CursorLine guibg=#111111]])
 
   -- By setting the option 'hidden', you can load a buffer in a window that currently has a modified buffer
-  -- ref: http://vimdoc.sourceforge.net/htmldoc/options.html#'hidden'
+  -- http://vimdoc.sourceforge.net/htmldoc/options.html#'hidden'
   vim.opt.hidden = true
 
   -- Case sensitivity
-  -- ref: https://vim.fandom.com/wiki/Searching#Case_sensitivity
+  -- https://vim.fandom.com/wiki/Searching#Case_sensitivity
   vim.opt.ignorecase = true
   vim.opt.smartcase = true
 
   -- Show the next match while entering a search
-  -- ref: https://vim.fandom.com/wiki/Searching#Show_the_next_match_while_entering_a_search
+  -- https://vim.fandom.com/wiki/Searching#Show_the_next_match_while_entering_a_search
   vim.opt.incsearch = true
 
   -- What do you use for your listchars?
-  -- ref: https://www.reddit.com/r/vim/comments/4hoa6e/comment/d2ra7qh/
+  -- https://www.reddit.com/r/vim/comments/4hoa6e/comment/d2ra7qh/
   vim.opt.list = true
   vim.opt.listchars = {
     eol = '⤶',
@@ -475,21 +546,21 @@ function M.options()
   }
 
   -- Vim highlights the remaining matches with the Search highlight group
-  -- ref: https://vim.fandom.com/wiki/Search_and_replace#Basic_search_and_replace
+  -- https://vim.fandom.com/wiki/Search_and_replace#Basic_search_and_replace
   vim.opt.hlsearch = true
 
   -- Does not change the text but simply displays it on multiple lines
-  -- ref: https://vim.fandom.com/wiki/Automatic_word_wrapping
+  -- https://vim.fandom.com/wiki/Automatic_word_wrapping
   vim.opt.wrap = true
 
   -- With custom background highlight
-  -- ref: https://github.com/lukas-reineke/indent-blankline.nvim/tree/8567ac8ccd19ee41a6ec55bf044884799fa3f56b
+  -- https://github.com/lukas-reineke/indent-blankline.nvim/tree/8567ac8ccd19ee41a6ec55bf044884799fa3f56b
   vim.opt.termguicolors = true
 end
 
 function M.shoval()
   -- shoves all those files into three directories, rather than individual local project directories
-  -- ref: https://sts10.github.io/2016/02/13/best-of-my-vimrc.html
+  -- https://sts10.github.io/2016/02/13/best-of-my-vimrc.html
 
   local home = os.getenv('HOME')
 
