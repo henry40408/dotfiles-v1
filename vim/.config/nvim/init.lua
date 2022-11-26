@@ -1,3 +1,8 @@
+local status_ok, impatient = pcall(require, "impatient")
+if status_ok then
+  impatient.enable_profile()
+end
+
 local M = {}
 
 function M.config_autopairs()
@@ -373,6 +378,8 @@ function M.use_neovim_plugins(use)
     requires = { 'nvim-lua/plenary.nvim' },
     config = M.config_gitsigns,
   })
+  -- Improve startup time for Neovim
+  use({ 'lewis6991/impatient.nvim', commit = 'd3dd30f' })
   -- Indent guides for Neovim
   use({
     'lukas-reineke/indent-blankline.nvim',
