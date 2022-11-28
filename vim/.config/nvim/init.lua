@@ -119,6 +119,7 @@ function M.config_lsp()
   lsp.bashls.setup({ capabilities = capabilities })
   lsp.clangd.setup({ capabilities = capabilities })
   lsp.pylsp.setup({ capabilities = capabilities })
+  lsp.taplo.setup({ capabilities = capabilities })
   lsp.tsserver.setup({ capabilities = capabilities })
 
   lsp.rust_analyzer.setup({
