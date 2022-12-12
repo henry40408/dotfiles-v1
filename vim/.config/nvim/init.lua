@@ -117,10 +117,13 @@ function M.config_lsp()
   local lsp = require('lspconfig')
 
   lsp.bashls.setup({ capabilities = capabilities })
+  lsp.eslint.setup({ capabilities = capabilities })
   lsp.clangd.setup({ capabilities = capabilities })
+  lsp.jsonls.setup({ capabilities = capabilities })
   lsp.pylsp.setup({ capabilities = capabilities })
   lsp.taplo.setup({ capabilities = capabilities })
   lsp.tsserver.setup({ capabilities = capabilities })
+  lsp.yamlls.setup({ capabilities = capabilities })
 
   lsp.rust_analyzer.setup({
     capabilities = capabilities,
