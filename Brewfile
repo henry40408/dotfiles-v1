@@ -24,7 +24,6 @@ brew "diff-so-fancy"
 brew "direnv"
 brew "gnutls"
 brew "ffmpeg"
-brew "fish"
 brew "fzf"
 brew "git"
 brew "git-extras"
@@ -66,7 +65,6 @@ brew "weihanglo/sfz/sfz"
 cask "1password"
 cask "alfred"
 cask "appcleaner"
-cask "backuploupe"
 cask "chromium"
 cask "daisydisk"
 cask "discord"
@@ -81,7 +79,6 @@ cask "keyboardcleantool"
 cask "monitorcontrol"
 cask "moom"
 cask "parallels"
-cask "pocket-casts"
 cask "protonvpn"
 cask "rancher"
 cask "signal"
@@ -91,10 +88,7 @@ cask "steam"
 cask "syncthing"
 cask "telegram"
 cask "visual-studio-code"
-mas "Affinity Designer", id: 824171161
-mas "Affinity Photo", id: 824183456
 mas "Amphetamine", id: 937984704
-mas "Bitwarden", id: 1352778147
 mas "DevCleaner", id: 1388020431
 mas "Disk Speed Test", id: 425264550
 mas "Drafts", id: 1435957248
