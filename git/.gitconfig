@@ -5,7 +5,7 @@
 [commit]
   gpgsign = yes
 [core]
-  editor = nvim
+  editor = lvim
   pager = delta
 [interactive]
   diffFilter = delta --color-only
