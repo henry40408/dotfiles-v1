@@ -62,3 +62,8 @@ lvim.plugins = {
 -- ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
 vim.keymap.set("n", ";", ":", {})
 vim.keymap.set("v", ";", ":", {})
+
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  { command = "eslint", filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" } }
+}
