@@ -14,6 +14,7 @@ ASDF_REF=v0.9.0
 ASDF_PLUGINS_REF=5f166d03e295abb3230a94ad619404e8cb30800c
 LUNAR_VIM_REF=1.2.0
 OMZ_REF=b3999a4b156185b617a5608317497399f88dc8fe
+SPACEMACS_REF=41785538571625de094bb9e34769fc1eaedb6e73
 VIM_PACKER_REF=14571611c06e757f4f5fe46b82657417645c74dc
 
 # Set name of the theme to load --- if set to "random", it will
@@ -299,6 +300,10 @@ install-lunar-vim() {
     lunarvim_base_dir="${LUNARVIM_BASE_DIR:-"$lunarvim_runtime_dir/lvim"}"
 
     git-clone-checkout "https://github.com/LunarVim/LunarVim" "$lunarvim_base_dir" "$LUNAR_VIM_REF"
+}
+
+install-spacemacs() {
+    git-clone-checkout "https://github.com/syl20bnr/spacemacs" "$HOME/.emacs.d" "$SPACEMACS_REF"
 }
 
 install-plugins() {
