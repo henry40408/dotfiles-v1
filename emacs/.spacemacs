@@ -42,6 +42,7 @@ This function should only modify configuration layer settings."
      better-defaults
      emacs-lisp
      (git :variables git-enable-magit-delta-plugin t)
+     go
      helm
      lsp
      markdown
@@ -52,8 +53,9 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
      spell-checking
      syntax-checking
-     version-control
-     treemacs)
+     tabs
+     treemacs
+     version-control)
 
 
    ;; List of additional packages that will be installed without being wrapped
