@@ -14,7 +14,7 @@ ASDF_REF=v0.9.0
 ASDF_PLUGINS_REF=5f166d03e295abb3230a94ad619404e8cb30800c
 OMZ_REF=b3999a4b156185b617a5608317497399f88dc8fe
 SPACEMACS_REF=41785538571625de094bb9e34769fc1eaedb6e73
-SPACEVIM_REF=2.1.0
+SPACEVIM_REF=v2.1.0
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -287,6 +287,7 @@ install-spacemacs() {
 install-spacevim() {
     git-clone-checkout "https://github.com/SpaceVim/SpaceVim" \
         "$HOME/.Spacevim" "$SPACEVIM_REF"
+    ln -s "$HOME/.Spacevim" "$HOME/.vim"
 }
 
 install-plugins() {
