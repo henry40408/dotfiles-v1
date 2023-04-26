@@ -48,6 +48,9 @@ This function should only modify configuration layer settings."
      markdown
      multiple-cursors
      org
+     (python :variables
+             python-backend 'lsp
+             python-formatter 'yapf)
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
