@@ -2,94 +2,147 @@
 
 import logging
 import os
+import pkg_resources
 import re
 import subprocess
+import sys
 import threading
+import unittest
 
 from optparse import OptionParser
-
-ignore_patterns = {
-    'consul': lambda v: re.search(r'-(alpha|beta|rc|)|\+ent', v),
-    'flutter': lambda v: re.search(r'-dev|pre', v),
-    'golang': lambda v: re.search(r'beta|rc', v),
-    'helm': lambda v: re.search(r'rc', v),
-    'kubectl': lambda v: re.search(r'alpha|beta|rc', v),
-    'neovim': lambda v: re.search(r'nightly|stable', v),
-    'nodejs': lambda v: re.search(r'lts', v),
-    'python': lambda v: not re.match(r'^\d', v) or re.search(r'a|b|dev|rc', v),
-    'ruby': lambda v: not re.match(r'^\d', v) or re.search(r'-dev|-preview', v),
-    'terraform': lambda v: re.search(r'alpha|beta|rc', v),
-    'tmux': lambda v: re.search(r'rc|to_merge', v),
-}
+from typing import List, Union
 
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+class TestCase(unittest.TestCase):
+
+    def test_semver_tmux_version(self):
+        v = pkg_resources.parse_version('1.0.0')  # semantic version
+        self.assertEqual(str(v), '1.0.0')
+
+    def test_parse_tool_versions(self):
+        t = parse_tool_versions('bat 1.0.0')
+        self.assertEqual(len(t), 1)
+        self.assertEqual(t, [('bat', ['1.0.0'])])
+
+        t = parse_tool_versions('bat')
+        self.assertEqual(t, [('bat', [])])
+
+    def test_find_closest(self):
+        installed = ['1.0.0', '1.5.0', '2.0.0']
+        latest = '1.6.0'
+        closest = find_closest(installed, latest)
+        self.assertEqual(closest, '1.5.0')
+
+    def test_is_valid_version(self):
+        self.assertTrue(is_valid_version('1.0.0'))  # semantic version
+        self.assertFalse(is_valid_version('1.0.0-dev'))  # ruby
+        self.assertFalse(is_valid_version('1.0.0-preview3'))  # ruby
 
 
-def read_tool_versions():
+class Colors:
+    if os.environ.get('NO_COLOR', False):
+        HEADER = ''
+        OKBLUE = ''
+        OKCYAN = ''
+        OKGREEN = ''
+        WARNING = ''
+        FAIL = ''
+        ENDC = ''
+        BOLD = ''
+        UNDERLINE = ''
+    else:
+        HEADER = '\033[95m'
+        OKBLUE = '\033[94m'
+        OKCYAN = '\033[96m'
+        OKGREEN = '\033[92m'
+        WARNING = '\033[93m'
+        FAIL = '\033[91m'
+        ENDC = '\033[0m'
+        BOLD = '\033[1m'
+        UNDERLINE = '\033[4m'
+
+
+def is_valid_version(s: str) -> bool:
+    if not s:
+        return False
+    v = pkg_resources.parse_version(s)
+    return not v.is_devrelease and not v.is_prerelease and bool(v.release)
+
+
+def get_available_versions(tool: str):
+    sp = subprocess.Popen(['asdf', 'list', 'all', tool],
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE)
+    stdout = sp.communicate()[0]
+    return [
+        l.strip() for l in stdout.decode('utf-8').split('\n')
+        if is_valid_version(l.strip())
+    ]
+
+
+def parse_tool_versions(s: str):
     tuples = []
-    with open(os.path.expanduser('~/.tool-versions')) as f:
-        for line in f.readlines():
-            splited = re.split(r'\s+', line.strip())
-            plugin, versions = splited[0], splited[1:]
-            tuples.append((plugin, versions))
+    for l in s.split('\n'):
+        splitted = re.split(r'\s+', l.strip())
+        tool, versions = splitted[0], splitted[1:]
+        tuples.append((tool, versions))
     return tuples
 
 
-def check_version(plugin, versions):
-    logging.debug(f'check {plugin}')
+def find_closest(installed: List[str], latest: str) -> Union[None, str]:
+    if not installed[0]:
+        return None
 
-    sp = subprocess.Popen(['asdf', 'list', 'all', plugin],
-                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, _stderr = sp.communicate()
+    lv = pkg_resources.parse_version(latest)
+    cv = pkg_resources.parse_version(installed[0])
+    for i in installed:
+        iv = pkg_resources.parse_version(i)
+        if iv < lv and iv > cv:
+            cv = iv
+    return str(cv)
 
-    newer_versions = [line.strip() for line in stdout.decode(
-        'utf-8').split('\n') if line.strip()]
-    logging.debug(f'{plugin}: found {newer_versions}')
 
-    if plugin in ignore_patterns.keys():
-        fn = ignore_patterns[plugin]
+def check_version(tool, installed):
+    logging.debug(f'check {tool}')
 
-        ignored = [v for v in newer_versions if fn(v)]
-        logging.debug(f'{plugin}: ignore {ignored}')
+    available = get_available_versions(tool)
+    logging.debug(f'{tool}: found {available}')
 
-        newer_versions = [v for v in newer_versions if v not in ignored]
-        logging.debug(f'{plugin}: preserve {newer_versions}')
-
-    if not newer_versions:
-        print(f'{plugin}: {bcolors.WARNING}no latest version{bcolors.ENDC}')
+    if not available:
+        print(f'{tool} {Colors.WARNING}no versions found{Colors.ENDC}',
+              file=sys.stderr)
         return
 
-    for version in versions:
-        if version not in newer_versions:
-            print(f'{plugin}: {bcolors.WARNING}{version} not found{bcolors.ENDC}')
-
-    latest_version = newer_versions[-1]
-    if latest_version in versions:
-        print(f'{plugin}: {bcolors.OKGREEN}up-to-date{bcolors.ENDC}')
+    latest_version = available[-1]
+    s = f'{tool}'
+    if latest_version in installed:
+        for i in installed:
+            s += f' {Colors.OKGREEN}{i}{Colors.ENDC}'
     else:
-        vs = ",".join(versions)
-        print(f'{plugin}: {bcolors.FAIL}{latest_version} <- {vs}{bcolors.ENDC}')
+        closest = find_closest(installed, latest_version)
+        for i in installed:
+            if i == closest:
+                s += f' {Colors.WARNING}{i}->{latest_version}{Colors.ENDC}'
+            else:
+                s += f' {i}'
+    print(s)
 
 
 def main():
     parser = OptionParser()
-    parser.add_option('-v', '--verbose', help='Verbose', action='store_true')
+    parser.add_option('-f', '--file', help='Path of .tool-versions')
+    parser.set_defaults(file=os.path.expanduser('~/.tool-versions'))
     (options, args) = parser.parse_args()
 
-    if options.verbose:
+    if os.environ.get('TEST', False):
+        unittest.main()
+        return
+
+    if os.environ.get('DEBUG', False):
         logging.basicConfig(level=logging.DEBUG)
 
-    tuples = read_tool_versions()
+    with open(options.file) as f:
+        tuples = parse_tool_versions(f.read().strip())
 
     # filter plugins if positional arguments are given
     if args:
@@ -98,8 +151,11 @@ def main():
     threads = []
 
     for t in tuples:
-        plugin, versions = t
-        th = threading.Thread(target=check_version, args=(plugin, versions,))
+        tool, versions = t
+        th = threading.Thread(target=check_version, args=(
+            tool,
+            versions,
+        ))
         th.start()
         threads.append(th)
 
