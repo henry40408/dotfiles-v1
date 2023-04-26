@@ -17,5 +17,5 @@ ruby 3.1.1 2.5.9 2.6.6
 rust 1.68.1 1.62.1
 terraform 1.4.2
 tflint 0.45.0
-tmux 3.3a
+tmux 3.3
 yarn 1.22.19
