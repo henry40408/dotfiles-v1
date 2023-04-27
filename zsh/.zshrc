@@ -12,9 +12,9 @@ export ZSH=$HOME/.oh-my-zsh
 # commits
 ASDF_REF=v0.9.0
 ASDF_PLUGINS_REF=5f166d03e295abb3230a94ad619404e8cb30800c
+LUNAR_VIM_REF=1.3.0
 OMZ_REF=b3999a4b156185b617a5608317497399f88dc8fe
 SPACEMACS_REF=41785538571625de094bb9e34769fc1eaedb6e73
-SPACEVIM_REF=v2.1.0
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -57,12 +57,10 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
-# Uncomment the following line to display red dots whilst waiting for
-# completion. You can also set it to another string to have that shown instead
-# of the default red dots.
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1
-# (see #5765)
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -144,15 +142,15 @@ tmux_plugins=(
 #     themes:romkatv/powerlevel10k:e1c52e0
 #
 # 1. "themes" or "plugins"
-# 2. clone romkatv/powerlevel10k.git themes/powerlevel10k
-# 3. checkout e1c52e0
+# 2. git clone https://github.com/romkatv/powerlevel10k.git to themes/powerlevel10k
+# 3. git checkout e1c52e0 in themes/powerlevel10k
 #
 # example #2:
 #     plugins:MichaelAquilina/zsh-you-should-use:773ae5f:you-should-use
 #
 # 1. "themes" or "plugins"
-# 2. clone MichaelAquilina/zsh-you-should-use.git to plugins/you-should-use
-# 3. checkout e1c52e0
+# 2. git clone https://github.com/MichaelAquilina/zsh-you-should-use.git to plugins/you-should-use
+# 3. git checkout e1c52e0 in plugins/you-should-use
 # 4. add alias "you-should-use" to plugins list instead
 zsh_plugins=(
     plugins:Aloxaf/fzf-tab:e85f76a
@@ -160,6 +158,7 @@ zsh_plugins=(
     plugins:MichaelAquilina/zsh-you-should-use:773ae5f:you-should-use
     plugins:chuwy/zsh-secrets:1d01c9d
     plugins:hlissner/zsh-autopair:9d003fc
+    # plugins:jreese/zsh-titles:b7d46d7:titles
     plugins:zsh-users/zsh-autosuggestions:a411ef3
     plugins:zsh-users/zsh-completions:20f3cd5
     plugins:zsh-users/zsh-syntax-highlighting:c7caf57
@@ -210,10 +209,9 @@ function() {
 }
 
 # Instant Prompt of powerlevel10k
-cache_path="${XDG_CACHE_HOME:-$HOME/.cache}"
-if [[ -r "$cache_path/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     # shellcheck source=/dev/null
-    source "$cache_path/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # powerlevel10k configuration must be loaded before oh my zsh
@@ -254,8 +252,7 @@ git-submodule-update() {
 }
 
 install-asdf() {
-    git-clone-checkout "https://github.com/asdf-vm/asdf.git" \
-        "$HOME/.asdf" "$ASDF_REF"
+    git-clone-checkout "https://github.com/asdf-vm/asdf.git" "$HOME/.asdf" "$ASDF_REF"
 }
 
 install-asdf-plugins() {
@@ -263,8 +260,7 @@ install-asdf-plugins() {
 
     asdf_plugins="$HOME/.asdf/plugins"
 
-    git-clone-checkout "https://github.com/henry40408/asdf-plugins.git" \
-        "$asdf_plugins" "$ASDF_PLUGINS_REF"
+    git-clone-checkout "https://github.com/henry40408/asdf-plugins.git" "$asdf_plugins" "$ASDF_PLUGINS_REF"
     git-submodule-update "$asdf_plugins"
 }
 
@@ -279,15 +275,34 @@ install-crates() {
     done
 }
 
-install-spacemacs() {
-    git-clone-checkout "https://github.com/syl20bnr/spacemacs" \
-        "$HOME/.emacs.d" "$SPACEMACS_REF"
+install-lunar-vim() {
+    local xdg_data_home
+    local xdg_cache_home
+    local xdg_config_home
+    xdg_data_home="${XDG_DATA_HOME:-"$HOME/.local/share"}"
+    xdg_cache_home="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+    xdg_config_home="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+
+    local lunarvim_runtime_dir
+    local lunarvim_config_dir
+    local lunarvim_cache_dir
+    lunarvim_runtime_dir="${LUNARVIM_RUNTIME_DIR:-"$xdg_data_home/lunarvim"}"
+    lunarvim_config_dir="${LUNARVIM_CONFIG_DIR:-"$xdg_config_home/lvim"}"
+    lunarvim_cache_dir="${LUNARVIM_CACHE_DIR:-"$xdg_cache_home/lvim"}"
+
+    mkdir -p "$lunarvim_runtime_dir"
+    mkdir -p "$lunarvim_config_dir"
+    mkdir -p "$lunarvim_cache_dir"
+
+    local lunarvim_base_dir
+    lunarvim_base_dir="${LUNARVIM_BASE_DIR:-"$lunarvim_runtime_dir/lvim"}"
+
+    git-clone-checkout "https://github.com/LunarVim/LunarVim" "$lunarvim_base_dir" "$LUNAR_VIM_REF"
 }
 
-install-spacevim() {
-    git-clone-checkout "https://github.com/SpaceVim/SpaceVim" \
-        "$HOME/.Spacevim" "$SPACEVIM_REF"
-    ln -s "$HOME/.Spacevim" "$HOME/.vim"
+install-spacemacs() {
+    git-clone-checkout "https://github.com/syl20bnr/spacemacs" "$HOME/.emacs.d" \
+        "$SPACEMACS_REF"
 }
 
 install-plugins() {
@@ -343,8 +358,7 @@ install-zsh-plugins() {
         ref="$(echo "$p" | awk -F: '{print $3}')"
         alt_basename="$(echo "$p" | awk -F: '{print $4}')"
 
-        # use alternative basename instead of basename
-        # if alternative basename is given
+        # use alternative basename instead of basename if alternative basename is given
         if [[ -z "$alt_basename" ]]; then
             basename="$(echo "$repo" | awk -F/ '{print $2}')"
         else
@@ -384,13 +398,10 @@ setup() {
 function() {
     # [[aliases]] https://remysharp.com/2018/08/23/cli-improved
     (which bat &> /dev/null) && alias cat="bat"
+    (which fzf &> /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
     (which lsd &> /dev/null) && alias ls="lsd"
     (which procs &> /dev/null) && alias ps="procs"
     (which zoxide &> /dev/null) && eval "$(zoxide init zsh)"
-
-    # [haskell]
-    # shellcheck source=/dev/null
-    [[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
 
     # [my] private configuration
     # shellcheck source=/dev/null
