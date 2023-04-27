@@ -2,13 +2,13 @@
 
 import logging
 import os
-import pkg_resources
 import re
 import subprocess
 import sys
 import threading
 import unittest
 
+from pkg_resources import parse_version
 from optparse import OptionParser
 from typing import List, Union
 
@@ -16,7 +16,7 @@ from typing import List, Union
 class TestCase(unittest.TestCase):
 
     def test_semver_tmux_version(self):
-        v = pkg_resources.parse_version('1.0.0')  # semantic version
+        v = parse_version('1.0.0')  # semantic version
         self.assertEqual(str(v), '1.0.0')
 
     def test_parse_tool_versions(self):
@@ -37,6 +37,20 @@ class TestCase(unittest.TestCase):
         self.assertTrue(is_valid_version('1.0.0'))  # semantic version
         self.assertFalse(is_valid_version('1.0.0-dev'))  # ruby
         self.assertFalse(is_valid_version('1.0.0-preview3'))  # ruby
+        self.assertFalse(is_valid_version('1.0.0+ent'))  # consul
+
+    def test_find_latest_version(self):
+        installed = ['0.5.0', '1.0.0']
+        available = ['0.5.0', '1.0.0', '1.0.1', '1.1.0', '2.0.0', '3.0.0']
+
+        v = find_latest_version(installed, available, 'patch')
+        self.assertEqual(v, '1.0.1')
+
+        v = find_latest_version(installed, available, 'minor')
+        self.assertEqual(v, '1.1.0')
+
+        v = find_latest_version(installed, available, 'major')
+        self.assertEqual(v, '3.0.0')
 
 
 class Colors:
@@ -62,10 +76,39 @@ class Colors:
         UNDERLINE = '\033[4m'
 
 
-def is_valid_version(s: str) -> bool:
-    if not s:
+def find_latest_version(installed: List[str], available: List[str],
+                        flag: str) -> Union[None, str]:
+    if not installed:
+        return None
+
+    installed_max = parse_version(installed[0])
+    for i in installed:
+        parsed = parse_version(i)
+        if parsed > installed_max:
+            installed_max = parsed
+
+    latest = installed_max
+    for a in available:
+        parsed = parse_version(a)
+        if parsed > latest:
+            if flag == 'major':
+                latest = parsed
+            elif flag == 'minor':
+                if parsed.major == latest.major:
+                    latest = parsed
+            else:  # patch
+                if parsed.major == latest.major and parsed.minor == latest.minor:
+                    latest = parsed
+
+    return str(latest)
+
+
+def is_valid_version(version: str) -> bool:
+    if not version:
         return False
-    v = pkg_resources.parse_version(s)
+    v = parse_version(version)
+    if v.local:  # consul = "+ent"
+        return False
     return not v.is_devrelease and not v.is_prerelease and bool(v.release)
 
 
@@ -75,15 +118,15 @@ def get_available_versions(tool: str):
                           stderr=subprocess.PIPE)
     stdout = sp.communicate()[0]
     return [
-        l.strip() for l in stdout.decode('utf-8').split('\n')
-        if is_valid_version(l.strip())
+        line.strip() for line in stdout.decode('utf-8').split('\n')
+        if is_valid_version(line.strip())
     ]
 
 
-def parse_tool_versions(s: str):
+def parse_tool_versions(content: str):
     tuples = []
-    for l in s.split('\n'):
-        splitted = re.split(r'\s+', l.strip())
+    for line in content.split('\n'):
+        splitted = re.split(r'\s+', line.strip())
         tool, versions = splitted[0], splitted[1:]
         tuples.append((tool, versions))
     return tuples
@@ -93,16 +136,16 @@ def find_closest(installed: List[str], latest: str) -> Union[None, str]:
     if not installed[0]:
         return None
 
-    lv = pkg_resources.parse_version(latest)
-    cv = pkg_resources.parse_version(installed[0])
+    p_latest = parse_version(latest)
+    p_current = parse_version(installed[0])
     for i in installed:
-        iv = pkg_resources.parse_version(i)
-        if iv < lv and iv > cv:
-            cv = iv
-    return str(cv)
+        p_installed = parse_version(i)
+        if p_installed < p_latest and p_installed > p_current:
+            p_current = p_installed
+    return str(p_current)
 
 
-def check_version(tool, installed):
+def check_version(tool: str, installed: List[str], granularity: str):
     logging.debug(f'check {tool}')
 
     available = get_available_versions(tool)
@@ -113,11 +156,19 @@ def check_version(tool, installed):
               file=sys.stderr)
         return
 
-    latest_version = available[-1]
+    latest_version = find_latest_version(installed, available, granularity)
+    if not latest_version:
+        print(f'{tool} {Colors.WARNING}no versions found{Colors.ENDC}',
+              file=sys.stderr)
+        return
+
     s = f'{tool}'
     if latest_version in installed:
         for i in installed:
-            s += f' {Colors.OKGREEN}{i}{Colors.ENDC}'
+            if i == latest_version:
+                s += f' {Colors.OKGREEN}{i}{Colors.ENDC}'
+            else:
+                s += f' {i}'
     else:
         closest = find_closest(installed, latest_version)
         for i in installed:
@@ -130,8 +181,16 @@ def check_version(tool, installed):
 
 def main():
     parser = OptionParser()
-    parser.add_option('-f', '--file', help='Path of .tool-versions')
-    parser.set_defaults(file=os.path.expanduser('~/.tool-versions'))
+    parser.add_option('-f',
+                      '--file',
+                      help='Path of .tool-versions',
+                      default=os.path.expanduser('~/.tool-versions'))
+    parser.add_option('-g',
+                      '--granularity',
+                      help='Suggest newer version on major, minor, or patch',
+                      default='patch',
+                      choices=['patch', 'minor', 'major'])
+    parser.set_defaults()
     (options, args) = parser.parse_args()
 
     if os.environ.get('TEST', False):
@@ -152,10 +211,8 @@ def main():
 
     for t in tuples:
         tool, versions = t
-        th = threading.Thread(target=check_version, args=(
-            tool,
-            versions,
-        ))
+        th = threading.Thread(target=check_version,
+                              args=(tool, versions, options.granularity))
         th.start()
         threads.append(th)
 
