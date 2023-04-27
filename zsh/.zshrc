@@ -108,8 +108,7 @@ plugins=(
 )
 
 # pip plugin
-# shellcheck disable=SC2034
-PIP_REQUIRE_VIRTUALENV=1
+export PIP_REQUIRE_VIRTUALENV=1
 
 # tmux plugins
 #
