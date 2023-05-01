@@ -170,6 +170,7 @@ crates=(
     cross:0.2.4
     du-dust:0.6.2
     git-delta:0.12.0
+    gping:1.8.0
     hyperfine:1.13.0
     license-generator:0.8.1
     lsd:0.20.1
@@ -399,6 +400,7 @@ function() {
     (which bat &> /dev/null) && alias cat="bat"
     (which fzf &> /dev/null) && alias preview="fzf --preview 'bat --color \"always\" {}'"
     (which lsd &> /dev/null) && alias ls="lsd"
+    (which ping &> /dev/null) && alias ping="gping"
     (which procs &> /dev/null) && alias ps="procs"
     (which zoxide &> /dev/null) && eval "$(zoxide init zsh)"
 
