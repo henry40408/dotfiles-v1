@@ -2,6 +2,7 @@
 
 import logging
 import os
+import queue
 import re
 import subprocess
 import sys
@@ -14,7 +15,6 @@ from typing import List, Union
 
 
 class TestCase(unittest.TestCase):
-
     def test_semver_tmux_version(self):
         v = parse_version('1.0.0')  # semantic version
         self.assertEqual(str(v), '1.0.0')
@@ -81,24 +81,24 @@ def find_latest_version(installed: List[str], available: List[str],
     if not installed:
         return None
 
-    installed_max = parse_version(installed[0])
+    im = parse_version(installed[0])  # installed max
     for i in installed:
-        parsed = parse_version(i)
-        if parsed > installed_max:
-            installed_max = parsed
+        p = parse_version(i)  # parsed
+        if p > im:
+            im = p
 
-    latest = installed_max
+    latest = im
     for a in available:
-        parsed = parse_version(a)
-        if parsed > latest:
+        p = parse_version(a)  # parsed
+        if p > latest:
             if flag == 'major':
-                latest = parsed
+                latest = p
             elif flag == 'minor':
-                if parsed.major == latest.major:
-                    latest = parsed
+                if p.major == latest.major:
+                    latest = p
             else:  # patch
-                if parsed.major == latest.major and parsed.minor == latest.minor:
-                    latest = parsed
+                if p.major == latest.major and p.minor == latest.minor:
+                    latest = p
 
     return str(latest)
 
@@ -145,7 +145,10 @@ def find_closest(installed: List[str], latest: str) -> Union[None, str]:
     return str(p_current)
 
 
-def check_version(tool: str, installed: List[str], granularity: str):
+def check_version(q: queue.Queue,
+                  tool: str,
+                  installed: List[str],
+                  granularity: str):
     logging.debug(f'check {tool}')
 
     available = get_available_versions(tool)
@@ -162,21 +165,26 @@ def check_version(tool: str, installed: List[str], granularity: str):
               file=sys.stderr)
         return
 
-    s = f'{tool}'
+    s = f'{tool}'  # message to be printed
+    t = f'{tool}'  # new content for .tool-versions
     if latest_version in installed:
         for i in installed:
             if i == latest_version:
                 s += f' {Colors.OKGREEN}{i}{Colors.ENDC}'
             else:
                 s += f' {i}'
+            t += f' {i}'
     else:
         closest = find_closest(installed, latest_version)
         for i in installed:
             if i == closest:
                 s += f' {Colors.WARNING}{i}->{latest_version}{Colors.ENDC}'
+                t += f' {latest_version}'
             else:
                 s += f' {i}'
+                t += f' {i}'
     print(s)
+    q.put(t)
 
 
 def main():
@@ -190,6 +198,10 @@ def main():
                       help='Suggest newer version on major, minor, or patch',
                       default='patch',
                       choices=['patch', 'minor', 'major'])
+    parser.add_option('-w',
+                      '--write',
+                      help='Update .tool-versions with newer versions',
+                      action='store_true')
     parser.set_defaults()
     (options, args) = parser.parse_args()
 
@@ -209,15 +221,22 @@ def main():
 
     threads = []
 
+    q = queue.Queue()
+
+    granularity = options.granularity
     for t in tuples:
         tool, versions = t
-        th = threading.Thread(target=check_version,
-                              args=(tool, versions, options.granularity))
+        args = (q, tool, versions, granularity)
+        th = threading.Thread(target=check_version, args=args)
         th.start()
         threads.append(th)
 
     for t in threads:
         t.join()
+
+    if options.write:
+        with open(options.file, 'w') as f:
+            f.write('\n'.join(sorted([q.get() for t in tuples])))
 
 
 if __name__ == '__main__':
