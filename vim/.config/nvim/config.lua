@@ -30,7 +30,7 @@ lvim.leader = "space"
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
 -- -- Change theme settings
--- lvim.colorscheme = "lunar"
+lvim.colorscheme = "base16-bright"
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -41,7 +41,9 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
--- lvim.builtin.treesitter.ignore_install = { "haskell" }
+-- Besides disabling indentation, I also need to completely disable Python treesitter to prevent the bug.
+-- ref: https://github.com/LunarVim/LunarVim/issues/1867
+lvim.builtin.treesitter.ignore_install = { "python" }
 
 -- -- always installed on startup, useful for parsers without a strict filetype
 -- lvim.builtin.treesitter.ensure_installed = { "comment", "markdown_inline", "regex" }
@@ -138,8 +140,6 @@ lvim.plugins = {
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
-
-lvim.colorscheme = "base16-bright"
 
 -- Map semicolon to colon
 -- ref: https://vim.fandom.com/wiki/Map_semicolon_to_colon
