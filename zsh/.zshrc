@@ -165,20 +165,20 @@ zsh_plugins=(
 )
 
 crates=(
-    cargo-outdated:0.11.1
-    cargo-watch:8.1.2
-    cross:0.2.4
-    du-dust:0.6.2
-    git-delta:0.12.0
+    cargo-outdated:0.11.2
+    cargo-watch:8.4.0
+    cross:0.2.5
+    du-dust:0.8.5
+    git-delta:0.15.1
     gping:1.8.0
-    hyperfine:1.13.0
-    license-generator:0.8.1
-    lsd:0.20.1
-    procs:0.11.10
-    stylua:0.13.1
+    hyperfine:1.16.1
+    license-generator:1.0.0
+    lsd:0.23.1
+    procs:0.14.0
+    stylua:0.17.1
     tokei:12.1.2
     xsv:0.13.0
-    zoxide:0.7.9
+    zoxide:0.9.0
 )
 
 # platform-specific plugins
