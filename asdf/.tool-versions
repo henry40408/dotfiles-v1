@@ -4,7 +4,7 @@ deno 1.32.5
 doctl 1.93.1
 fd 8.7.0
 github-cli 2.25.1
-golang 1.20.3
+golang 1.20.4
 helm 3.11.3
 k9s 0.27.3
 kubectl 1.26.4
