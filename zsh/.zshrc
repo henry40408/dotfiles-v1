@@ -161,7 +161,7 @@ zsh_plugins=(
     plugins:zsh-users/zsh-autosuggestions:a411ef3
     plugins:zsh-users/zsh-completions:20f3cd5
     plugins:zsh-users/zsh-syntax-highlighting:c7caf57
-    themes:romkatv/powerlevel10k:e1c52e0
+    themes:romkatv/powerlevel10k:v1.18.0
 )
 
 crates=(
