@@ -1,10 +1,2 @@
-bin/bin/clion
-bin/bin/fleet
-bin/bin/goland
-bin/bin/idea
-bin/bin/nb
-bin/bin/rubymine
-bin/bin/studio
-bin/bin/webstorm
 fish/.config/fish/fish_variables
 vim/.config/nvim/plugin/packer_compiled.lua
