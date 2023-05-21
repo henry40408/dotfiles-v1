@@ -17,3 +17,5 @@
   side-by-side = true
 [pull]
   rebase = false
+[init]
+	defaultBranch = main
