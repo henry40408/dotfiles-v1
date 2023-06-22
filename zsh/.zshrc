@@ -92,19 +92,14 @@ plugins=(
     direnv
     docker-compose
     fzf
-    gem
     git
     git-extras
     git-flow
     gitignore
     golang
     gpg-agent
-    helm
-    kubectl
     pip
     python
-    rails
-    ruby
 )
 
 # pip plugin
@@ -153,16 +148,23 @@ tmux_plugins=(
 # 4. add alias "you-should-use" to plugins list instead
 zsh_plugins=(
     plugins:Aloxaf/fzf-tab:e85f76a
-    plugins:MichaelAquilina/zsh-auto-notify:fb38802:auto-notify
     plugins:MichaelAquilina/zsh-you-should-use:773ae5f:you-should-use
     plugins:chuwy/zsh-secrets:1d01c9d
     plugins:hlissner/zsh-autopair:9d003fc
-    # plugins:jreese/zsh-titles:b7d46d7:titles
     plugins:zsh-users/zsh-autosuggestions:a411ef3
     plugins:zsh-users/zsh-completions:20f3cd5
     plugins:zsh-users/zsh-syntax-highlighting:c7caf57
     themes:romkatv/powerlevel10k:v1.18.0
 )
+
+# Disable automatic notifications on a remote machine via SSH
+function() {
+    if [[ "x$SSH_CLIENT" = "x" ]]; then
+        zsh_plugins+=(
+            plugins:MichaelAquilina/zsh-auto-notify:fb38802:auto-notify
+        )
+    fi
+}
 
 crates=(
     cargo-outdated:0.11.2
